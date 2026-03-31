@@ -61,22 +61,22 @@ $script:UI_ICON_INFO = "[*]"
 $script:UI_ICON_WARN = "[!]"
 $script:UI_ICON_ARROW = "[>]"
 
-function Write-UILine { param([string]$Char = "-"); Write-Host ("$Char" * 60) -ForegroundColor DarkGray }
+function Write-UILine { param([string]$Char = "-"); Write-Host ("$Char" * 60) -ForegroundColor Blue }
 function Write-UISection {
     param([string]$Title, [string]$Step = "")
     Write-Host ""
     if ($Step) {
-        Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+        Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
         Write-Host "  $script:UI_ICON_ARROW $Title  " -NoNewline -ForegroundColor Cyan
-        Write-Host "($Step)" -ForegroundColor DarkGray
-        Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+        Write-Host "($Step)" -ForegroundColor Blue
+        Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     } else {
-        Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+        Write-Host "  $script:UI_LINE" -ForegroundColor Blue
         Write-Host "  $Title" -ForegroundColor Cyan
-        Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+        Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     }
 }
-function Write-UIInfo { param([string]$Msg); Write-Host "  $script:UI_ICON_INFO $Msg" -ForegroundColor Gray }
+function Write-UIInfo { param([string]$Msg); Write-Host "  $script:UI_ICON_INFO $Msg" -ForegroundColor Cyan }
 function Write-UIOk   { param([string]$Msg); Write-Host "  $script:UI_ICON_OK $Msg" -ForegroundColor Green }
 function Write-UIWarn { param([string]$Msg); Write-Host "  $script:UI_ICON_WARN $Msg" -ForegroundColor Yellow }
 
@@ -243,17 +243,17 @@ function Select-Provider {
                 "china-direct" { "  ══ 国内直连模型（按量付费）══" }
                 "international" { "  ══ 国际模型（需海外网络环境）══" }
             }
-            Write-Host $categoryLabel -ForegroundColor DarkYellow
+            Write-Host $categoryLabel -ForegroundColor Yellow
         }
         $indexStr = "$($p.Index)".PadLeft(4)
         $nameStr  = "[$($p.Emoji)] $($p.Name)".PadRight(32)
-        Write-Host "$indexStr) " -NoNewline -ForegroundColor DarkCyan
+        Write-Host "$indexStr) " -NoNewline -ForegroundColor Cyan
         Write-Host $nameStr -NoNewline -ForegroundColor White
-        Write-Host "  默认模型：$($p.DefaultModel)" -ForegroundColor DarkGray
+        Write-Host "  默认模型：$($p.DefaultModel)" -ForegroundColor Blue
     }
 
     Write-Host ""
-    Write-Host "    提示：国内用户推荐选 1（火山方舟）或 2（阿里百炼），包月订阅更划算。" -ForegroundColor DarkGray
+    Write-Host "    提示：国内用户推荐选 1（火山方舟）或 2（阿里百炼），包月订阅更划算。" -ForegroundColor Blue
     Write-Host ""
 
     while ($true) {
@@ -263,7 +263,7 @@ function Select-Provider {
             $selected = $script:ProviderList | Where-Object { $_.Index -eq $num }
             Write-Host ""
             Write-UIOk "已选择：$($selected.Name)（$($selected.NameEn)）"
-            Write-Host "    默认模型：" -NoNewline -ForegroundColor DarkGray
+            Write-Host "    默认模型：" -NoNewline -ForegroundColor Blue
             Write-Host $selected.DefaultModel -ForegroundColor Cyan
             return $selected
         }
@@ -284,10 +284,10 @@ function Read-ApiKey {
     Write-Host ""
     Write-Host "    Boss，请输入你的 $($Provider.Name) API Key：" -ForegroundColor White
     Write-Host ""
-    Write-Host "    还没有 API Key？前往以下地址获取：" -ForegroundColor DarkGray
+    Write-Host "    还没有 API Key？前往以下地址获取：" -ForegroundColor Blue
     Write-Host "    $($Provider.ApiKeyUrl)" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "    环境变量名：" -NoNewline -ForegroundColor DarkGray
+    Write-Host "    环境变量名：" -NoNewline -ForegroundColor Blue
     Write-Host $Provider.EnvVar -ForegroundColor Yellow
     Write-Host ""
 
@@ -319,12 +319,12 @@ function Read-Workspace {
 
     Write-Host ""
     Write-Host "    Boss，请指定 OpenClaw 项目文件夹路径：" -ForegroundColor White
-    Write-Host "    后续工作文件均存放于此目录。" -ForegroundColor DarkGray
+    Write-Host "    后续工作文件均存放于此目录。" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    默认路径：" -NoNewline -ForegroundColor DarkGray
+    Write-Host "    默认路径：" -NoNewline -ForegroundColor Blue
     Write-Host $defaultPath -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "    直接按 Enter 使用默认路径，或输入自定义路径：" -ForegroundColor DarkGray
+    Write-Host "    直接按 Enter 使用默认路径，或输入自定义路径：" -ForegroundColor Blue
 
     $userInput = Read-Host "    工作目录"
 
@@ -365,26 +365,26 @@ function Invoke-Deployment {
     Write-UISection -Title "执行自动部署" -Step "openclaw onboard --non-interactive"
 
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE" -ForegroundColor Cyan
     Write-Host "  部署计划" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkCyan
-    Write-Host "    模型提供商    " -NoNewline -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Cyan
+    Write-Host "    模型提供商    " -NoNewline -ForegroundColor Blue
     Write-Host "$($Provider.Name) ($($Provider.NameEn))" -ForegroundColor White
-    Write-Host "    认证方式 ID   " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    认证方式 ID   " -NoNewline -ForegroundColor Blue
     Write-Host $Provider.AuthChoice -ForegroundColor White
-    Write-Host "    默认模型      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    默认模型      " -NoNewline -ForegroundColor Blue
     Write-Host $Provider.DefaultModel -ForegroundColor White
-    Write-Host "    工作目录      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    工作目录      " -NoNewline -ForegroundColor Blue
     Write-Host $WorkDir -ForegroundColor White
-    Write-Host "    安装 Daemon   " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    安装 Daemon   " -NoNewline -ForegroundColor Blue
     Write-Host "是（后台服务自启动）" -ForegroundColor White
-    Write-Host "    跳过通道配置  " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    跳过通道配置  " -NoNewline -ForegroundColor Blue
     Write-Host "是（稍后可通过 openclaw channels add 添加）" -ForegroundColor White
-    Write-Host "    跳过技能配置  " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    跳过技能配置  " -NoNewline -ForegroundColor Blue
     Write-Host "是（稍后可通过 openclaw skills 配置）" -ForegroundColor White
-    Write-Host "    跳过搜索配置  " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    跳过搜索配置  " -NoNewline -ForegroundColor Blue
     Write-Host "是（稍后可通过 openclaw configure --section web 配置）" -ForegroundColor White
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE" -ForegroundColor Cyan
     Write-Host ""
 
     Write-UIInfo "正在执行 OpenClaw 自动化部署，请稍候..."
@@ -409,7 +409,7 @@ function Invoke-Deployment {
 
     try {
         & openclaw @onboardArgs 2>&1 | ForEach-Object {
-            Write-Host "    $_" -ForegroundColor DarkGray
+            Write-Host "    $_" -ForegroundColor Blue
         }
         $onboardExit = $LASTEXITCODE
     } catch {
@@ -421,24 +421,24 @@ function Invoke-Deployment {
         Write-Host ""
         Write-UIOk "🦞 OpenClaw 部署配置完成！"
         Write-Host ""
-        Write-Host "    已完成以下配置：" -ForegroundColor DarkGray
-        Write-Host "      - 模型提供商: $($Provider.Name)" -ForegroundColor Gray
-        Write-Host "      - 默认模型: $($Provider.DefaultModel)" -ForegroundColor Gray
-        Write-Host "      - API Key: 已配置" -ForegroundColor Gray
-        Write-Host "      - 工作目录: $WorkDir" -ForegroundColor Gray
-        Write-Host "      - Gateway Daemon: 已安装并启动" -ForegroundColor Gray
-        Write-Host "      - 网关端口: 18789（Loopback 绑定 + Token 认证）" -ForegroundColor Gray
+        Write-Host "    已完成以下配置：" -ForegroundColor Blue
+        Write-Host "      - 模型提供商: $($Provider.Name)" -ForegroundColor Cyan
+        Write-Host "      - 默认模型: $($Provider.DefaultModel)" -ForegroundColor Cyan
+        Write-Host "      - API Key: 已配置" -ForegroundColor Cyan
+        Write-Host "      - 工作目录: $WorkDir" -ForegroundColor Cyan
+        Write-Host "      - Gateway Daemon: 已安装并启动" -ForegroundColor Cyan
+        Write-Host "      - 网关端口: 18789（Loopback 绑定 + Token 认证）" -ForegroundColor Cyan
         return $true
     } else {
         Write-Host ""
         Write-UIWarn "部署过程遇到问题（退出码：$onboardExit）"
         Write-Host ""
         Write-Host "    请检查以下可能的原因：" -ForegroundColor Yellow
-        Write-Host "      1. API Key 是否正确" -ForegroundColor Gray
-        Write-Host "      2. 网络是否可以访问对应模型提供商" -ForegroundColor Gray
-        Write-Host "      3. 工作目录是否有写入权限" -ForegroundColor Gray
+        Write-Host "      1. API Key 是否正确" -ForegroundColor Cyan
+        Write-Host "      2. 网络是否可以访问对应模型提供商" -ForegroundColor Cyan
+        Write-Host "      3. 工作目录是否有写入权限" -ForegroundColor Cyan
         Write-Host ""
-        Write-Host "    你可以稍后手动运行以下命令重试：" -ForegroundColor DarkGray
+        Write-Host "    你可以稍后手动运行以下命令重试：" -ForegroundColor Blue
         Write-Host "      openclaw onboard --install-daemon" -ForegroundColor Cyan
         Write-Host ""
         return $false
@@ -455,7 +455,7 @@ function Invoke-DoctorCheck {
     Write-Host ""
     try {
         & openclaw doctor 2>&1 | ForEach-Object {
-            Write-Host "    $_" -ForegroundColor DarkGray
+            Write-Host "    $_" -ForegroundColor Blue
         }
     } catch {
         Write-UIWarn "doctor 运行遇到问题：$($_.Exception.Message)"
@@ -465,7 +465,7 @@ function Invoke-DoctorCheck {
     Write-Host ""
     try {
         & openclaw doctor --fix 2>&1 | ForEach-Object {
-            Write-Host "    $_" -ForegroundColor DarkGray
+            Write-Host "    $_" -ForegroundColor Blue
         }
     } catch { }
     Write-Host ""
@@ -480,18 +480,18 @@ function Invoke-GatewayRestart {
     Write-UISection -Title "重启 Gateway 服务" -Step "openclaw gateway restart"
     Write-UIInfo "正在重启 Gateway 后台服务..."
     Write-Host ""
-    Write-Host "    小提示：gateway restart 是重启后台 daemon 服务" -ForegroundColor DarkGray
-    Write-Host "    记得不要额外运行 openclaw gateway run 哦，会造成端口冲突的！" -ForegroundColor DarkGray
+    Write-Host "    小提示：gateway restart 是重启后台 daemon 服务" -ForegroundColor Blue
+    Write-Host "    记得不要额外运行 openclaw gateway run 哦，会造成端口冲突的！" -ForegroundColor Blue
     Write-Host ""
     try {
         & openclaw gateway restart 2>&1 | ForEach-Object {
-            Write-Host "    $_" -ForegroundColor DarkGray
+            Write-Host "    $_" -ForegroundColor Blue
         }
         Write-Host ""
         Write-UIOk "🦞 Gateway 服务重启成功！"
     } catch {
         Write-UIWarn "Gateway 重启失败：$($_.Exception.Message)"
-        Write-Host "    可稍后手动运行：openclaw gateway restart" -ForegroundColor DarkGray
+        Write-Host "    可稍后手动运行：openclaw gateway restart" -ForegroundColor Blue
     }
 }
 
@@ -505,7 +505,7 @@ function Invoke-Dashboard {
     Write-Host ""
     try {
         & openclaw dashboard 2>&1 | ForEach-Object {
-            Write-Host "    $_" -ForegroundColor DarkGray
+            Write-Host "    $_" -ForegroundColor Blue
         }
         Write-Host ""
         Write-UIOk "OpenClaw Web UI 已启动！"
@@ -531,37 +531,37 @@ function Show-DeploySummary {
     }
     Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Green
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
-    Write-Host "  部署摘要" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
-    Write-Host "    模型提供商    " -NoNewline -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
+    Write-Host "  部署摘要" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
+    Write-Host "    模型提供商    " -NoNewline -ForegroundColor Blue
     Write-Host "$($Provider.Name)" -ForegroundColor Cyan
-    Write-Host "    默认模型      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    默认模型      " -NoNewline -ForegroundColor Blue
     Write-Host $Provider.DefaultModel -ForegroundColor Cyan
-    Write-Host "    工作目录      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    工作目录      " -NoNewline -ForegroundColor Blue
     Write-Host $WorkDir -ForegroundColor Cyan
-    Write-Host "    Gateway 端口  " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    Gateway 端口  " -NoNewline -ForegroundColor Blue
     Write-Host "18789 (Loopback + Token)" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
-    Write-Host "  常用命令" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
-    Write-Host "    自检修复      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
+    Write-Host "  常用命令" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
+    Write-Host "    自检修复      " -NoNewline -ForegroundColor Blue
     Write-Host "openclaw doctor --fix" -ForegroundColor Cyan
-    Write-Host "    重启服务      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    重启服务      " -NoNewline -ForegroundColor Blue
     Write-Host "openclaw gateway restart" -ForegroundColor Cyan
-    Write-Host "    打开面板      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    打开面板      " -NoNewline -ForegroundColor Blue
     Write-Host "openclaw dashboard" -ForegroundColor Cyan
-    Write-Host "    重新引导      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    重新引导      " -NoNewline -ForegroundColor Blue
     Write-Host "openclaw onboard --install-daemon" -ForegroundColor Cyan
-    Write-Host "    安全审计      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    安全审计      " -NoNewline -ForegroundColor Blue
     Write-Host "openclaw security audit --deep" -ForegroundColor Cyan
-    Write-Host "    添加通道      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    添加通道      " -NoNewline -ForegroundColor Blue
     Write-Host "openclaw channels add" -ForegroundColor Cyan
-    Write-Host "    配置技能      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    配置技能      " -NoNewline -ForegroundColor Blue
     Write-Host "openclaw skills" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     $tips = @(
         "🦞 OpenClaw 已就绪，快去探索 AI 世界吧！",
@@ -570,7 +570,7 @@ function Show-DeploySummary {
         "你的 AI 助手已在后台待命，随时召唤。"
     )
     Write-Host "  " -NoNewline
-    Write-Host $tips[(Get-Random -Maximum $tips.Count)] -ForegroundColor Gray
+    Write-Host $tips[(Get-Random -Maximum $tips.Count)] -ForegroundColor Cyan
     Write-Host ""
 }
 
@@ -586,37 +586,37 @@ function Show-DeploySummary {
 # ————————————————————————————————————————————————————
 function Invoke-ConfigureModel {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 更换 OpenClaw 模型  " -NoNewline -ForegroundColor Cyan
-    Write-Host "配置向导" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "配置向导" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host "  模型资源与配置参考" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     Write-Host "    🔥 火山方舟 Coding Plan（火山引擎 包月订阅）" -ForegroundColor Yellow
-    Write-Host "       配置指南： https://www.volcengine.com/docs/82379/2183190?lang=zh" -ForegroundColor DarkGray
-    Write-Host "       API Key 查看： https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey" -ForegroundColor DarkGray
+    Write-Host "       配置指南： https://www.volcengine.com/docs/82379/2183190?lang=zh" -ForegroundColor Blue
+    Write-Host "       API Key 查看： https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey" -ForegroundColor Blue
     Write-Host ""
     Write-Host "    ☁️  阿里百炼 Coding Plan（平行引擎 包月订阅）" -ForegroundColor Yellow
-    Write-Host "       配置指南： https://bailian.console.aliyun.com/cn-beijing/?tab=doc#/doc/?type=model&url=3023085" -ForegroundColor DarkGray
-    Write-Host "       API Key 查看： https://bailian.console.aliyun.com/cn-beijing?tab=coding-plan#/efm/coding-plan-detail" -ForegroundColor DarkGray
+    Write-Host "       配置指南： https://bailian.console.aliyun.com/cn-beijing/?tab=doc#/doc/?type=model&url=3023085" -ForegroundColor Blue
+    Write-Host "       API Key 查看： https://bailian.console.aliyun.com/cn-beijing?tab=coding-plan#/efm/coding-plan-detail" -ForegroundColor Blue
     Write-Host ""
     Write-Host "    🟦 腾讯 Coding Plan（混元大模型 包月订阅）" -ForegroundColor Yellow
-    Write-Host "       配置指南： https://cloud.tencent.com/document/product/1772/128949" -ForegroundColor DarkGray
-    Write-Host "       API Key 查看： https://hunyuan.cloud.tencent.com/#/app/subscription" -ForegroundColor DarkGray
+    Write-Host "       配置指南： https://cloud.tencent.com/document/product/1772/128949" -ForegroundColor Blue
+    Write-Host "       API Key 查看： https://hunyuan.cloud.tencent.com/#/app/subscription" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host "  请提前准备好对应模型的 API Key，然后选择操作：" -ForegroundColor White
     Write-Host ""
-    Write-Host "    1) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    1) " -NoNewline -ForegroundColor Cyan
     Write-Host "继续配置 OpenClaw 模型" -ForegroundColor White
     Write-Host ""
-    Write-Host "    2) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    2) " -NoNewline -ForegroundColor Cyan
     Write-Host "返回主菜单" -ForegroundColor White
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     while ($true) {
         $subInput = Read-Host "    请输入序号 (1/2)"
@@ -627,10 +627,10 @@ function Invoke-ConfigureModel {
                 Write-Host ""
                 try {
                     # 传入 "1\n2\n" 模拟交互：选Local(1) 再选Model(2)
-                    & openclaw configure 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+                    & openclaw configure 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
-                    Write-Host "    请手动运行： openclaw configure" -ForegroundColor DarkGray
+                    Write-Host "    请手动运行： openclaw configure" -ForegroundColor Blue
                 }
                 return
             }
@@ -645,36 +645,36 @@ function Invoke-ConfigureModel {
 # ————————————————————————————————————————————————————
 function Show-WechatChannelMenu {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 连接微信  " -NoNewline -ForegroundColor Cyan
-    Write-Host "Wechat Channel" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "Wechat Channel" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host "  接入步骤" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     Write-Host "  第一步：升级微信至最新版（≥ 8.0.7）" -ForegroundColor White
-    Write-Host "    微信 → 我 → 设置 → 关于微信 → 版本更新" -ForegroundColor DarkGray
+    Write-Host "    微信 → 我 → 设置 → 关于微信 → 版本更新" -ForegroundColor Blue
     Write-Host ""
     Write-Host "  第二步：在微信里启用插件" -ForegroundColor White
-    Write-Host "    1. 手机微信 → 「我」→ 「设置」→ 「插件」" -ForegroundColor DarkGray
-    Write-Host "    2. 找到「微信 ClawBot」，按提示启用/授权" -ForegroundColor DarkGray
-    Write-Host "    （此步是将微信账号与插件能力绑定）" -ForegroundColor DarkGray
+    Write-Host "    1. 手机微信 → 「我」→ 「设置」→ 「插件」" -ForegroundColor Blue
+    Write-Host "    2. 找到「微信 ClawBot」，按提示启用/授权" -ForegroundColor Blue
+    Write-Host "    （此步是将微信账号与插件能力绑定）" -ForegroundColor Blue
     Write-Host ""
     Write-Host "  第三步：点击“继续”，将自动安装微信官方插件" -ForegroundColor White
-    Write-Host "    执行命令： npx -y @tencent-weixin/openclaw-weixin-cli@latest install" -ForegroundColor DarkGray
-    Write-Host "    执行后自动弹出二维码，用需要绑定的微信扫码并点“连接”确认" -ForegroundColor DarkGray
+    Write-Host "    执行命令： npx -y @tencent-weixin/openclaw-weixin-cli@latest install" -ForegroundColor Blue
+    Write-Host "    执行后自动弹出二维码，用需要绑定的微信扫码并点“连接”确认" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    1) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    1) " -NoNewline -ForegroundColor Cyan
     Write-Host "安装微信官方插件（自动执行上述命令）" -ForegroundColor White
     Write-Host ""
-    Write-Host "    2) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    2) " -NoNewline -ForegroundColor Cyan
     Write-Host "返回主菜单" -ForegroundColor White
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     while ($true) {
         $subInput = Read-Host "    请输入序号 (1/2)"
@@ -685,13 +685,13 @@ function Show-WechatChannelMenu {
                 Write-Host ""
                 try {
                     & npx -y @tencent-weixin/openclaw-weixin-cli@latest install 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor DarkGray
+                        Write-Host "    $_" -ForegroundColor Blue
                     }
                     Write-Host ""
                     Write-UIOk "微信插件安装命令执行完成！请用微信扫码确认连接。"
                 } catch {
                     Write-UIWarn "安装失败：$($_.Exception.Message)"
-                    Write-Host "    请手动运行： npx -y @tencent-weixin/openclaw-weixin-cli@latest install" -ForegroundColor DarkGray
+                    Write-Host "    请手动运行： npx -y @tencent-weixin/openclaw-weixin-cli@latest install" -ForegroundColor Blue
                 }
                 return
             }
@@ -703,36 +703,36 @@ function Show-WechatChannelMenu {
 
 function Show-ChannelsMenu {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 添加 Channels  " -NoNewline -ForegroundColor Cyan
-    Write-Host "连接即时通讯渠道" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "连接即时通讯渠道" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  请选择要连接的渠道：" -ForegroundColor White
     Write-Host ""
-    Write-Host "    1) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    1) " -NoNewline -ForegroundColor Cyan
     Write-Host "连接微信" -ForegroundColor White
     Write-Host ""
-    Write-Host "    2) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    2) " -NoNewline -ForegroundColor Cyan
     Write-Host "连接飞书" -ForegroundColor White
-    Write-Host "       参考指南： https://www.feishu.cn/content/article/7613711414611463386" -ForegroundColor DarkGray
+    Write-Host "       参考指南： https://www.feishu.cn/content/article/7613711414611463386" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    3) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    3) " -NoNewline -ForegroundColor Cyan
     Write-Host "连接企微" -ForegroundColor White
-    Write-Host "       参考指南： https://open.work.weixin.qq.com/help2/pc/cat?doc_id=21657" -ForegroundColor DarkGray
+    Write-Host "       参考指南： https://open.work.weixin.qq.com/help2/pc/cat?doc_id=21657" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    4) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    4) " -NoNewline -ForegroundColor Cyan
     Write-Host "连接 QQ" -ForegroundColor White
-    Write-Host "       参考指南： https://q.qq.com/qqbot/openclaw/login.html" -ForegroundColor DarkGray
+    Write-Host "       参考指南： https://q.qq.com/qqbot/openclaw/login.html" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    5) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    5) " -NoNewline -ForegroundColor Cyan
     Write-Host "连接其他渠道" -ForegroundColor White
-    Write-Host "       进入 Channels 配置总入口，手动选择渠道" -ForegroundColor DarkGray
+    Write-Host "       进入 Channels 配置总入口，手动选择渠道" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    6) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    6) " -NoNewline -ForegroundColor Cyan
     Write-Host "返回主菜单" -ForegroundColor White
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     while ($true) {
         $subInput = Read-Host "    请输入序号 (1-6)"
@@ -749,11 +749,11 @@ function Show-ChannelsMenu {
                 Write-Host ""
                 try {
                     & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor DarkGray
+                        Write-Host "    $_" -ForegroundColor Blue
                     }
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
-                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor DarkGray
+                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
                 }
                 return
             }
@@ -765,11 +765,11 @@ function Show-ChannelsMenu {
                 Write-Host ""
                 try {
                     & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor DarkGray
+                        Write-Host "    $_" -ForegroundColor Blue
                     }
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
-                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor DarkGray
+                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
                 }
                 return
             }
@@ -783,11 +783,11 @@ function Show-ChannelsMenu {
                 Write-Host ""
                 try {
                     & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor DarkGray
+                        Write-Host "    $_" -ForegroundColor Blue
                     }
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
-                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor DarkGray
+                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
                 }
                 return
             }
@@ -802,28 +802,28 @@ function Show-ChannelsMenu {
 # ————————————————————————————————————————————————————
 function Show-QQChannelMenu {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 连接 QQ  " -NoNewline -ForegroundColor Cyan
-    Write-Host "三步完成 QQ 渠道接入" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "三步完成 QQ 渠道接入" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  📋 连接前请先阅读官方指南：" -ForegroundColor White
-    Write-Host "     https://q.qq.com/qqbot/openclaw/login.html" -ForegroundColor DarkCyan
+    Write-Host "     https://q.qq.com/qqbot/openclaw/login.html" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  接入步骤：" -ForegroundColor White
-    Write-Host "    第一步：访问以上官方指南页面，完成 QQ 账号授权" -ForegroundColor DarkGray
-    Write-Host "    第二步：准备好 QQ 机器人的相关凭据（AppID / Token 等）" -ForegroundColor DarkGray
-    Write-Host "    第三步：点击继续，进入 OpenClaw Channels 配置页完成绑定" -ForegroundColor DarkGray
+    Write-Host "    第一步：访问以上官方指南页面，完成 QQ 账号授权" -ForegroundColor Blue
+    Write-Host "    第二步：准备好 QQ 机器人的相关凭据（AppID / Token 等）" -ForegroundColor Blue
+    Write-Host "    第三步：点击继续，进入 OpenClaw Channels 配置页完成绑定" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    1) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    1) " -NoNewline -ForegroundColor Cyan
     Write-Host "继续连接 QQ（进入 Channels 配置）" -ForegroundColor White
     Write-Host ""
-    Write-Host "    2) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    2) " -NoNewline -ForegroundColor Cyan
     Write-Host "返回渠道菜单" -ForegroundColor White
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     while ($true) {
         $subInput = Read-Host "    请输入序号 (1-2)"
@@ -834,11 +834,11 @@ function Show-QQChannelMenu {
                 Write-Host ""
                 try {
                     & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor DarkGray
+                        Write-Host "    $_" -ForegroundColor Blue
                     }
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
-                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor DarkGray
+                    Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
                 }
                 return
             }
@@ -853,9 +853,9 @@ function Show-QQChannelMenu {
 # ————————————————————————————————————————————————————
 function Invoke-SelfCheck {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 OpenClaw 自检并尝试修复  " -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  小提示：请将完整自检结果复制粘贴给 豆包 / 千问 / DeepSeek 帮你分析" -ForegroundColor Yellow
     Write-Host ""
@@ -865,7 +865,7 @@ function Invoke-SelfCheck {
     Write-UIInfo "正在运行 OpenClaw 健康检查..."
     Write-Host ""
     try {
-        & openclaw doctor 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw doctor 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
     } catch {
         Write-UIWarn "doctor 运行遇到问题：$($_.Exception.Message)"
     }
@@ -876,7 +876,7 @@ function Invoke-SelfCheck {
     Write-UIInfo "正在尝试自动修复检测到的问题..."
     Write-Host ""
     try {
-        & openclaw doctor --fix 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw doctor --fix 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
     } catch {
         Write-UIWarn "doctor --fix 运行遇到问题：$($_.Exception.Message)"
     }
@@ -887,12 +887,12 @@ function Invoke-SelfCheck {
     Write-UIInfo "正在重启 Gateway 后台服务..."
     Write-Host ""
     try {
-        & openclaw gateway restart 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw gateway restart 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         Write-Host ""
         Write-UIOk "Gateway 服务已重启"
     } catch {
         Write-UIWarn "gateway restart 失败：$($_.Exception.Message)"
-        Write-Host "    可手动运行： openclaw gateway restart" -ForegroundColor DarkGray
+        Write-Host "    可手动运行： openclaw gateway restart" -ForegroundColor Blue
     }
     Write-Host ""
 
@@ -901,7 +901,7 @@ function Invoke-SelfCheck {
     Write-UIInfo "正在获取 OpenClaw 全量状态信息..."
     Write-Host ""
     try {
-        & openclaw status --all 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw status --all 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
     } catch {
         Write-UIWarn "status --all 运行遇到问题：$($_.Exception.Message)"
     }
@@ -912,7 +912,7 @@ function Invoke-SelfCheck {
     Write-UIInfo "正在打开 OpenClaw Web UI（控制面板）..."
     Write-Host ""
     try {
-        & openclaw dashboard 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw dashboard 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         Write-Host ""
         Write-UIOk "OpenClaw Web UI 已启动！"
     } catch {
@@ -920,9 +920,9 @@ function Invoke-SelfCheck {
     }
     Write-Host ""
 
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-UIOk "🦞 全部自检流程执行完成！如有输出异常请复制给 AI 助手分析。"
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
 }
 
@@ -935,10 +935,10 @@ function Invoke-ConfigureMain {
     Write-UIInfo "正在启动 OpenClaw 配置向导（包含模型 / 网关 / 渠道 / 守护进程等）..."
     Write-Host ""
     try {
-        & openclaw configure 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw configure 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
     } catch {
         Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
-        Write-Host "    请手动运行： openclaw configure" -ForegroundColor DarkGray
+        Write-Host "    请手动运行： openclaw configure" -ForegroundColor Blue
     }
     Write-Host ""
 }
@@ -952,12 +952,12 @@ function Invoke-Dashboard {
     Write-UIInfo "正在启动 OpenClaw Web UI..."
     Write-Host ""
     try {
-        & openclaw dashboard 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw dashboard 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         Write-Host ""
         Write-UIOk "OpenClaw Web UI 已启动！请在浏览器中查看。"
     } catch {
         Write-UIWarn "启动失败：$($_.Exception.Message)"
-        Write-Host "    请手动运行： openclaw dashboard" -ForegroundColor DarkGray
+        Write-Host "    请手动运行： openclaw dashboard" -ForegroundColor Blue
     }
     Write-Host ""
 }
@@ -967,19 +967,19 @@ function Invoke-Dashboard {
 # ————————————————————————————————————————————————————
 function Invoke-Uninstall {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkRed
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Red
     Write-Host "  ⚠️  完全卸载 OpenClaw  " -NoNewline -ForegroundColor Red
-    Write-Host "本操作不可逆！" -ForegroundColor DarkRed
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkRed
+    Write-Host "本操作不可逆！" -ForegroundColor Red
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Red
     Write-Host ""
     Write-Host "  将依次执行以下操作：" -ForegroundColor White
-    Write-Host "    1. openclaw gateway stop" -ForegroundColor DarkGray
-    Write-Host "    2. openclaw gateway uninstall" -ForegroundColor DarkGray
-    Write-Host "    3. openclaw uninstall" -ForegroundColor DarkGray
-    Write-Host "    4. npm uninstall -g openclaw" -ForegroundColor DarkGray
-    Write-Host "    5. pnpm remove -g openclaw" -ForegroundColor DarkGray
+    Write-Host "    1. openclaw gateway stop" -ForegroundColor Blue
+    Write-Host "    2. openclaw gateway uninstall" -ForegroundColor Blue
+    Write-Host "    3. openclaw uninstall" -ForegroundColor Blue
+    Write-Host "    4. npm uninstall -g openclaw" -ForegroundColor Blue
+    Write-Host "    5. pnpm remove -g openclaw" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkRed
+    Write-Host "  $script:UI_LINE" -ForegroundColor Red
     Write-Host "  请输入 YES 进行二次确认（输入其它内容取消）" -ForegroundColor Red
     Write-Host ""
     $confirm1 = Read-Host "    请确认：输入 YES 开始卸载"
@@ -995,9 +995,9 @@ function Invoke-Uninstall {
     }
 
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 开始执行卸载流程..." -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
 
     $uninstallResults = @()
@@ -1005,7 +1005,7 @@ function Invoke-Uninstall {
     # Step 1: openclaw gateway stop
     Write-UISection -Title "Step 1 - 停止 Gateway 服务" -Step "openclaw gateway stop"
     try {
-        & openclaw gateway stop 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw gateway stop 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         $uninstallResults += "[OK] openclaw gateway stop"
     } catch {
         $uninstallResults += "[!] openclaw gateway stop: $($_.Exception.Message)"
@@ -1015,7 +1015,7 @@ function Invoke-Uninstall {
     # Step 2: openclaw gateway uninstall
     Write-UISection -Title "Step 2 - 移除 Gateway 服务" -Step "openclaw gateway uninstall"
     try {
-        & openclaw gateway uninstall 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw gateway uninstall 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         $uninstallResults += "[OK] openclaw gateway uninstall"
     } catch {
         $uninstallResults += "[!] openclaw gateway uninstall: $($_.Exception.Message)"
@@ -1025,7 +1025,7 @@ function Invoke-Uninstall {
     # Step 3: openclaw uninstall
     Write-UISection -Title "Step 3 - 卸载 OpenClaw配置" -Step "openclaw uninstall"
     try {
-        & openclaw uninstall 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & openclaw uninstall 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         $uninstallResults += "[OK] openclaw uninstall"
     } catch {
         $uninstallResults += "[!] openclaw uninstall: $($_.Exception.Message)"
@@ -1035,7 +1035,7 @@ function Invoke-Uninstall {
     # Step 4: npm uninstall -g openclaw
     Write-UISection -Title "Step 4 - npm 全局卸载" -Step "npm uninstall -g openclaw"
     try {
-        & npm uninstall -g openclaw 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & npm uninstall -g openclaw 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         $uninstallResults += "[OK] npm uninstall -g openclaw"
     } catch {
         $uninstallResults += "[!] npm uninstall -g openclaw: $($_.Exception.Message)"
@@ -1045,7 +1045,7 @@ function Invoke-Uninstall {
     # Step 5: pnpm remove -g openclaw
     Write-UISection -Title "Step 5 - pnpm 全局卸载" -Step "pnpm remove -g openclaw"
     try {
-        & pnpm remove -g openclaw 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        & pnpm remove -g openclaw 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
         $uninstallResults += "[OK] pnpm remove -g openclaw"
     } catch {
         $uninstallResults += "[!] pnpm remove -g openclaw: $($_.Exception.Message)"
@@ -1053,9 +1053,9 @@ function Invoke-Uninstall {
     Write-Host ""
 
     # 卸载结果汇总
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 卸载流程完成 — 执行结果汇总" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
     foreach ($result in $uninstallResults) {
         if ($result -like "[OK]*") {
@@ -1075,69 +1075,73 @@ function Invoke-Uninstall {
 
 function Show-WelcomeMenu {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
-    Write-Host "  🦞 欢迎使用 OpenClaw 全自动安装部署脚本！  " -NoNewline -ForegroundColor Cyan
-    Write-Host "Windows 版" -ForegroundColor DarkGray
-    Write-Host "  基于 OpenClaw 2026.3.28 官方源码" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  # ═══════════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
+    Write-Host "  # OpenClaw 全自动安装部署脚本 - Windows 版" -ForegroundColor Cyan
+    Write-Host "  # 涵盖 OpenClaw环境安装 + OpenClaw最新官方稳定版 + 模型/网关/项目空间全自动部署" -ForegroundColor Blue
+    Write-Host "  # 无后门 | 无病毒 | 全自动 | 全免费 | 零技术门槛" -ForegroundColor Green
+    Write-Host "  # Created by: Mr_Hou  致力于技术平权降低门槛 让人人都有机会拥抱Ai世界" -ForegroundColor Blue
+    Write-Host "  # Wechat_id：qiyuan_hou，欢迎一起讨论 共同进化！" -ForegroundColor Blue
+    Write-Host "  # **严禁恶意篡改或将本免费脚本商业化售卖**" -ForegroundColor Yellow
+    Write-Host "  # ═══════════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
+    Write-Host "  # 功能菜单:" -ForegroundColor Blue
     Write-Host ""
 
     # ── 安装部署 OpenClaw 篇 ──
-    Write-Host "  ┌─ 安装部署 OpenClaw 篇 ──────────────────────────────┐" -ForegroundColor Cyan
+    Write-Host "  ┌─ 《安装与部署 OpenClaw 篇》 ────────────────────────────────────────────┤" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "    1) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    1) " -NoNewline -ForegroundColor Cyan
     Write-Host "安装 OpenClaw 并自动化部署" -NoNewline -ForegroundColor White
-    Write-Host "  （新用户首选！一次搞定所有）" -ForegroundColor DarkGray
-    Write-Host "       自动安装 Node.js / Git / OpenClaw，并配置模型、网关和项目空间" -ForegroundColor DarkGray
+    Write-Host "  （推荐新用户）" -ForegroundColor Blue
+    Write-Host "       自动安装 Node.js / Git / OpenClaw，并配置模型、API Key、网关和项目空间" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    2) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    2) " -NoNewline -ForegroundColor Cyan
     Write-Host "仅自动化安装 OpenClaw" -ForegroundColor White
-    Write-Host "       只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成" -ForegroundColor DarkGray
+    Write-Host "       只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    3) " -NoNewline -ForegroundColor DarkCyan
+    Write-Host "    3) " -NoNewline -ForegroundColor Cyan
     Write-Host "仅部署 OpenClaw 模型/网关/项目空间" -ForegroundColor White
-    Write-Host "       OpenClaw 已安装，仅配置模型提供商和工作目录" -ForegroundColor DarkGray
+    Write-Host "       OpenClaw 已安装，仅配置模型提供商、API Key 和工作目录" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  └────────────────────────────────────────────────────┘" -ForegroundColor Cyan
+    Write-Host "  └─────────────────────────────────────────────────────────────────────┘" -ForegroundColor Cyan
     Write-Host ""
 
     # ── 使用 OpenClaw 篇 ──
-    Write-Host "  ┌─ 使用 OpenClaw 篇（需已安装 OpenClaw）────────────┐" -ForegroundColor Yellow
+    Write-Host "  ┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "    4) " -NoNewline -ForegroundColor DarkYellow
-    Write-Host "更换 OpenClaw 模型" -ForegroundColor White
-    Write-Host "       进入模型配置向导，更换 AI 模型提供商和 API Key" -ForegroundColor DarkGray
+    Write-Host "    4) " -NoNewline -ForegroundColor Yellow
+    Write-Host "更换 OpenClaw 模型（配置 AI 模型提供商 / API Key）" -ForegroundColor White
+    Write-Host "       支持 DeepSeek / Kimi / 火山方舟 / 阿里百炼 / ChatGPT / Claude 等 9 家提供商" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    5) " -NoNewline -ForegroundColor DarkYellow
-    Write-Host "添加 Channels（微信 / 飞书 / 企微 / QQ 等）" -ForegroundColor White
-    Write-Host "       连接即时通讯渠道，让 AI 助手在你的聊天 App 里回复消息" -ForegroundColor DarkGray
+    Write-Host "    5) " -NoNewline -ForegroundColor Yellow
+    Write-Host "添加 Channels（微信 / 飞书 / 企微 / QQ 等即时通讯渠道）" -ForegroundColor White
+    Write-Host "       连接即时通讯渠道，让 AI 助手在你的聊天 App 里直接回复消息" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    6) " -NoNewline -ForegroundColor DarkYellow
+    Write-Host "    6) " -NoNewline -ForegroundColor Yellow
     Write-Host "OpenClaw 自检并尝试修复" -ForegroundColor White
-    Write-Host "       依次运行 doctor / doctor --fix / gateway restart / status / dashboard" -ForegroundColor DarkGray
+    Write-Host "       自动运行 doctor 诊断 + doctor --fix 修复 + gateway restart 重启网关" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    7) " -NoNewline -ForegroundColor DarkYellow
+    Write-Host "    7) " -NoNewline -ForegroundColor Yellow
     Write-Host "进入 OpenClaw 配置页面" -ForegroundColor White
-    Write-Host "       打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）" -ForegroundColor DarkGray
+    Write-Host "       打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "    8) " -NoNewline -ForegroundColor DarkYellow
+    Write-Host "    8) " -NoNewline -ForegroundColor Yellow
     Write-Host "打开 OpenClaw 主页面" -ForegroundColor White
-    Write-Host "       启动 OpenClaw Web UI 控制面板" -ForegroundColor DarkGray
+    Write-Host "       启动 OpenClaw Web UI 控制面板，可在浏览器中查看全部功能和对话" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  └────────────────────────────────────────────────────┘" -ForegroundColor Yellow
+    Write-Host "  └─────────────────────────────────────────────────────────────────────┘" -ForegroundColor Yellow
     Write-Host ""
 
     # ── 卸载 OpenClaw 篇 ──
-    Write-Host "  ┌─ 卸载 OpenClaw 篇 ─────────────────────────────────┐" -ForegroundColor DarkRed
+    Write-Host "  ┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤" -ForegroundColor Red
     Write-Host ""
     Write-Host "    9) " -NoNewline -ForegroundColor Red
     Write-Host "完全卸载 OpenClaw" -ForegroundColor White
-    Write-Host "       停止服务并彻底移除 OpenClaw（操作不可逆，需二次确认）" -ForegroundColor DarkGray
+    Write-Host "       停止全部服务并彻底移除 OpenClaw（操作不可逆，执行前需二次确认）" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  └────────────────────────────────────────────────────┘" -ForegroundColor DarkRed
+    Write-Host "  └─────────────────────────────────────────────────────────────────────┘" -ForegroundColor Red
     Write-Host ""
 
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
     while ($true) {
         $userInput = Read-Host "    请输入序号 (1-9)"
@@ -1212,10 +1216,10 @@ function Select-Proxy {
     }
     if ($script:ProxyCandidates.Count -eq 0) {
         $script:SelectedProxy = ""
-        Write-Host "  $script:UI_ICON_INFO 未配置代理环境变量，直连" -ForegroundColor Gray
+        Write-Host "  $script:UI_ICON_INFO 未配置代理环境变量，直连" -ForegroundColor Cyan
         return ""
     }
-    Write-Host "  $script:UI_ICON_INFO 检测网络代理..." -ForegroundColor Gray
+    Write-Host "  $script:UI_ICON_INFO 检测网络代理..." -ForegroundColor Cyan
     foreach ($candidate in $script:ProxyCandidates) {
         if (Test-ProxyConnectivity -ProxyUrl $candidate) {
             $script:SelectedProxy = $candidate
@@ -1224,7 +1228,7 @@ function Select-Proxy {
         }
     }
     $script:SelectedProxy = ""
-    Write-Host "  $script:UI_ICON_INFO 代理不可用，直连" -ForegroundColor Gray
+    Write-Host "  $script:UI_ICON_INFO 代理不可用，直连" -ForegroundColor Cyan
     return ""
 }
 
@@ -1310,7 +1314,7 @@ function Choose-InstallMethodInteractive {
     if ($env:OPENCLAW_NO_PROMPT -eq "1") { return }
     Write-Host ""
     Write-Host "  $script:UI_ICON_ARROW 喔！检测到 OpenClaw 源码目录，请选择安装方式：" -ForegroundColor Yellow
-    Write-Host "    $DetectedCheckout" -ForegroundColor Gray
+    Write-Host "    $DetectedCheckout" -ForegroundColor Cyan
     Write-Host "    1) 更新源码目录（git）并使用"
     Write-Host "    2) 通过 npm 全局安装"
     Write-Host "    3) 通过 pnpm 全局安装"
@@ -1506,9 +1510,9 @@ function Auto-SelectFastestRegistry {
         $time = Test-RegistrySpeed -Name $r.Name -Url $r.Url
         if ($Verbose) {
             if ($time -eq 9999) {
-                Write-Host "    $($r.Name): 超时" -ForegroundColor Gray
+                Write-Host "    $($r.Name): 超时" -ForegroundColor Cyan
             } else {
-                Write-Host "    $($r.Name): ${time}ms" -ForegroundColor Gray
+                Write-Host "    $($r.Name): ${time}ms" -ForegroundColor Cyan
             }
         }
         if ($time -lt $fastestTime) {
@@ -1623,7 +1627,7 @@ function Install-Node {
 
     # 方式 1: winget
     if (Get-Command winget -ErrorAction SilentlyContinue) {
-        Write-Host "  正在尝试 winget 安装方式..." -ForegroundColor Gray
+        Write-Host "  正在尝试 winget 安装方式..." -ForegroundColor Cyan
         # 先尝试重置 winget 源以修复常见的 msstore 证书问题
         try { winget source reset --force 2>$null | Out-Null } catch {}
         winget install OpenJS.NodeJS.LTS --source winget --accept-package-agreements --accept-source-agreements 2>$null
@@ -1638,7 +1642,7 @@ function Install-Node {
 
     # 方式 2: Chocolatey
     if (Get-Command choco -ErrorAction SilentlyContinue) {
-        Write-Host "  正在尝试 Chocolatey 安装方式..." -ForegroundColor Gray
+        Write-Host "  正在尝试 Chocolatey 安装方式..." -ForegroundColor Cyan
         choco install nodejs-lts -y
         if ($LASTEXITCODE -eq 0) {
             $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -1651,7 +1655,7 @@ function Install-Node {
 
     # 方式 3: Scoop
     if (Get-Command scoop -ErrorAction SilentlyContinue) {
-        Write-Host "  正在尝试 Scoop 安装方式..." -ForegroundColor Gray
+        Write-Host "  正在尝试 Scoop 安装方式..." -ForegroundColor Cyan
         scoop install nodejs-lts
         if ($LASTEXITCODE -eq 0) {
             Preload-NodePaths
@@ -1669,26 +1673,26 @@ function Install-Node {
         $mirrorUrl = "https://npmmirror.com/mirrors/node/v24.0.2/node-v24.0.2-${arch}.msi"
         $msiPath = Join-Path $env:TEMP "node-installer.msi"
 
-        Write-Host "  正在下载 Node.js v24 安装包..." -ForegroundColor Gray
+        Write-Host "  正在下载 Node.js v24 安装包..." -ForegroundColor Cyan
         $downloadOk = $false
         # 优先尝试国内镜像
         try {
             Invoke-WebRequest -Uri $mirrorUrl -OutFile $msiPath -UseBasicParsing -TimeoutSec 60
             $downloadOk = $true
-            Write-Host "  国内镜像下载成功！" -ForegroundColor Gray
+            Write-Host "  国内镜像下载成功！" -ForegroundColor Cyan
         } catch {
-            Write-Host "  国内镜像暂时不可用，改用官方源..." -ForegroundColor Gray
+            Write-Host "  国内镜像暂时不可用，改用官方源..." -ForegroundColor Cyan
             try {
                 Invoke-WebRequest -Uri $nodeUrl -OutFile $msiPath -UseBasicParsing -TimeoutSec 120
                 $downloadOk = $true
-                Write-Host "  官方源下载成功！" -ForegroundColor Gray
+                Write-Host "  官方源下载成功！" -ForegroundColor Cyan
             } catch {
                 Write-Host "  下载失败：$_" -ForegroundColor Red
             }
         }
 
         if ($downloadOk -and (Test-Path $msiPath)) {
-            Write-Host "  正在安装 Node.js，就快好了..." -ForegroundColor Gray
+            Write-Host "  正在安装 Node.js，就快好了..." -ForegroundColor Cyan
             $proc = Start-Process msiexec -ArgumentList "/i `"$msiPath`" /qn /norestart" -Wait -PassThru
             Remove-Item $msiPath -Force -ErrorAction SilentlyContinue
             if ($proc.ExitCode -eq 0) {
@@ -1709,7 +1713,7 @@ function Install-Node {
     Write-Host "[X] 所有自动安装方式均失败，请手动安装 Node.js 24+：" -ForegroundColor Red
     Write-Host "    官方下载: https://nodejs.org/zh-cn/download/" -ForegroundColor Cyan
     Write-Host "    国内镜像: https://npmmirror.com/mirrors/node/" -ForegroundColor Cyan
-    Write-Host "    安装完成后重新运行本脚本即可。" -ForegroundColor Gray
+    Write-Host "    安装完成后重新运行本脚本即可。" -ForegroundColor Cyan
     exit 1
 }
 
@@ -1757,7 +1761,7 @@ function Download-FileWithFallback {
     $timeoutSec = 300
     for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
         try {
-            Write-Host "    下载中 (方法1/5 尝试 $attempt/$maxAttempts)..." -ForegroundColor DarkGray
+            Write-Host "    下载中 (方法1/5 尝试 $attempt/$maxAttempts)..." -ForegroundColor Blue
             Invoke-WebRequest -Uri $Url -OutFile $OutPath -UseBasicParsing -UserAgent $ua -TimeoutSec $timeoutSec
             if (& $testOk) { return $true }
             Remove-Item $OutPath -Force -ErrorAction SilentlyContinue
@@ -1768,7 +1772,7 @@ function Download-FileWithFallback {
     for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
         Remove-Item $OutPath -Force -ErrorAction SilentlyContinue
         try {
-            Write-Host "    下载中 (方法2/5 尝试 $attempt/$maxAttempts)..." -ForegroundColor DarkGray
+            Write-Host "    下载中 (方法2/5 尝试 $attempt/$maxAttempts)..." -ForegroundColor Blue
             $wc = [Net.WebClient]::new()
             $wc.Headers.Add("User-Agent", $ua)
             $wc.DownloadFile($Url, $OutPath)
@@ -1782,7 +1786,7 @@ function Download-FileWithFallback {
         for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
             Remove-Item $OutPath -Force -ErrorAction SilentlyContinue
             try {
-                Write-Host "    下载中 (方法3/5 尝试 $attempt/$maxAttempts，使用代理)..." -ForegroundColor DarkGray
+                Write-Host "    下载中 (方法3/5 尝试 $attempt/$maxAttempts，使用代理)..." -ForegroundColor Blue
                 $wc = [Net.WebClient]::new()
                 $wc.Proxy = $webProxy
                 $wc.Headers.Add("User-Agent", $ua)
@@ -1800,7 +1804,7 @@ function Download-FileWithFallback {
         for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
             Remove-Item $OutPath -Force -ErrorAction SilentlyContinue
             try {
-                Write-Host "    下载中 (方法4/5 尝试 $attempt/$maxAttempts)..." -ForegroundColor DarkGray
+                Write-Host "    下载中 (方法4/5 尝试 $attempt/$maxAttempts)..." -ForegroundColor Blue
                 & $curlExe -L -o $OutPath -s -S --connect-timeout 30 --max-time 600 --user-agent $ua $Url 2>$null
                 if (& $testOk) { return $true }
                 Remove-Item $OutPath -Force -ErrorAction SilentlyContinue
@@ -1812,7 +1816,7 @@ function Download-FileWithFallback {
         for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
             Remove-Item $OutPath -Force -ErrorAction SilentlyContinue
             if ($curlExe -and (Test-Path $curlExe)) {
-                Write-Host "    下载中 (方法5/5 尝试 $attempt/$maxAttempts，使用代理)..." -ForegroundColor DarkGray
+                Write-Host "    下载中 (方法5/5 尝试 $attempt/$maxAttempts，使用代理)..." -ForegroundColor Blue
                 & $curlExe -x $proxy --proxy-insecure -L -o $OutPath -s -S --connect-timeout 30 --max-time 600 --user-agent $ua $Url 2>$null
                 if (& $testOk) { return $true }
                 Remove-Item $OutPath -Force -ErrorAction SilentlyContinue
@@ -1856,10 +1860,10 @@ function Install-Git {
     $gitExeName = if ($arch -eq "ARM64") { "Git-2.53.0-arm64.exe" } else { "Git-2.53.0-64-bit.exe" }
     $annexUrl = "https://annex.orence.net/git-for-windows/$gitExeName"
     $tempExe = Join-Path $env:TEMP $gitExeName
-    Write-Host "  正在下载 $gitExeName ..." -ForegroundColor Gray
+    Write-Host "  正在下载 $gitExeName ..." -ForegroundColor Cyan
     $ok = Download-FileWithFallback -Url $annexUrl -OutPath $tempExe
     if ($ok -and (Test-Path $tempExe)) {
-        Write-Host "  正在静默安装..." -ForegroundColor Gray
+        Write-Host "  正在静默安装..." -ForegroundColor Cyan
         Start-Process -FilePath $tempExe -ArgumentList "/VERYSILENT" -Wait
         Remove-Item $tempExe -Force -ErrorAction SilentlyContinue
         & $refreshPath
@@ -1869,12 +1873,12 @@ function Install-Git {
         }
     }
     if (Get-Command winget -ErrorAction SilentlyContinue) {
-        Write-Host "  直接下载失败，尝试 winget..." -ForegroundColor Gray
+        Write-Host "  直接下载失败，尝试 winget..." -ForegroundColor Cyan
         winget settings --enable ProxyCommandLineOptions 2>$null | Out-Null
         $wingetProxy = Get-WingetProxyArg
         if (-not [string]::IsNullOrWhiteSpace($wingetProxy)) {
             winget settings set DefaultProxy $wingetProxy 2>$null | Out-Null
-            Write-Host "  已配置 winget 代理" -ForegroundColor Gray
+            Write-Host "  已配置 winget 代理" -ForegroundColor Cyan
         }
         $wingetArgs = @("install", "Git.Git", "--source", "winget", "--accept-package-agreements", "--accept-source-agreements")
         if (-not [string]::IsNullOrWhiteSpace($wingetProxy)) {
@@ -1888,7 +1892,7 @@ function Install-Git {
                 return
             }
         }
-        Write-Host "  winget 安装失败，尝试 gh-proxy..." -ForegroundColor Gray
+        Write-Host "  winget 安装失败，尝试 gh-proxy..." -ForegroundColor Cyan
     }
     $gitExeNameFallback = if ($arch -eq "ARM64") { "Git-2.53.0-arm64.exe" } else { "Git-2.53.0-64-bit.exe" }
     $gitExeUrl = "https://github.com/git-for-windows/git/releases/download/v2.53.0.windows.1/$gitExeNameFallback"
@@ -1896,11 +1900,11 @@ function Install-Git {
     $tempExe = Join-Path $env:TEMP $gitExeNameFallback
     $ok = Download-FileWithFallback -Url $ghProxyUrl -OutPath $tempExe
     if (-not $ok) {
-        Write-Host "  gh-proxy 失败，尝试直连 GitHub..." -ForegroundColor Gray
+        Write-Host "  gh-proxy 失败，尝试直连 GitHub..." -ForegroundColor Cyan
         $ok = Download-FileWithFallback -Url $gitExeUrl -OutPath $tempExe
     }
     if ($ok -and (Test-Path $tempExe)) {
-        Write-Host "  正在静默安装..." -ForegroundColor Gray
+        Write-Host "  正在静默安装..." -ForegroundColor Cyan
         Start-Process -FilePath $tempExe -ArgumentList "/VERYSILENT" -Wait
         Remove-Item $tempExe -Force -ErrorAction SilentlyContinue
         & $refreshPath
@@ -1911,7 +1915,7 @@ function Install-Git {
     }
     if (-not $ok) { Write-Host "[!] 下载失败，尝试其他方式..." -ForegroundColor Yellow }
     if (Get-Command choco -ErrorAction SilentlyContinue) {
-        Write-Host "  尝试 Chocolatey 安装 Git..." -ForegroundColor Gray
+        Write-Host "  尝试 Chocolatey 安装 Git..." -ForegroundColor Cyan
         choco install git -y
         if ($LASTEXITCODE -eq 0) {
             $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -1928,7 +1932,7 @@ function Install-Git {
         }
     }
     if (Get-Command scoop -ErrorAction SilentlyContinue) {
-        Write-Host "  尝试 Scoop 安装 Git..." -ForegroundColor Gray
+        Write-Host "  尝试 Scoop 安装 Git..." -ForegroundColor Cyan
         scoop install git
         if ($LASTEXITCODE -eq 0) {
             $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -1964,7 +1968,7 @@ function Configure-GitForGitHubHttps {
             if ($keys) { $keys | Add-Content -Path $knownHosts -ErrorAction SilentlyContinue }
         }
     }
-    Write-Host "[*] 已配置 Git 使用 HTTPS 访问 GitHub（pnpm/npm 依赖 libsignal-node 需要哦）" -ForegroundColor Gray
+    Write-Host "[*] 已配置 Git 使用 HTTPS 访问 GitHub（pnpm/npm 依赖 libsignal-node 需要哦）" -ForegroundColor Cyan
 }
 
 function Ensure-GitForPnpmNpm {
@@ -2063,7 +2067,7 @@ function Ensure-OpenClawOnPath {
     if ($npmPrefix) {
         Write-Host "预期路径: $npmPrefix\bin" -ForegroundColor Cyan
     } else {
-        Write-Host "提示: 运行 \"npm config get prefix\" 可查找 npm 全局路径。" -ForegroundColor Gray
+        Write-Host "提示: 运行 \"npm config get prefix\" 可查找 npm 全局路径。" -ForegroundColor Cyan
     }
     return $false
 }
@@ -2273,7 +2277,7 @@ function Install-OpenClawFromGit {
         Write-Host "[!] 已将 $binDir 添加到用户 PATH（若命令未找到请重启终端）。" -ForegroundColor Yellow
     }
     Write-Host "[OK] OpenClaw 包装器已安装到 $cmdPath。" -ForegroundColor Green
-    Write-Host "[i] 本源码使用 pnpm — 运行 pnpm install 安装依赖（请勿在仓库内使用 npm install）。" -ForegroundColor Gray
+    Write-Host "[i] 本源码使用 pnpm — 运行 pnpm install 安装依赖（请勿在仓库内使用 npm install）。" -ForegroundColor Cyan
 }
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -2303,12 +2307,12 @@ function Remove-LegacySubmodule {
 function Show-InstallPlan {
     param([string]$DetectedCheckout)
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE" -ForegroundColor Cyan
     Write-Host "  安装计划" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkCyan
-    Write-Host "    操作系统    " -NoNewline -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Cyan
+    Write-Host "    操作系统    " -NoNewline -ForegroundColor Blue
     Write-Host "Windows" -ForegroundColor White
-    Write-Host "    安装方式    " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    安装方式    " -NoNewline -ForegroundColor Blue
     Write-Host $InstallMethod -ForegroundColor White
     if ($InstallMethod -eq "npm" -or $InstallMethod -eq "pnpm") {
         $pkg = if (-not [string]::IsNullOrWhiteSpace($script:OPENCLAW_EDITION)) {
@@ -2317,37 +2321,37 @@ function Show-InstallPlan {
             "openclaw 或 $OPENCLAW_PACKAGE_ZH（待选择）"
         }
         $distTag = "latest"
-        Write-Host "    安装包      " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    安装包      " -NoNewline -ForegroundColor Blue
         Write-Host "$pkg@$distTag" -ForegroundColor White
     } else {
-        Write-Host "    Git 目录    " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    Git 目录    " -NoNewline -ForegroundColor Blue
         Write-Host $GitDir -ForegroundColor White
-        Write-Host "    Git 更新    " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    Git 更新    " -NoNewline -ForegroundColor Blue
         Write-Host $(if ($NoGitUpdate) { "已禁用" } else { "已启用" }) -ForegroundColor White
     }
     if ($Registry) {
         $regUrl = Get-RegistryUrl -Key $Registry
         if ($regUrl) {
-            Write-Host "    npm 源      " -NoNewline -ForegroundColor DarkGray
+            Write-Host "    npm 源      " -NoNewline -ForegroundColor Blue
             Write-Host "$Registry ($regUrl)" -ForegroundColor White
         } else {
-            Write-Host "    npm 源      " -NoNewline -ForegroundColor DarkGray
+            Write-Host "    npm 源      " -NoNewline -ForegroundColor Blue
             Write-Host $Registry -ForegroundColor White
         }
     }
     if ($GitHubProxy) {
-        Write-Host "    GitHub 代理  " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    GitHub 代理  " -NoNewline -ForegroundColor Blue
         Write-Host $GitHubProxy -ForegroundColor White
     }
     if ($DetectedCheckout) {
-        Write-Host "    检测仓库    " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    检测仓库    " -NoNewline -ForegroundColor Blue
         Write-Host $DetectedCheckout -ForegroundColor White
     }
     if ($DryRun) {
-        Write-Host "    模拟运行    " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    模拟运行    " -NoNewline -ForegroundColor Blue
         Write-Host "是" -ForegroundColor Yellow
     }
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE" -ForegroundColor Cyan
     Write-Host ""
 }
 
@@ -2385,7 +2389,7 @@ function Test-IsAdmin {
 function Set-AdminExecutionPolicy {
     try {
         Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
-        Write-Host "[*] 已设置执行策略 Process=Bypass（当前会话）" -ForegroundColor Gray
+        Write-Host "[*] 已设置执行策略 Process=Bypass（当前会话）" -ForegroundColor Cyan
     } catch {
         Write-Host "[!] Process 执行策略设置失败: $($_.Exception.Message)" -ForegroundColor Yellow
     }
@@ -2393,7 +2397,7 @@ function Set-AdminExecutionPolicy {
     if ($execPolicy -eq "Restricted" -or $execPolicy -eq "AllSigned") {
         try {
             Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-            Write-Host "[*] 已设置执行策略 CurrentUser=RemoteSigned（持久）" -ForegroundColor Gray
+            Write-Host "[*] 已设置执行策略 CurrentUser=RemoteSigned（持久）" -ForegroundColor Cyan
         } catch {
             Write-Host "[!] CurrentUser 执行策略设置失败: $($_.Exception.Message)" -ForegroundColor Yellow
         }
@@ -2422,22 +2426,22 @@ function Show-SystemInfo {
         [math]::Round($csInfo.TotalPhysicalMemory / 1GB, 1)
     } else { $null }
     Write-Host "  $script:UI_ICON_OK 检测到 Windows，开始运行。" -ForegroundColor Green
-    Write-Host "    系统      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    系统      " -NoNewline -ForegroundColor Blue
     Write-Host $osName -ForegroundColor White
     if ($osVer) {
-        Write-Host "    版本      " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    版本      " -NoNewline -ForegroundColor Blue
         Write-Host "$osVer (Build $osBuild)" -ForegroundColor White
     }
-    Write-Host "    架构      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    架构      " -NoNewline -ForegroundColor Blue
     Write-Host $arch -ForegroundColor White
-    Write-Host "    PowerShell " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    PowerShell " -NoNewline -ForegroundColor Blue
     Write-Host $psVer -ForegroundColor White
     if ($cpuName) {
-        Write-Host "    CPU       " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    CPU       " -NoNewline -ForegroundColor Blue
         Write-Host $cpuName -ForegroundColor White
     }
     if ($null -ne $memGB) {
-        Write-Host "    内存      " -NoNewline -ForegroundColor DarkGray
+        Write-Host "    内存      " -NoNewline -ForegroundColor Blue
         Write-Host "${memGB} GB" -ForegroundColor White
     }
     Write-Host ""
@@ -2453,7 +2457,7 @@ function Invoke-InstallFlow {
         $proxy = Select-Proxy
         if ([string]::IsNullOrWhiteSpace($proxy)) {
             Write-Host "  $script:UI_ICON_WARN 代理不可用" -ForegroundColor Yellow
-            Write-Host "  手动测试命令：" -ForegroundColor Gray
+            Write-Host "  手动测试命令：" -ForegroundColor Cyan
             Write-Host '  curl -x "PROXY" --proxy-insecure -w "%{http_code}" -o NUL -s https://www.google.com' -ForegroundColor Cyan
         } else {
             Write-Host "  $script:UI_ICON_OK 当前代理: $proxy" -ForegroundColor Green
@@ -2540,7 +2544,7 @@ function Invoke-InstallFlow {
             $fromLabel = if ($installedEdition -eq "original") { "原版" } else { "中文版" }
             $toLabel = if ($script:OPENCLAW_EDITION -eq "original") { "原版" } else { "中文版" }
             if ($installedEdition -eq $script:OPENCLAW_EDITION) {
-                Write-Host "[*] 检测到已安装相同版本（$fromLabel），将直接升级。" -ForegroundColor Gray
+                Write-Host "[*] 检测到已安装相同版本（$fromLabel），将直接升级。" -ForegroundColor Cyan
             } else {
                 Write-Host "[*] 检测到需切换版本（$fromLabel → $toLabel），需先卸载旧版。" -ForegroundColor Yellow
                 Uninstall-Both-And-ClearCache -Method "pnpm"
@@ -2562,7 +2566,7 @@ function Invoke-InstallFlow {
             $fromLabel = if ($installedEdition -eq "original") { "原版" } else { "中文版" }
             $toLabel = if ($script:OPENCLAW_EDITION -eq "original") { "原版" } else { "中文版" }
             if ($installedEdition -eq $script:OPENCLAW_EDITION) {
-                Write-Host "[*] 检测到已安装相同版本（$fromLabel），将直接升级。" -ForegroundColor Gray
+                Write-Host "[*] 检测到已安装相同版本（$fromLabel），将直接升级。" -ForegroundColor Cyan
             } else {
                 Write-Host "[*] 检测到需切换版本（$fromLabel → $toLabel），需先卸载旧版。" -ForegroundColor Yellow
                 Uninstall-Both-And-ClearCache -Method "npm"
@@ -2590,7 +2594,7 @@ function Invoke-InstallFlow {
 
     if (-not (Ensure-OpenClawOnPath)) {
         Write-UIWarn "安装完成，但 openclaw 尚未在 PATH 中"
-        Write-Host "  请打开新终端并运行 " -NoNewline -ForegroundColor Gray
+        Write-Host "  请打开新终端并运行 " -NoNewline -ForegroundColor Cyan
         Write-Host "openclaw doctor" -ForegroundColor Cyan
         return
     }
@@ -2625,7 +2629,7 @@ function Invoke-InstallFlow {
             "自我进化完成！感觉状态绝佳！",
             "升级完毕！现在更强劲了！"
         )
-        Write-Host (Get-Random -InputObject $updateMessages) -ForegroundColor Gray
+        Write-Host (Get-Random -InputObject $updateMessages) -ForegroundColor Cyan
     } else {
         $completionMessages = @(
             "🦞 安装完成！OpenClaw 准备就绪，随时待命！",
@@ -2634,21 +2638,21 @@ function Invoke-InstallFlow {
             "安装完毕！让我们一起开启智能协作之旅！",
             "🦞 部署完成！AI 助手已在后台待命！"
         )
-        Write-Host (Get-Random -InputObject $completionMessages) -ForegroundColor Gray
+        Write-Host (Get-Random -InputObject $completionMessages) -ForegroundColor Cyan
     }
     Write-Host ""
     if ($InstallMethod -eq "git") {
-        Write-Host "  源码目录  " -NoNewline -ForegroundColor DarkGray
+        Write-Host "  源码目录  " -NoNewline -ForegroundColor Blue
         Write-Host $finalGitDir -ForegroundColor Cyan
     }
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
-    Write-Host "  相关链接" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
-    Write-Host "    官方文档      " -NoNewline -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
+    Write-Host "  相关链接" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
+    Write-Host "    官方文档      " -NoNewline -ForegroundColor Blue
     Write-Host "https://docs.openclaw.ai/zh-CN" -ForegroundColor Cyan
-    Write-Host "    OpenClawCN    " -NoNewline -ForegroundColor DarkGray
+    Write-Host "    OpenClawCN    " -NoNewline -ForegroundColor Blue
     Write-Host "https://openclaw.qt.cool/" -ForegroundColor Cyan
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Blue
     Write-Host ""
 }
 
@@ -2657,15 +2661,15 @@ function Invoke-InstallFlow {
 # ═══════════════════════════════════════════════════════════════════════
 function Invoke-DeployFlow {
     Write-Host ""
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host "  🦞 OpenClaw 部署配置器  " -NoNewline -ForegroundColor Cyan
-    Write-Host "基于官方源码引导流程" -ForegroundColor DarkGray
-    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+    Write-Host "基于官方源码引导流程" -ForegroundColor Blue
+    Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
     Write-Host ""
 
     if (-not (Test-OpenClawInstalled)) {
         Write-UIWarn "未检测到 OpenClaw，请先完成安装。"
-        Write-Host "    重新运行脚本，选 1 或 2 安装即可。" -ForegroundColor Gray
+        Write-Host "    重新运行脚本，选 1 或 2 安装即可。" -ForegroundColor Cyan
         return
     }
 
@@ -2678,10 +2682,10 @@ function Invoke-DeployFlow {
     $workDir = Read-Workspace
 
     Write-Host ""
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkYellow
+    Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
     Write-Host "  即将开始部署，请确认以上信息" -ForegroundColor Yellow
-    Write-Host "  $script:UI_LINE" -ForegroundColor DarkYellow
-    Write-Host "    提供商: $($provider.Name)  |  模型: $($provider.DefaultModel)  |  目录: $workDir" -ForegroundColor DarkGray
+    Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
+    Write-Host "    提供商: $($provider.Name)  |  模型: $($provider.DefaultModel)  |  目录: $workDir" -ForegroundColor Blue
     Write-Host ""
     $confirm = Read-Host "    确认开始部署？(Y/n)"
     if ($confirm -eq "n" -or $confirm -eq "N") {
@@ -2715,11 +2719,11 @@ function Main-Setup {
             $workDir = Read-Workspace
 
             Write-Host ""
-            Write-Host "  $script:UI_LINE" -ForegroundColor DarkYellow
+            Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
             Write-Host "  即将开始 安装 + 部署，Boss 请确认以上信息" -ForegroundColor Yellow
-            Write-Host "  $script:UI_LINE" -ForegroundColor DarkYellow
-            Write-Host "    提供商: $($provider.Name)  |  模型: $($provider.DefaultModel)" -ForegroundColor DarkGray
-            Write-Host "    工作目录: $workDir" -ForegroundColor DarkGray
+            Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
+            Write-Host "    提供商: $($provider.Name)  |  模型: $($provider.DefaultModel)" -ForegroundColor Blue
+            Write-Host "    工作目录: $workDir" -ForegroundColor Blue
             Write-Host ""
             $confirm = Read-Host "    确认开始？(Y/n)"
             if ($confirm -eq "n" -or $confirm -eq "N") {
@@ -2731,18 +2735,18 @@ function Main-Setup {
             if (-not (Test-IsAdmin)) {
                 Write-Host ""
                 Write-UIWarn "OpenClaw 安装需要管理员权限。"
-                Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Gray
-                Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Gray
+                Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Cyan
+                Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Cyan
                 Write-Host ""
                 return
             }
             Set-AdminExecutionPolicy
 
             Write-Host ""
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
             Write-Host "  🦞 OpenClaw 安装器（安装 + 自动部署）  " -NoNewline -ForegroundColor Cyan
-            Write-Host "Windows 版" -ForegroundColor DarkGray
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+            Write-Host "Windows 版" -ForegroundColor Blue
+            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
             Write-Host ""
 
             Show-SystemInfo
@@ -2761,7 +2765,7 @@ function Main-Setup {
                 Show-DeploySummary -Provider $provider -WorkDir $workDir -DeploySuccess $deploySuccess
             } else {
                 Write-UIWarn "OpenClaw 安装未成功，已跳过部署步骤。"
-                Write-Host "    解决安装问题后重新运行本脚本即可。" -ForegroundColor Gray
+                Write-Host "    解决安装问题后重新运行本脚本即可。" -ForegroundColor Cyan
             }
         }
         "install" {
@@ -2769,18 +2773,18 @@ function Main-Setup {
             if (-not (Test-IsAdmin)) {
                 Write-Host ""
                 Write-UIWarn "OpenClaw 安装需要管理员权限。"
-                Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Gray
-                Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Gray
+                Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Cyan
+                Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Cyan
                 Write-Host ""
                 return
             }
             Set-AdminExecutionPolicy
 
             Write-Host ""
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
             Write-Host "  🦞 OpenClaw 安装器（仅安装）  " -NoNewline -ForegroundColor Cyan
-            Write-Host "Windows 版" -ForegroundColor DarkGray
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor DarkCyan
+            Write-Host "Windows 版" -ForegroundColor Blue
+            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
             Write-Host ""
 
             Show-SystemInfo
