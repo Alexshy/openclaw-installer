@@ -29,18 +29,26 @@ use_color() {
     [[ -z "${NO_COLOR:-}" && "${TERM:-dumb}" != "dumb" ]]
 }
 
-# 检测终端背景色（macOS Terminal/iTerm2 均支持 COLORFGBG 或 __CFBundleIdentifier）
+# 检测终端背景色（macOS Terminal/iTerm2 均支持 COLORFGBG；macOS 深/浅色模式用 osascript 判断）
 _is_light_bg() {
-    # COLORFGBG 格式：前景;背景，背景数字 >= 8 通常为浅色
+    # 1. COLORFGBG 格式：前景;背景，背景数字 >= 8 通常为浅色（iTerm2/部分终端设置此变量）
     if [[ -n "${COLORFGBG:-}" ]]; then
         local bg_code
         bg_code="${COLORFGBG##*;}"
-        [[ "$bg_code" -ge 8 ]] 2>/dev/null && return 0
+        if [[ "$bg_code" -ge 8 ]] 2>/dev/null; then
+            return 0
+        else
+            return 1
+        fi
     fi
-    # 检测 macOS Terminal 默认白色背景（TERM_PROGRAM=Apple_Terminal）
-    if [[ "${TERM_PROGRAM:-}" == "Apple_Terminal" ]]; then
-        return 0
+    # 2. macOS：通过 osascript 查询系统外观（深色模式返回1 = 深色背景）
+    if [[ "$(uname -s)" == "Darwin" ]] && command -v osascript &>/dev/null; then
+        local appearance
+        appearance=$(osascript -e 'tell application "System Events" to return dark mode of appearance preferences' 2>/dev/null || echo "false")
+        [[ "$appearance" == "false" ]] && return 0  # 浅色模式
+        return 1                                      # 深色模式
     fi
+    # 3. 兜底：默认深色
     return 1
 }
 
@@ -56,6 +64,9 @@ if use_color; then
         WARN='\033[38;2;180;100;0m'          # 深橙/棕
         ERROR='\033[38;2;180;20;30m'         # 深红
         MUTED='\033[38;2;80;80;100m'         # 深灰蓝
+        HEADER='\033[38;2;30;30;30m'         # 近纯黑 — 浅色背景下欢迎页主体字
+        HEADER_SUB='\033[38;2;70;70;90m'     # 深灰 — 浅色背景下次要说明行
+        TAGLINE='\033[38;2;0;120;80m'        # 深绿 — 浅色背景下标语行
     else
         # 深色背景主题（默认）
         ACCENT='\033[38;2;255;77;77m'        # coral-bright  #ff4d4d
@@ -65,10 +76,13 @@ if use_color; then
         SUCCESS='\033[38;2;0;229;204m'       # cyan-bright   #00e5cc
         WARN='\033[38;2;255;176;32m'         # amber
         ERROR='\033[38;2;230;57;70m'         # coral-mid     #e63946
-        MUTED='\033[38;2;90;100;128m'        # text-muted    #5a6480
+        MUTED='\033[38;2;145;155;178m'       # text-muted（亮化）#919bb2
+        HEADER='\033[38;2;220;220;220m'      # 近纯白灰 — 深色背景下欢迎页主体字
+        HEADER_SUB='\033[38;2;160;170;195m'  # 中亮灰 — 深色背景下欢迎页次要说明行
+        TAGLINE='\033[38;2;80;220;180m'      # 薄荷绿 — 深色背景下标语行
     fi
 else
-    BOLD='' ACCENT='' ACCENT_BRIGHT='' INFO='' SUCCESS='' WARN='' ERROR='' MUTED='' NC=''
+    BOLD='' ACCENT='' ACCENT_BRIGHT='' INFO='' SUCCESS='' WARN='' ERROR='' MUTED='' HEADER='' HEADER_SUB='' TAGLINE='' NC=''
 fi
 
 # 分隔线（非 gum 模式）
@@ -4956,59 +4970,47 @@ invoke_uninstall() {
 
 show_welcome_menu() {
     echo ""
-    echo -e "${ACCENT}${BOLD}  # ═══════════════════════════════════════════════════════════════════════${NC}"
-    echo -e "${ACCENT}${BOLD}  # OpenClaw 全自动安装部署脚本 - MacOS 版${NC}"
-    echo -e "${MUTED}  # 涵盖 OpenClaw环境安装 + OpenClaw最新官方稳定版 + 模型/网关/项目空间全自动部署${NC}"
-    echo -e "${SUCCESS}  # 无后门 | 无病毒 | 全自动 | 全免费 | 零技术门槛${NC}"
-    echo -e "${MUTED}  # Created by: Mr_Hou  致力于技术平权降低门槛 让人人都有机会拥抱Ai世界${NC}"
-    echo -e "${MUTED}  # Wechat_id：qiyuan_hou，欢迎一起讨论 共同进化！${NC}"
+    echo -e "${HEADER}${BOLD}  # ═══════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "${HEADER}${BOLD}  # OpenClaw 全自动安装部署脚本 - MacOS 版${NC}"
+    echo -e "${HEADER_SUB}  # 涵盖 OpenClaw环境安装 + OpenClaw最新官方稳定版 + 模型/网关/项目空间全自动部署${NC}"
+    echo -e "${TAGLINE}  # 无后门 | 无病毒 | 全自动 | 全免费 | 零技术门槛${NC}"
+    echo -e "${HEADER_SUB}  # Created by: Mr_Hou  致力于技术平权降低门槛 让人人都有机会拥抱Ai世界${NC}"
+    echo -e "${HEADER_SUB}  # Wechat_id：qiyuan_hou，欢迎一起讨论 共同进化！${NC}"
     echo -e "${WARN}  # **严禁恶意篡改或将本免费脚本商业化售卖**${NC}"
-    echo -e "${ACCENT}${BOLD}  # ═══════════════════════════════════════════════════════════════════════${NC}"
-    echo -e "${MUTED}  # 功能菜单:${NC}"
+    echo -e "${HEADER}${BOLD}  # ═══════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "${HEADER_SUB}  # 功能菜单:${NC}"
     echo ""
 
     # ── 安装部署 OpenClaw 篇 ──
     echo -e "  ${ACCENT}┌─ 《安装与部署 OpenClaw 篇》 ────────────────────────────────────────────┤${NC}"
-    echo ""
     echo -e "    ${ACCENT}1)${NC} 安装 OpenClaw 并自动化部署  ${MUTED}（推荐新用户）${NC}"
     echo -e "       ${MUTED}自动安装 Homebrew/Node.js/Git/OpenClaw，并配置模型、API Key、网关和项目空间${NC}"
-    echo ""
     echo -e "    ${ACCENT}2)${NC} 仅自动化安装 OpenClaw"
     echo -e "       ${MUTED}只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成${NC}"
-    echo ""
     echo -e "    ${ACCENT}3)${NC} 仅部署 OpenClaw 模型/网关/项目空间"
     echo -e "       ${MUTED}OpenClaw 已安装，仅配置模型提供商、API Key 和工作目录${NC}"
-    echo ""
     echo -e "  ${ACCENT}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 使用 OpenClaw 篇 ──
     echo -e "  ${WARN}┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤${NC}"
-    echo ""
     echo -e "    ${WARN}4)${NC} 更换 OpenClaw 模型（配置 AI 模型提供商 / API Key）"
     echo -e "       ${MUTED}支持 DeepSeek / Kimi / 火山方舟 / 阿里百炼 / ChatGPT / Claude 等 9 家提供商${NC}"
-    echo ""
     echo -e "    ${WARN}5)${NC} 添加 Channels（微信 / 飞书 / 企微 / QQ 等即时通讯渠道）"
     echo -e "       ${MUTED}连接即时通讯渠道，让 AI 助手在你的聊天 App 里直接回复消息${NC}"
-    echo ""
     echo -e "    ${WARN}6)${NC} OpenClaw 自检并尝试修复"
     echo -e "       ${MUTED}自动运行 doctor 诊断 + doctor --fix 修复 + gateway restart 重启网关${NC}"
-    echo ""
     echo -e "    ${WARN}7)${NC} 进入 OpenClaw 配置页面"
     echo -e "       ${MUTED}打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）${NC}"
-    echo ""
     echo -e "    ${WARN}8)${NC} 打开 OpenClaw 主页面"
     echo -e "       ${MUTED}启动 OpenClaw Web UI 控制面板，可在浏览器中查看全部功能和对话${NC}"
-    echo ""
     echo -e "  ${WARN}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 卸载 OpenClaw 篇 ──
     echo -e "  ${ERROR}┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤${NC}"
-    echo ""
     echo -e "    ${ERROR}9)${NC} 完全卸载 OpenClaw"
     echo -e "       ${MUTED}停止全部服务并彻底移除 OpenClaw（操作不可逆，执行前需二次确认）${NC}"
-    echo ""
     echo -e "  ${ERROR}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
