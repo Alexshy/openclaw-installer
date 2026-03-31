@@ -2,7 +2,7 @@
 
 > **零技术门槛 · 全自动 · 双平台支持（Mac + Windows）**
 > 
-> Created by:Mr_Hou 致力于技术平权，让每一个人都有机会拥抱 AI 世界 🌏
+> Created by:Mr_Hou 致力于技术平权降低门槛 让人人都有机会拥抱Ai世界  🌏
 
 <div align="center">
 
@@ -79,12 +79,12 @@
 **第二步**：复制以下命令，粘贴到终端，按回车：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/Mac_openclaw_Autoinstaller.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
 ```
 
 > 国内网络较慢时，可使用 jsDelivr 加速：
 > ```bash
-> curl -fsSL https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/Mac_openclaw_Autoinstaller.sh | bash
+> curl -fsSL https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
 > ```
 
 **第三步**：按照脚本提示操作即可 🎉
@@ -100,12 +100,12 @@ curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/Mac
 **第二步**：复制以下命令，粘贴到 PowerShell，按回车：
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/Windows_openclaw_Autoinstaller.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
 ```
 
 > 国内网络较慢时，可使用 jsDelivr 加速：
 > ```powershell
-> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/Windows_openclaw_Autoinstaller.ps1 | iex
+> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
 > ```
 
 > 如遇到「执行策略」报错，请先运行：
@@ -169,7 +169,7 @@ A：重新运行脚本，选择菜单 `6`（自检修复）；或添加微信 `q
 **Created by：Mr_Hou**  
 致力于技术平权，降低技术门槛，让人人都有机会拥抱 AI 世界 🤝
 
-- 💬 微信：`qiyuan_hou`（欢迎交流，共同进化！）
+- 💬 Wechat：`qiyuan_hou`（欢迎交流，共同进化！）
 - 🐙 GitHub：[https://github.com/Alexshy/openclaw-installer](https://github.com/Alexshy/openclaw-installer)
 
 > ⚠️ **严禁恶意篡改或将本免费脚本商业化售卖**
