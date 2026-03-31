@@ -99,7 +99,6 @@ ui_hr() {
     fi
 }
 
-DEFAULT_TAGLINE="所有对话，一个 OpenClaw。"
 
 ORIGINAL_PATH="${PATH:-}"
 
@@ -528,7 +527,7 @@ print_installer_banner() {
     if [[ -n "$GUM" ]]; then
         local title tagline hint card
         title="$("$GUM" style --foreground "#ff4d4d" --bold "🦞 OpenClaw 安装器")"
-        tagline="$("$GUM" style --foreground "#8892b0" "$TAGLINE")"
+        tagline="$("$GUM" style --foreground "#8892b0" "OpenClaw 一键部署 — 让 AI 助手为你效劳。")"
         hint="$("$GUM" style --foreground "#5a6480" "现代安装模式")"
         card="$(printf '%s\n%s\n%s' "$title" "$tagline" "$hint")"
         "$GUM" style --border rounded --border-foreground "#ff4d4d" --padding "1 2" "$card"
@@ -540,7 +539,7 @@ print_installer_banner() {
     ui_hr 54 "═"
     echo -e "${ACCENT}${BOLD}"
     echo "     🦞 OpenClaw 安装器"
-    echo -e "${NC}${INFO}     ${TAGLINE}${NC}"
+    echo -e "${NC}${INFO}     OpenClaw 一键部署 — 让 AI 助手为你效劳。${NC}"
     echo -e "${MUTED}     ── 现代安装模式 ──${NC}"
     ui_hr 54 "═"
     echo ""
@@ -1269,42 +1268,7 @@ install_openclaw_npm() {
     return 0
 }
 
-TAGLINES=()
-TAGLINES+=("OpenClaw 一键部署 — 让 AI 助手为你效劳。")
 
-HOLIDAY_NEW_YEAR="元旦: 新年新配置——还是老样子的 EADDRINUSE，但这次我们像大人一样解决它。"
-HOLIDAY_LUNAR_NEW_YEAR="春节: 愿你的构建吉祥如意，分支繁荣昌盛，合并冲突被鞭炮赶走。"
-HOLIDAY_CHRISTMAS="圣诞节: 嗬嗬嗬——圣诞老人的小钳子助手来发布快乐、回滚混乱、安全保管密钥了。"
-HOLIDAY_EID="开斋节: 庆祝模式：队列已清空，任务已完成，好心情已提交到 main 分支。"
-HOLIDAY_DIWALI="排灯节: 让日志闪耀，让 bug 逃跑——今天我们点亮终端，自豪地发布。"
-HOLIDAY_EASTER="复活节: 我找到了你丢失的环境变量——就当是一次迷你 CLI 彩蛋寻宝吧。"
-HOLIDAY_HANUKKAH="光明节: 八夜，八次重试，零羞耻——愿你的网关常亮，部署安宁。"
-HOLIDAY_HALLOWEEN="万圣节: 恐怖季节：当心闹鬼的依赖、被诅咒的缓存，和 node_modules 的幽灵。"
-HOLIDAY_THANKSGIVING="感恩节: 感谢稳定的端口、正常的 DNS，和一个帮你读日志的机器人。"
-HOLIDAY_VALENTINES="情人节: 玫瑰是 typed 的，紫罗兰是 piped 的——我来自动化杂活，你去陪人类吧。"
-
-append_holiday_taglines() {
-    local today
-    local month_day
-    today="$(date -u +%Y-%m-%d 2>/dev/null || date +%Y-%m-%d)"
-    month_day="$(date -u +%m-%d 2>/dev/null || date +%m-%d)"
-
-    case "$month_day" in
-        "01-01") TAGLINES+=("$HOLIDAY_NEW_YEAR") ;;
-        "02-14") TAGLINES+=("$HOLIDAY_VALENTINES") ;;
-        "10-31") TAGLINES+=("$HOLIDAY_HALLOWEEN") ;;
-        "12-25") TAGLINES+=("$HOLIDAY_CHRISTMAS") ;;
-    esac
-
-    case "$today" in
-        "2025-01-29"|"2026-02-17"|"2027-02-06") TAGLINES+=("$HOLIDAY_LUNAR_NEW_YEAR") ;;
-        "2025-03-30"|"2025-03-31"|"2026-03-20"|"2027-03-10") TAGLINES+=("$HOLIDAY_EID") ;;
-        "2025-10-20"|"2026-11-08"|"2027-10-28") TAGLINES+=("$HOLIDAY_DIWALI") ;;
-        "2025-04-20"|"2026-04-05"|"2027-03-28") TAGLINES+=("$HOLIDAY_EASTER") ;;
-        "2025-11-27"|"2026-11-26"|"2027-11-25") TAGLINES+=("$HOLIDAY_THANKSGIVING") ;;
-        "2025-12-15"|"2025-12-16"|"2025-12-17"|"2025-12-18"|"2025-12-19"|"2025-12-20"|"2025-12-21"|"2025-12-22"|"2026-12-05"|"2026-12-06"|"2026-12-07"|"2026-12-08"|"2026-12-09"|"2026-12-10"|"2026-12-11"|"2026-12-12"|"2027-12-25"|"2027-12-26"|"2027-12-27"|"2027-12-28"|"2027-12-29"|"2027-12-30"|"2027-12-31"|"2028-01-01") TAGLINES+=("$HOLIDAY_HANUKKAH") ;;
-    esac
-}
 
 map_legacy_env() {
     local key="$1"
@@ -1314,7 +1278,6 @@ map_legacy_env() {
     fi
 }
 
-map_legacy_env "OPENCLAW_TAGLINE_INDEX" "CLAWDBOT_TAGLINE_INDEX"
 map_legacy_env "OPENCLAW_NO_ONBOARD" "CLAWDBOT_NO_ONBOARD"
 map_legacy_env "OPENCLAW_NO_PROMPT" "CLAWDBOT_NO_PROMPT"
 map_legacy_env "OPENCLAW_DRY_RUN" "CLAWDBOT_DRY_RUN"
@@ -1428,26 +1391,6 @@ npm_view() {
         npm view "$@"
     fi
 }
-
-pick_tagline() {
-    append_holiday_taglines
-    local count=${#TAGLINES[@]}
-    if [[ "$count" -eq 0 ]]; then
-        echo "$DEFAULT_TAGLINE"
-        return
-    fi
-    if [[ -n "${OPENCLAW_TAGLINE_INDEX:-}" ]]; then
-        if [[ "${OPENCLAW_TAGLINE_INDEX}" =~ ^[0-9]+$ ]]; then
-            local idx=$((OPENCLAW_TAGLINE_INDEX % count))
-            echo "${TAGLINES[$idx]}"
-            return
-        fi
-    fi
-    local idx=$((RANDOM % count))
-    echo "${TAGLINES[$idx]}"
-}
-
-TAGLINE=$(pick_tagline)
 
 NO_ONBOARD=${OPENCLAW_NO_ONBOARD:-0}
 NO_PROMPT=${OPENCLAW_NO_PROMPT:-0}
