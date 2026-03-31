@@ -77,12 +77,12 @@ Open a terminal, paste one command, and let the script handle everything ✅
 **Step 2**: Copy the command below, paste it into Terminal, and press Enter:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/Mac_openclaw_Autoinstaller.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
 ```
 
 > If GitHub is slow in your region, use the jsDelivr mirror:
 > ```bash
-> curl -fsSL https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/Mac_openclaw_Autoinstaller.sh | bash
+> curl -fsSL https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
 > ```
 
 **Step 3**: Follow the on-screen prompts — that's it! 🎉
@@ -98,12 +98,12 @@ curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/Mac
 **Step 2**: Copy the command below, paste it into PowerShell, and press Enter:
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/Windows_openclaw_Autoinstaller.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
 ```
 
 > If GitHub is slow in your region, use the jsDelivr mirror:
 > ```powershell
-> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/Windows_openclaw_Autoinstaller.ps1 | iex
+> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
 > ```
 
 > If you encounter an "execution policy" error, run this first:
