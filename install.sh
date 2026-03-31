@@ -29,17 +29,44 @@ use_color() {
     [[ -z "${NO_COLOR:-}" && "${TERM:-dumb}" != "dumb" ]]
 }
 
+# 检测终端背景色（macOS Terminal/iTerm2 均支持 COLORFGBG 或 __CFBundleIdentifier）
+_is_light_bg() {
+    # COLORFGBG 格式：前景;背景，背景数字 >= 8 通常为浅色
+    if [[ -n "${COLORFGBG:-}" ]]; then
+        local bg_code
+        bg_code="${COLORFGBG##*;}"
+        [[ "$bg_code" -ge 8 ]] 2>/dev/null && return 0
+    fi
+    # 检测 macOS Terminal 默认白色背景（TERM_PROGRAM=Apple_Terminal）
+    if [[ "${TERM_PROGRAM:-}" == "Apple_Terminal" ]]; then
+        return 0
+    fi
+    return 1
+}
+
 if use_color; then
     BOLD='\033[1m'
-    ACCENT='\033[38;2;255;77;77m'       # coral-bright  #ff4d4d
-    # shellcheck disable=SC2034
-    ACCENT_BRIGHT='\033[38;2;255;110;110m' # lighter coral
-    INFO='\033[38;2;136;146;176m'       # text-secondary #8892b0
-    SUCCESS='\033[38;2;0;229;204m'      # cyan-bright   #00e5cc
-    WARN='\033[38;2;255;176;32m'        # amber
-    ERROR='\033[38;2;230;57;70m'        # coral-mid     #e63946
-    MUTED='\033[38;2;90;100;128m'       # text-muted    #5a6480
     NC='\033[0m'
+    if _is_light_bg; then
+        # 浅色/白色背景主题 —— 使用深色、高饱和度颜色确保可读性
+        ACCENT='\033[38;2;200;30;30m'        # 深红
+        ACCENT_BRIGHT='\033[38;2;220;60;60m' # 中红
+        INFO='\033[38;2;50;80;160m'          # 深蓝
+        SUCCESS='\033[38;2;0;140;100m'       # 深青绿
+        WARN='\033[38;2;180;100;0m'          # 深橙/棕
+        ERROR='\033[38;2;180;20;30m'         # 深红
+        MUTED='\033[38;2;80;80;100m'         # 深灰蓝
+    else
+        # 深色背景主题（默认）
+        ACCENT='\033[38;2;255;77;77m'        # coral-bright  #ff4d4d
+        # shellcheck disable=SC2034
+        ACCENT_BRIGHT='\033[38;2;255;110;110m' # lighter coral
+        INFO='\033[38;2;136;146;176m'        # text-secondary #8892b0
+        SUCCESS='\033[38;2;0;229;204m'       # cyan-bright   #00e5cc
+        WARN='\033[38;2;255;176;32m'         # amber
+        ERROR='\033[38;2;230;57;70m'         # coral-mid     #e63946
+        MUTED='\033[38;2;90;100;128m'        # text-muted    #5a6480
+    fi
 else
     BOLD='' ACCENT='' ACCENT_BRIGHT='' INFO='' SUCCESS='' WARN='' ERROR='' MUTED='' NC=''
 fi
@@ -566,7 +593,7 @@ detect_os_or_die() {
         ui_hr 48 "─"
         ui_error "不支持的操作系统"
         echo -e "  本安装器支持 ${ACCENT}macOS${NC} 和 ${ACCENT}Linux${NC}（包括 WSL）"
-        echo -e "  Windows 用户请使用: ${INFO}iwr -useb https://openclaw.ai/install.ps1 | iex${NC}"
+        echo -e "  Windows 用户请使用: ${INFO}iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex${NC}"
         ui_hr 48 "─"
         echo ""
         exit 1
@@ -1539,7 +1566,7 @@ print_usage() {
     echo -e "${ACCENT}${BOLD}  OpenClaw 安装器${NC} ${MUTED}（macOS + Linux）${NC}"
     echo ""
     echo -e "${MUTED}用法:${NC}"
-    echo -e "  ${INFO}curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-zh.sh | bash -s -- [选项]${NC}"
+    echo -e "  ${INFO}curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- [选项]${NC}"
     echo ""
     echo -e "${MUTED}选项:${NC}"
     echo -e "  ${ACCENT}--install-method${NC}, --method npm|pnpm|git  通过 pnpm（默认）、npm 或 git 源码安装"
@@ -1562,9 +1589,9 @@ print_usage() {
     echo -e "         OPENCLAW_PROXY_PRIMARY / OPENCLAW_PROXY_SECONDARY 等"
     echo ""
     echo -e "${MUTED}示例:${NC}"
-    echo -e "  curl -fsSL https://openclaw.ai/install-zh.sh | bash"
-    echo -e "  curl -fsSL https://openclaw.ai/install-zh.sh | bash -s -- ${ACCENT}--beta${NC}"
-    echo -e "  curl -fsSL https://openclaw.ai/install-zh.sh | bash -s -- ${ACCENT}--registry taobao${NC}"
+    echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash"
+    echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- ${ACCENT}--beta${NC}"
+    echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- ${ACCENT}--registry taobao${NC}"
     echo ""
 }
 
@@ -4929,55 +4956,60 @@ invoke_uninstall() {
 
 show_welcome_menu() {
     echo ""
-    echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
-    echo -e "${ACCENT}${BOLD}  🦞 欢迎使用 OpenClaw 全自动安装部署脚本！  ${NC}${MUTED}Mac 版${NC}"
-    echo -e "${MUTED}  基于 OpenClaw 2026.3.28 官方源码${NC}"
-    echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
+    echo -e "${ACCENT}${BOLD}  # ═══════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "${ACCENT}${BOLD}  # OpenClaw 全自动安装部署脚本 - MacOS 版${NC}"
+    echo -e "${MUTED}  # 涵盖 OpenClaw环境安装 + OpenClaw最新官方稳定版 + 模型/网关/项目空间全自动部署${NC}"
+    echo -e "${SUCCESS}  # 无后门 | 无病毒 | 全自动 | 全免费 | 零技术门槛${NC}"
+    echo -e "${MUTED}  # Created by: Mr_Hou  致力于技术平权降低门槛 让人人都有机会拥抱Ai世界${NC}"
+    echo -e "${MUTED}  # Wechat_id：qiyuan_hou，欢迎一起讨论 共同进化！${NC}"
+    echo -e "${WARN}  # **严禁恶意篡改或将本免费脚本商业化售卖**${NC}"
+    echo -e "${ACCENT}${BOLD}  # ═══════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "${MUTED}  # 功能菜单:${NC}"
     echo ""
 
     # ── 安装部署 OpenClaw 篇 ──
-    echo -e "  ${ACCENT}┌─ 安装部署 OpenClaw 篇 ──────────────────────────────────────┐${NC}"
+    echo -e "  ${ACCENT}┌─ 《安装与部署 OpenClaw 篇》 ────────────────────────────────────────────┤${NC}"
     echo ""
-    echo -e "    ${ACCENT}1)${NC} 安装 OpenClaw 并自动化部署  ${MUTED}（新用户首选！一次搞定所有）${NC}"
-    echo -e "       ${MUTED}自动安装 Homebrew/Node.js/Git/OpenClaw，并配置模型、网关和项目空间${NC}"
+    echo -e "    ${ACCENT}1)${NC} 安装 OpenClaw 并自动化部署  ${MUTED}（推荐新用户）${NC}"
+    echo -e "       ${MUTED}自动安装 Homebrew/Node.js/Git/OpenClaw，并配置模型、API Key、网关和项目空间${NC}"
     echo ""
     echo -e "    ${ACCENT}2)${NC} 仅自动化安装 OpenClaw"
     echo -e "       ${MUTED}只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成${NC}"
     echo ""
     echo -e "    ${ACCENT}3)${NC} 仅部署 OpenClaw 模型/网关/项目空间"
-    echo -e "       ${MUTED}OpenClaw 已安装，仅配置模型提供商和工作目录${NC}"
+    echo -e "       ${MUTED}OpenClaw 已安装，仅配置模型提供商、API Key 和工作目录${NC}"
     echo ""
-    echo -e "  ${ACCENT}└─────────────────────────────────────────────────────┘${NC}"
+    echo -e "  ${ACCENT}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 使用 OpenClaw 篇 ──
-    echo -e "  ${WARN}┌─ 使用 OpenClaw 篇（需已安装 OpenClaw）──────────────────────┐${NC}"
+    echo -e "  ${WARN}┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤${NC}"
     echo ""
-    echo -e "    ${WARN}4)${NC} 更换 OpenClaw 模型"
-    echo -e "       ${MUTED}进入模型配置向导，更换 AI 模型提供商和 API Key${NC}"
+    echo -e "    ${WARN}4)${NC} 更换 OpenClaw 模型（配置 AI 模型提供商 / API Key）"
+    echo -e "       ${MUTED}支持 DeepSeek / Kimi / 火山方舟 / 阿里百炼 / ChatGPT / Claude 等 9 家提供商${NC}"
     echo ""
-    echo -e "    ${WARN}5)${NC} 添加 Channels（微信 / 飞书 / 企微 / QQ 等）"
-    echo -e "       ${MUTED}连接即时通讯渠道，让 AI 助手在你的聊天 App 里回复消息${NC}"
+    echo -e "    ${WARN}5)${NC} 添加 Channels（微信 / 飞书 / 企微 / QQ 等即时通讯渠道）"
+    echo -e "       ${MUTED}连接即时通讯渠道，让 AI 助手在你的聊天 App 里直接回复消息${NC}"
     echo ""
     echo -e "    ${WARN}6)${NC} OpenClaw 自检并尝试修复"
-    echo -e "       ${MUTED}依次运行 doctor / doctor --fix / gateway restart / status / dashboard${NC}"
+    echo -e "       ${MUTED}自动运行 doctor 诊断 + doctor --fix 修复 + gateway restart 重启网关${NC}"
     echo ""
     echo -e "    ${WARN}7)${NC} 进入 OpenClaw 配置页面"
     echo -e "       ${MUTED}打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）${NC}"
     echo ""
     echo -e "    ${WARN}8)${NC} 打开 OpenClaw 主页面"
-    echo -e "       ${MUTED}启动 OpenClaw Web UI 控制面板${NC}"
+    echo -e "       ${MUTED}启动 OpenClaw Web UI 控制面板，可在浏览器中查看全部功能和对话${NC}"
     echo ""
-    echo -e "  ${WARN}└─────────────────────────────────────────────────────┘${NC}"
+    echo -e "  ${WARN}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 卸载 OpenClaw 篇 ──
-    echo -e "  ${ERROR}┌─ 卸载 OpenClaw 篇 ───────────────────────────────────────────┐${NC}"
+    echo -e "  ${ERROR}┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤${NC}"
     echo ""
     echo -e "    ${ERROR}9)${NC} 完全卸载 OpenClaw"
-    echo -e "       ${MUTED}停止服务并彻底移除 OpenClaw（操作不可逆，需二次确认）${NC}"
+    echo -e "       ${MUTED}停止全部服务并彻底移除 OpenClaw（操作不可逆，执行前需二次确认）${NC}"
     echo ""
-    echo -e "  ${ERROR}└─────────────────────────────────────────────────┘${NC}"
+    echo -e "  ${ERROR}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
@@ -5301,8 +5333,8 @@ invoke_install_flow() {
         ui_kv "源码目录" "$final_git_dir"
         ui_kv "包装器" "$HOME/.local/bin/openclaw"
         ui_kv "更新命令" "openclaw update --restart"
-        ui_kv "切换到 npm" "curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-zh.sh | bash -s -- --install-method npm"
-        ui_kv "切换到 pnpm" "curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-zh.sh | bash -s -- --install-method pnpm"
+        ui_kv "切换到 npm" "curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- --install-method npm"
+        ui_kv "切换到 pnpm" "curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- --install-method pnpm"
     elif [[ "$is_upgrade" == "true" ]]; then
         ui_info "升级完成"
         if [[ -r /dev/tty && -w /dev/tty ]]; then
