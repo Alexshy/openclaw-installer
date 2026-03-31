@@ -2,7 +2,7 @@
 
 > **零技术门槛 · 全自动 · 双平台支持（Mac + Windows）**
 > 
-> 致力于技术平权，让每一个人都有机会拥抱 AI 世界 🌏
+> Created by:Mr_Hou 致力于技术平权，让每一个人都有机会拥抱 AI 世界 🌏
 
 <div align="center">
 
