@@ -100,12 +100,12 @@ curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/ins
 **第二步**：复制以下命令，粘贴到 PowerShell，按回车：
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
+$r=iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1; iex ([System.Text.Encoding]::UTF8.GetString($r.Content))
 ```
 
 > 国内网络较慢时，可使用 jsDelivr 加速：
 > ```powershell
-> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
+> $r=iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1; iex ([System.Text.Encoding]::UTF8.GetString($r.Content))
 > ```
 
 > 如遇到「执行策略」报错，请先运行：
