@@ -44,11 +44,14 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# ─── UTF-8 编码修复 ───
+# ─── UTF-8 编码强制设置（iwr|iex 远程执行时防止中文乱码）───
 try {
-    chcp 65001 2>$null | Out-Null
-    $OutputEncoding = [System.Text.Encoding]::UTF8
+    [Console]::InputEncoding  = [System.Text.Encoding]::UTF8
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+    $OutputEncoding = [System.Text.Encoding]::UTF8
+    if ([Console]::OutputEncoding.CodePage -ne 65001) {
+        & chcp 65001 2>$null | Out-Null
+    }
 } catch { }
 
 # ═══════════════════════════════════════════════════════════════════════
