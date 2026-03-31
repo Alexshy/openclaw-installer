@@ -1088,56 +1088,44 @@ function Show-WelcomeMenu {
 
     # ── 安装部署 OpenClaw 篇 ──
     Write-Host "  ┌─ 《安装与部署 OpenClaw 篇》 ────────────────────────────────────────────┤" -ForegroundColor Cyan
-    Write-Host ""
     Write-Host "    1) " -NoNewline -ForegroundColor Cyan
     Write-Host "安装 OpenClaw 并自动化部署" -NoNewline -ForegroundColor White
     Write-Host "  （推荐新用户）" -ForegroundColor Blue
     Write-Host "       自动安装 Node.js / Git / OpenClaw，并配置模型、API Key、网关和项目空间" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "    2) " -NoNewline -ForegroundColor Cyan
     Write-Host "仅自动化安装 OpenClaw" -ForegroundColor White
     Write-Host "       只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "    3) " -NoNewline -ForegroundColor Cyan
     Write-Host "仅部署 OpenClaw 模型/网关/项目空间" -ForegroundColor White
     Write-Host "       OpenClaw 已安装，仅配置模型提供商、API Key 和工作目录" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "  └─────────────────────────────────────────────────────────────────────┘" -ForegroundColor Cyan
     Write-Host ""
 
     # ── 使用 OpenClaw 篇 ──
     Write-Host "  ┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤" -ForegroundColor Yellow
-    Write-Host ""
     Write-Host "    4) " -NoNewline -ForegroundColor Yellow
     Write-Host "更换 OpenClaw 模型（配置 AI 模型提供商 / API Key）" -ForegroundColor White
     Write-Host "       支持 DeepSeek / Kimi / 火山方舟 / 阿里百炼 / ChatGPT / Claude 等 9 家提供商" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "    5) " -NoNewline -ForegroundColor Yellow
     Write-Host "添加 Channels（微信 / 飞书 / 企微 / QQ 等即时通讯渠道）" -ForegroundColor White
     Write-Host "       连接即时通讯渠道，让 AI 助手在你的聊天 App 里直接回复消息" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "    6) " -NoNewline -ForegroundColor Yellow
     Write-Host "OpenClaw 自检并尝试修复" -ForegroundColor White
     Write-Host "       自动运行 doctor 诊断 + doctor --fix 修复 + gateway restart 重启网关" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "    7) " -NoNewline -ForegroundColor Yellow
     Write-Host "进入 OpenClaw 配置页面" -ForegroundColor White
     Write-Host "       打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "    8) " -NoNewline -ForegroundColor Yellow
     Write-Host "打开 OpenClaw 主页面" -ForegroundColor White
     Write-Host "       启动 OpenClaw Web UI 控制面板，可在浏览器中查看全部功能和对话" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "  └─────────────────────────────────────────────────────────────────────┘" -ForegroundColor Yellow
     Write-Host ""
 
     # ── 卸载 OpenClaw 篇 ──
     Write-Host "  ┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤" -ForegroundColor Red
-    Write-Host ""
     Write-Host "    9) " -NoNewline -ForegroundColor Red
     Write-Host "完全卸载 OpenClaw" -ForegroundColor White
     Write-Host "       停止全部服务并彻底移除 OpenClaw（操作不可逆，执行前需二次确认）" -ForegroundColor Blue
-    Write-Host ""
     Write-Host "  └─────────────────────────────────────────────────────────────────────┘" -ForegroundColor Red
     Write-Host ""
 
