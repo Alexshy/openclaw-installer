@@ -77,12 +77,12 @@ Open a terminal, paste one command, and let the script handle everything ✅
 **Step 2**: Copy the command below, paste it into Terminal, and press Enter:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
+curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
 ```
 
 > If GitHub is slow in your region, use the jsDelivr mirror:
 > ```bash
-> curl -fsSL https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
+> curl -fsSL --proto '=https' --tlsv1.2 https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
 > ```
 
 **Step 3**: Follow the on-screen prompts — that's it! 🎉
@@ -95,24 +95,26 @@ curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/ins
 
 > ⚠️ Must be run as **Administrator**, otherwise software cannot be installed
 
-**Step 2**: Copy the command below, paste it into PowerShell, and press Enter:
+**Step 2**: Copy the command below, paste it into PowerShell, press Enter, then type `A` and press Enter to confirm:
 
 ```powershell
-$r=iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 -UseBasicParsing; iex ([System.Text.Encoding]::UTF8.GetString($r.RawContentBytes))
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+> ⚠️ This step allows PowerShell to run local and downloaded scripts. Required for all users to avoid permission errors later.
+
+**Step 3**: Copy the command below, paste it into PowerShell, and press Enter:
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
 ```
 
 > If GitHub is slow in your region, use the jsDelivr mirror:
 > ```powershell
-> $r=iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1; iex ([System.Text.Encoding]::UTF8.GetString($r.Content))
+> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
 > ```
 
-> If you encounter an "execution policy" error, run this first:
-> ```powershell
-> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-> ```
-> Then run the install command again.
-
-**Step 3**: Follow the on-screen prompts — that's it! 🎉
+**Step 4**: Follow the on-screen prompts — that's it! 🎉
 
 ---
 
