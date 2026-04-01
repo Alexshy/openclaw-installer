@@ -4298,7 +4298,7 @@ deploy_invoke_gateway_restart() {
     echo -e "    ${MUTED}提示: gateway restart 是重启后台 daemon 服务${NC}"
     echo -e "    ${MUTED}请不要额外执行 openclaw gateway run（前台模式会产生端口冲突）${NC}"
     echo ""
-    if openclaw gateway restart 2>&1 | sed 's/^/    /'; then
+    if openclaw gateway restart 2>&1; then
         echo ""
         ui_success "Gateway 服务已重启"
     else
@@ -4316,7 +4316,7 @@ deploy_invoke_dashboard() {
     ui_section "打开 Web UI 控制界面 (openclaw dashboard)"
     ui_info "正在打开 OpenClaw Web UI (Control Panel)..."
     echo ""
-    if openclaw dashboard 2>&1 | sed 's/^/    /'; then
+    if openclaw dashboard 2>&1; then
         echo ""
         ui_success "Web UI 已启动"
     else
@@ -4414,9 +4414,11 @@ invoke_configure_model() {
                 echo ""
                 ui_info "正在调起 openclaw configure （Local + Model）..."
                 echo ""
-                openclaw configure 2>&1 | while IFS= read -r line; do
-                    echo -e "    ${MUTED}${line}${NC}"
-                done || ui_warn "configure 启动失败，请手动运行： openclaw configure"
+                if [[ -r /dev/tty && -w /dev/tty ]]; then
+                    openclaw configure </dev/tty || ui_warn "configure 启动失败，请手动运行： openclaw configure"
+                else
+                    openclaw configure || ui_warn "configure 启动失败，请手动运行： openclaw configure"
+                fi
                 return 0
                 ;;
             2) return 0 ;;
@@ -4468,11 +4470,12 @@ show_wechat_channel_menu() {
                 echo ""
                 ui_info "正在安装微信官方插件..."
                 echo ""
-                npx -y @tencent-weixin/openclaw-weixin-cli@latest install 2>&1 | while IFS= read -r line; do
-                    echo -e "    ${MUTED}${line}${NC}"
-                done || ui_warn "安装失败，请手动运行： npx -y @tencent-weixin/openclaw-weixin-cli@latest install"
+                npx -y @tencent-weixin/openclaw-weixin-cli@latest install 2>&1 || ui_warn "安装失败，请手动运行： npx -y @tencent-weixin/openclaw-weixin-cli@latest install"
                 echo ""
                 ui_success "✅ 微信插件安装命令执行完成！请用微信扫码确认连接。"
+                echo ""
+                printf "    按回车键返回渠道菜单..."
+                read -r < /dev/tty || true
                 return 0
                 ;;
             2) return 0 ;;
@@ -4512,9 +4515,11 @@ show_qq_channel_menu() {
                 echo ""
                 ui_info "正在调起 openclaw configure → Channels..."
                 echo ""
-                openclaw configure --section channels 2>&1 | while IFS= read -r line; do
-                    echo -e "    ${MUTED}${line}${NC}"
-                done || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                if [[ -r /dev/tty && -w /dev/tty ]]; then
+                    openclaw configure --section channels </dev/tty || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                else
+                    openclaw configure --section channels || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                fi
                 return 0
                 ;;
             2) return 0 ;;
@@ -4556,7 +4561,7 @@ show_channels_menu() {
         case "$sub_input" in
             1)
                 show_wechat_channel_menu
-                return 0
+                # 微信子菜单返回后，继续循环显示渠道菜单
                 ;;
             2)
                 echo ""
@@ -4564,10 +4569,11 @@ show_channels_menu() {
                 echo ""
                 ui_info "正在调起 openclaw configure → Channels..."
                 echo ""
-                openclaw configure --section channels 2>&1 | while IFS= read -r line; do
-                    echo -e "    ${MUTED}${line}${NC}"
-                done || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
-                return 0
+                if [[ -r /dev/tty && -w /dev/tty ]]; then
+                    openclaw configure --section channels </dev/tty || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                else
+                    openclaw configure --section channels || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                fi
                 ;;
             3)
                 echo ""
@@ -4575,23 +4581,25 @@ show_channels_menu() {
                 echo ""
                 ui_info "正在调起 openclaw configure → Channels..."
                 echo ""
-                openclaw configure --section channels 2>&1 | while IFS= read -r line; do
-                    echo -e "    ${MUTED}${line}${NC}"
-                done || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
-                return 0
+                if [[ -r /dev/tty && -w /dev/tty ]]; then
+                    openclaw configure --section channels </dev/tty || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                else
+                    openclaw configure --section channels || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                fi
                 ;;
             4)
                 show_qq_channel_menu
-                return 0
+                # QQ子菜单返回后，继续循环显示渠道菜单
                 ;;
             5)
                 echo ""
                 ui_info "正在调起 openclaw configure → Channels..."
                 echo ""
-                openclaw configure --section channels 2>&1 | while IFS= read -r line; do
-                    echo -e "    ${MUTED}${line}${NC}"
-                done || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
-                return 0
+                if [[ -r /dev/tty && -w /dev/tty ]]; then
+                    openclaw configure --section channels </dev/tty || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                else
+                    openclaw configure --section channels || ui_warn "configure 启动失败，请手动运行： openclaw configure --section channels"
+                fi
                 ;;
             6) return 0 ;;
             *) echo "    输入无效，请输入 1 到 6 之间的序号" ;;
@@ -4618,9 +4626,7 @@ invoke_selfcheck() {
     echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
     ui_info "正在运行 OpenClaw 健康检查..."
     echo ""
-    openclaw doctor 2>&1 | while IFS= read -r line; do
-        echo -e "    ${MUTED}${line}${NC}"
-    done || ui_warn "doctor 运行遇到问题"
+    openclaw doctor 2>&1 || ui_warn "doctor 运行遇到问题"
     echo ""
 
     # Step 2: openclaw doctor --fix
@@ -4629,9 +4635,7 @@ invoke_selfcheck() {
     echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
     ui_info "正在尝试自动修复检测到的问题..."
     echo ""
-    openclaw doctor --fix 2>&1 | while IFS= read -r line; do
-        echo -e "    ${MUTED}${line}${NC}"
-    done || ui_warn "doctor --fix 运行遇到问题"
+    openclaw doctor --fix 2>&1 || ui_warn "doctor --fix 运行遇到问题"
     echo ""
 
     # Step 3: openclaw gateway restart
@@ -4640,9 +4644,7 @@ invoke_selfcheck() {
     echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
     ui_info "正在重启 Gateway 后台服务..."
     echo ""
-    if openclaw gateway restart 2>&1 | while IFS= read -r line; do
-        echo -e "    ${MUTED}${line}${NC}"
-    done; then
+    if openclaw gateway restart 2>&1; then
         ui_success "✅ Gateway 服务已重启"
     else
         ui_warn "gateway restart 失败，可手动运行： openclaw gateway restart"
@@ -4655,9 +4657,7 @@ invoke_selfcheck() {
     echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
     ui_info "正在获取 OpenClaw 全量状态信息..."
     echo ""
-    openclaw status --all 2>&1 | while IFS= read -r line; do
-        echo -e "    ${MUTED}${line}${NC}"
-    done || ui_warn "status --all 运行遇到问题"
+    openclaw status --all 2>&1 || ui_warn "status --all 运行遇到问题"
     echo ""
 
     # Step 5: openclaw dashboard
@@ -4666,9 +4666,7 @@ invoke_selfcheck() {
     echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
     ui_info "正在打开 OpenClaw Web UI（控制面板）..."
     echo ""
-    if openclaw dashboard 2>&1 | while IFS= read -r line; do
-        echo -e "    ${MUTED}${line}${NC}"
-    done; then
+    if openclaw dashboard; then
         ui_success "✅ OpenClaw Web UI 已启动！"
     else
         ui_warn "打开 Web UI 失败，请手动运行： openclaw dashboard"
@@ -4692,9 +4690,11 @@ invoke_configure_main() {
     echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
     ui_info "正在启动 OpenClaw 配置向导（包含模型 / 网关 / 渠道 / 守护进程等）..."
     echo ""
-    openclaw configure 2>&1 | while IFS= read -r line; do
-        echo -e "    ${MUTED}${line}${NC}"
-    done || ui_warn "configure 启动失败，请手动运行： openclaw configure"
+    if [[ -r /dev/tty && -w /dev/tty ]]; then
+        openclaw configure </dev/tty || ui_warn "configure 启动失败，请手动运行： openclaw configure"
+    else
+        openclaw configure || ui_warn "configure 启动失败，请手动运行： openclaw configure"
+    fi
     echo ""
 }
 
@@ -4709,9 +4709,7 @@ invoke_dashboard_menu() {
     echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
     ui_info "正在启动 OpenClaw Web UI..."
     echo ""
-    if openclaw dashboard 2>&1 | while IFS= read -r line; do
-        echo -e "    ${MUTED}${line}${NC}"
-    done; then
+    if openclaw dashboard; then
         ui_success "✅ OpenClaw Web UI 已启动！请在浏览器中查看。"
     else
         ui_warn "启动失败，请手动运行： openclaw dashboard"
@@ -4769,7 +4767,7 @@ invoke_uninstall() {
         _out="$("$@" 2>&1)" || _rc=$?
         if [[ -n "$_out" ]]; then
             while IFS= read -r line; do
-                echo -e "    ${MUTED}${line}${NC}"
+                echo -e "    ${line}"
             done <<< "$_out"
         fi
         return $_rc
@@ -4867,35 +4865,35 @@ show_welcome_menu() {
 
     # ── 安装部署 OpenClaw 篇 ──
     echo -e "  ${ACCENT}┌─ 《安装与部署 OpenClaw 篇》 ────────────────────────────────────────────┤${NC}"
-    echo -e "    ${ACCENT}1)${NC} 安装 OpenClaw 并自动化部署  ${MUTED}（推荐新用户）${NC}"
-    echo -e "       ${MUTED}自动安装 Homebrew/Node.js/Git/OpenClaw，并配置模型、API Key、网关和项目空间${NC}"
+    echo -e "    ${ACCENT}1)${NC} 安装 OpenClaw 并自动化部署  ${INFO}（推荐新用户）${NC}"
+    echo -e "       ${INFO}自动安装 Homebrew/Node.js/Git/OpenClaw，并配置模型、API Key、网关和项目空间${NC}"
     echo -e "    ${ACCENT}2)${NC} 仅自动化安装 OpenClaw"
-    echo -e "       ${MUTED}只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成${NC}"
+    echo -e "       ${INFO}只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成${NC}"
     echo -e "    ${ACCENT}3)${NC} 仅部署 OpenClaw 模型/网关/项目空间"
-    echo -e "       ${MUTED}OpenClaw 已安装，仅配置模型提供商、API Key 和工作目录${NC}"
+    echo -e "       ${INFO}OpenClaw 已安装，仅配置模型提供商、API Key 和工作目录${NC}"
     echo -e "  ${ACCENT}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 使用 OpenClaw 篇 ──
-    echo -e "  ${WARN}┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤${NC}"
-    echo -e "    ${WARN}4)${NC} 更换 OpenClaw 模型（配置 AI 模型提供商 / API Key）"
-    echo -e "       ${MUTED}支持 DeepSeek / Kimi / 火山方舟 / 阿里百炼 / ChatGPT / Claude 等 9 家提供商${NC}"
-    echo -e "    ${WARN}5)${NC} 添加 Channels（微信 / 飞书 / 企微 / QQ 等即时通讯渠道）"
-    echo -e "       ${MUTED}连接即时通讯渠道，让 AI 助手在你的聊天 App 里直接回复消息${NC}"
-    echo -e "    ${WARN}6)${NC} OpenClaw 自检并尝试修复"
-    echo -e "       ${MUTED}自动运行 doctor 诊断 + doctor --fix 修复 + gateway restart 重启网关${NC}"
-    echo -e "    ${WARN}7)${NC} 进入 OpenClaw 配置页面"
-    echo -e "       ${MUTED}打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）${NC}"
-    echo -e "    ${WARN}8)${NC} 打开 OpenClaw 主页面"
-    echo -e "       ${MUTED}启动 OpenClaw Web UI 控制面板，可在浏览器中查看全部功能和对话${NC}"
-    echo -e "  ${WARN}└─────────────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "  ${ACCENT}┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤${NC}"
+    echo -e "    ${ACCENT}4)${NC} 更换 OpenClaw 模型（配置 AI 模型提供商 / API Key）"
+    echo -e "       ${INFO}支持 DeepSeek / Kimi / 火山方舟 / 阿里百炼 / ChatGPT / Claude 等 9 家提供商${NC}"
+    echo -e "    ${ACCENT}5)${NC} 添加 Channels（微信 / 飞书 / 企微 / QQ 等即时通讯渠道）"
+    echo -e "       ${INFO}连接即时通讯渠道，让 AI 助手在你的聊天 App 里直接回复消息${NC}"
+    echo -e "    ${ACCENT}6)${NC} OpenClaw 自检并尝试修复"
+    echo -e "       ${INFO}自动运行 doctor 诊断 + doctor --fix 修复 + gateway restart 重启网关${NC}"
+    echo -e "    ${ACCENT}7)${NC} 进入 OpenClaw 配置页面"
+    echo -e "       ${INFO}打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）${NC}"
+    echo -e "    ${ACCENT}8)${NC} 打开 OpenClaw 主页面"
+    echo -e "       ${INFO}启动 OpenClaw Web UI 控制面板，可在浏览器中查看全部功能和对话${NC}"
+    echo -e "  ${ACCENT}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 卸载 OpenClaw 篇 ──
-    echo -e "  ${ERROR}┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤${NC}"
-    echo -e "    ${ERROR}9)${NC} 完全卸载 OpenClaw"
-    echo -e "       ${MUTED}停止全部服务并彻底移除 OpenClaw（操作不可逆，执行前需二次确认）${NC}"
-    echo -e "  ${ERROR}└─────────────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "  ${ACCENT}┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤${NC}"
+    echo -e "    ${ACCENT}9)${NC} 完全卸载 OpenClaw"
+    echo -e "       ${INFO}停止全部服务并彻底移除 OpenClaw（操作不可逆，执行前需二次确认）${NC}"
+    echo -e "  ${ACCENT}└─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
@@ -5405,64 +5403,69 @@ main_setup() {
         SETUP_MODE="deploy"
     fi
 
-    # 如果未指定模式，显示欢迎菜单
-    if [[ -z "$SETUP_MODE" ]]; then
-        show_welcome_menu
-    fi
+    # 如果未指定模式，循环显示菜单
+    while true; do
+        if [[ -z "$SETUP_MODE" ]]; then
+            show_welcome_menu
+        fi
 
-    case "$SETUP_MODE" in
-        full)
-            echo ""
-            echo -e "${ACCENT}${BOLD}  ▸ 模式: 安装 + 部署${NC}"
-            echo ""
-            invoke_install_flow
-            echo ""
-            echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
-            echo -e "${ACCENT}${BOLD}  ✅ 安装完成！现在进入部署配置...${NC}"
-            echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
-            invoke_deploy_flow
-            ;;
-        install)
-            echo ""
-            echo -e "${ACCENT}${BOLD}  ▸ 模式: 仅安装${NC}"
-            echo ""
-            invoke_install_flow
-            ;;
-        deploy)
-            echo ""
-            echo -e "${ACCENT}${BOLD}  ▸ 模式: 仅部署${NC}"
-            echo ""
-            invoke_deploy_flow
-            ;;
-        configure-model)
-            # ══ 模式 4: 更换模型 ══
-            invoke_configure_model
-            ;;
-        channels)
-            # ══ 模式 5: 添加 Channels ══
-            show_channels_menu
-            ;;
-        selfcheck)
-            # ══ 模式 6: 自检修复 ══
-            invoke_selfcheck
-            ;;
-        configure-main)
-            # ══ 模式 7: 进入配置页面 ══
-            invoke_configure_main
-            ;;
-        dashboard)
-            # ══ 模式 8: 打开主页面 ══
-            invoke_dashboard_menu
-            ;;
-        uninstall)
-            # ══ 模式 9: 完全卸载 ══
-            invoke_uninstall
-            ;;
-        *)
-            ui_error "未知模式: $SETUP_MODE"
-            return 1
-            ;;
-    esac
+        case "$SETUP_MODE" in
+            full)
+                echo ""
+                echo -e "${ACCENT}${BOLD}  ▸ 模式: 安装 + 部署${NC}"
+                echo ""
+                invoke_install_flow
+                echo ""
+                echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
+                echo -e "${ACCENT}${BOLD}  ✅ 安装完成！现在进入部署配置...${NC}"
+                echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
+                invoke_deploy_flow
+                return 0
+                ;;
+            install)
+                echo ""
+                echo -e "${ACCENT}${BOLD}  ▸ 模式: 仅安装${NC}"
+                echo ""
+                invoke_install_flow
+                return 0
+                ;;
+            deploy)
+                echo ""
+                echo -e "${ACCENT}${BOLD}  ▸ 模式: 仅部署${NC}"
+                echo ""
+                invoke_deploy_flow
+                return 0
+                ;;
+            configure-model)
+                invoke_configure_model
+                SETUP_MODE=""
+                ;;
+            channels)
+                show_channels_menu
+                SETUP_MODE=""
+                ;;
+            selfcheck)
+                invoke_selfcheck
+                SETUP_MODE=""
+                ;;
+            configure-main)
+                invoke_configure_main
+                SETUP_MODE=""
+                ;;
+            dashboard)
+                invoke_dashboard_menu
+                SETUP_MODE=""
+                ;;
+            uninstall)
+                invoke_uninstall
+                return 0
+                ;;
+            *)
+                ui_error "未知模式: $SETUP_MODE"
+                return 1
+                ;;
+        esac
+    done
 }
 
 # ═══════════════════════════════════════════════════════════════════════
