@@ -625,7 +625,7 @@ ui_info() {
     if [[ -n "$GUM" ]]; then
         "$GUM" log --level info "$msg"
     else
-        echo -e "  ${MUTED}▸${NC} ${msg}"
+        echo -e "  ▸${NC} ${msg}"
     fi
 }
 
@@ -687,7 +687,7 @@ ui_kv() {
         value_part="$("$GUM" style --bold "$value")"
         "$GUM" join --horizontal "$key_part" "$value_part"
     else
-        echo -e "  ${MUTED}${key}${NC}  ${ACCENT}${value}${NC}"
+        echo -e "  ${key}${NC}  ${ACCENT}${value}${NC}"
     fi
 }
 
@@ -766,14 +766,14 @@ China IM 渠道: ${OPENCLAW_CHINA_CHANNELS_REPO_URL}"
         ui_panel "$content"
     else
         echo ""
-        echo -e "${MUTED}  需要帮助？${NC}"
+        echo -e "  需要帮助？${NC}"
         ui_hr 48 "─"
-        echo -e "  ${MUTED}官方文档${NC}     ${INFO}${OPENCLAW_DOCS_URL}${NC}"
-        echo -e "  ${MUTED}常见问题${NC}     ${INFO}${OPENCLAW_FAQ_URL}${NC}"
-        echo -e "  ${MUTED}OpenClawCN${NC}   ${INFO}${OPENCLAW_CN_SITE_URL}${NC}"
-        echo -e "  ${MUTED}中文翻译${NC}     ${INFO}${OPENCLAW_CN_TRANSLATION_REPO}${NC}"
-        echo -e "  ${MUTED}Manager${NC}     ${INFO}${OPENCLAW_MANAGER_REPO_URL}${NC}"
-        echo -e "  ${MUTED}China IM${NC}     ${INFO}${OPENCLAW_CHINA_CHANNELS_REPO_URL}${NC}"
+        echo -e "  官方文档${NC}     ${INFO}${OPENCLAW_DOCS_URL}${NC}"
+        echo -e "  常见问题${NC}     ${INFO}${OPENCLAW_FAQ_URL}${NC}"
+        echo -e "  OpenClawCN${NC}   ${INFO}${OPENCLAW_CN_SITE_URL}${NC}"
+        echo -e "  中文翻译${NC}     ${INFO}${OPENCLAW_CN_TRANSLATION_REPO}${NC}"
+        echo -e "  Manager${NC}     ${INFO}${OPENCLAW_MANAGER_REPO_URL}${NC}"
+        echo -e "  China IM${NC}     ${INFO}${OPENCLAW_CHINA_CHANNELS_REPO_URL}${NC}"
         ui_hr 48 "─"
     fi
 }
@@ -1185,33 +1185,33 @@ print_npm_failure_diagnostics() {
     ui_warn "npm 安装 ${spec} 失败"
     ui_hr 50 "─"
     if [[ -n "${LAST_NPM_INSTALL_CMD}" ]]; then
-        echo -e "  ${MUTED}命令${NC} ${LAST_NPM_INSTALL_CMD}"
+        echo -e "  命令${NC} ${LAST_NPM_INSTALL_CMD}"
     fi
-    echo -e "  ${MUTED}日志${NC} ${log}"
+    echo -e "  日志${NC} ${log}"
 
     error_code="$(extract_npm_error_code "$log")"
     if [[ -n "$error_code" ]]; then
-        echo -e "  ${MUTED}错误码${NC} ${ERROR}${error_code}${NC}"
+        echo -e "  错误码${NC} ${ERROR}${error_code}${NC}"
     fi
 
     error_syscall="$(extract_npm_error_syscall "$log")"
     if [[ -n "$error_syscall" ]]; then
-        echo -e "  ${MUTED}syscall${NC} ${error_syscall}"
+        echo -e "  syscall${NC} ${error_syscall}"
     fi
 
     error_errno="$(extract_npm_error_errno "$log")"
     if [[ -n "$error_errno" ]]; then
-        echo -e "  ${MUTED}errno${NC} ${error_errno}"
+        echo -e "  errno${NC} ${error_errno}"
     fi
 
     debug_log="$(extract_npm_debug_log_path "$log" || true)"
     if [[ -n "$debug_log" ]]; then
-        echo -e "  ${MUTED}调试日志${NC} ${INFO}${debug_log}${NC}"
+        echo -e "  调试日志${NC} ${INFO}${debug_log}${NC}"
     fi
 
     first_error="$(extract_first_npm_error_line "$log")"
     if [[ -n "$first_error" ]]; then
-        echo -e "  ${MUTED}首条错误${NC} ${ERROR}${first_error}${NC}"
+        echo -e "  首条错误${NC} ${ERROR}${first_error}${NC}"
     fi
     echo ""
 }
@@ -1461,12 +1461,12 @@ SETUP_MODE=""
 
 print_usage() {
     echo ""
-    echo -e "${ACCENT}${BOLD}  OpenClaw 安装器${NC} ${MUTED}（macOS + Linux）${NC}"
+    echo -e "${ACCENT}${BOLD}  OpenClaw 安装器${NC} （macOS + Linux）${NC}"
     echo ""
-    echo -e "${MUTED}用法:${NC}"
+    echo -e "用法:${NC}"
     echo -e "  ${INFO}curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- [选项]${NC}"
     echo ""
-    echo -e "${MUTED}选项:${NC}"
+    echo -e "选项:${NC}"
     echo -e "  ${ACCENT}--install-method${NC}, --method npm|pnpm|git  通过 pnpm（默认）、npm 或 git 源码安装"
     echo -e "  --npm, --pnpm, --git/--github                    快捷方式"
     echo -e "  --version <版本|dist-tag>                        npm 安装: 指定版本（默认: latest）"
@@ -1481,12 +1481,12 @@ print_usage() {
     echo -e "  ${ACCENT}--github-proxy${NC}, -g <URL>             GitHub 代理"
     echo -e "  --help, -h                                       显示此帮助"
     echo ""
-    echo -e "${MUTED}环境变量:${NC} OPENCLAW_INSTALL_METHOD, OPENCLAW_EDITION, OPENCLAW_VERSION, OPENCLAW_NPM_REGISTRY,"
+    echo -e "环境变量:${NC} OPENCLAW_INSTALL_METHOD, OPENCLAW_EDITION, OPENCLAW_VERSION, OPENCLAW_NPM_REGISTRY,"
     echo -e "         OPENCLAW_INSTALL_CHINA_CHANNELS, OPENCLAW_INSTALL_MANAGER,"
     echo -e "         OPENCLAW_PROXY_SINGAPORE / OPENCLAW_PROXY_HONGKONG,"
     echo -e "         OPENCLAW_PROXY_PRIMARY / OPENCLAW_PROXY_SECONDARY 等"
     echo ""
-    echo -e "${MUTED}示例:${NC}"
+    echo -e "示例:${NC}"
     echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash"
     echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- ${ACCENT}--beta${NC}"
     echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- ${ACCENT}--registry taobao${NC}"
@@ -2184,7 +2184,7 @@ print_homebrew_admin_fix() {
     echo ""
     ui_hr 50 "─"
     ui_error "安装 Homebrew 需要 macOS 管理员账户"
-    echo -e "  ${MUTED}当前用户${NC} ${current_user} 不在 admin 组中"
+    echo -e "  当前用户${NC} ${current_user} 不在 admin 组中"
     echo ""
     echo -e "  ${ACCENT}解决方案:${NC}"
     echo -e "  1) 使用管理员账户重新运行安装器"
@@ -2232,7 +2232,7 @@ install_homebrew() {
         echo -e "  ${SUCCESS}✓${NC} Xcode 命令行工具已就绪"
         echo -e "  ${ERROR}✗${NC} Homebrew 未安装"
         echo ""
-        echo -e "  ${MUTED}请先在交互式终端中安装 Homebrew 国内源:${NC}"
+        echo -e "  请先在交互式终端中安装 Homebrew 国内源:${NC}"
         echo -e "    ${INFO}/bin/zsh -c \"\$(curl -fsSL ${HOMEBREW_CN_INSTALL_URL})\"${NC}"
         ui_hr 48 "─"
         echo ""
@@ -2316,7 +2316,7 @@ ensure_n_node_active() {
     active_version="$(node -v 2>/dev/null || echo "缺失")"
 
     ui_error "Node.js v24 已通过 n 安装，但当前 shell 使用的是 ${active_version} (${active_path})"
-    echo -e "  ${MUTED}请将以下内容添加到 shell 配置文件并重启:${NC}"
+    echo -e "  请将以下内容添加到 shell 配置文件并重启:${NC}"
     echo -e "  ${ACCENT}export PATH=\"${n_bin}:\$PATH\"${NC}"
     return 1
 }
@@ -2390,8 +2390,8 @@ install_node() {
         ui_warn "n 24 失败，尝试 n lts"
         if ! run_quiet_step "安装 Node.js LTS (n lts)" bash "$n_script" lts; then
             ui_error "n 安装 Node.js 失败"
-            echo -e "  ${MUTED}请手动安装 Node.js 24+:${NC} ${INFO}https://nodejs.org${NC}"
-            echo -e "  ${MUTED}或使用:${NC} ${ACCENT}curl -L https://bit.ly/n-install | bash -s -- 24${NC}"
+            echo -e "  请手动安装 Node.js 24+:${NC} ${INFO}https://nodejs.org${NC}"
+            echo -e "  或使用:${NC} ${ACCENT}curl -L https://bit.ly/n-install | bash -s -- 24${NC}"
             exit 1
         fi
     fi
@@ -2461,7 +2461,7 @@ require_sudo() {
         return 0
     fi
     ui_error "Linux 系统安装需要 sudo"
-    echo -e "  ${MUTED}请安装 sudo 或以 root 身份重新运行${NC}"
+    echo -e "  请安装 sudo 或以 root 身份重新运行${NC}"
     exit 1
 }
 
@@ -4093,7 +4093,7 @@ deploy_select_provider() {
         printf "    %2s) [%s] %-28s  默认模型: %s\n" "$idx" "$emoji" "$name" "$default_model"
     done
     echo ""
-    echo -e "    ${MUTED}提示: 国内用户推荐选择 1 (火山方舟) 或 2 (阿里百炼)，包月更划算${NC}"
+    echo -e "    提示: 国内用户推荐选择 1 (火山方舟) 或 2 (阿里百炼)，包月更划算${NC}"
     echo ""
     while true; do
         echo -n "    请输入序号 (1-9): "
@@ -4103,7 +4103,7 @@ deploy_select_provider() {
             local p="${DEPLOY_PROVIDERS[$((user_input - 1))]}"
             echo ""
             ui_success "你选择了: $(deploy_get_field "$p" 2) ($(deploy_get_field "$p" 3))"
-            echo -e "    ${MUTED}默认模型: ${NC}$(deploy_get_field "$p" 9)"
+            echo -e "    默认模型: ${NC}$(deploy_get_field "$p" 9)"
             SELECTED_PROVIDER="$p"
             return 0
         fi
@@ -4127,10 +4127,10 @@ deploy_read_api_key() {
     echo ""
     echo "    Boss，请输入你的 ${p_name} API Key"
     echo ""
-    echo -e "    ${MUTED}获取 API Key 的地址：${NC}"
+    echo -e "    获取 API Key 的地址：${NC}"
     echo -e "    ${INFO}${p_url}${NC}"
     echo ""
-    echo -e "    ${MUTED}环境变量名: ${NC}${WARN}${p_env}${NC}"
+    echo -e "    环境变量名: ${NC}${WARN}${p_env}${NC}"
     echo ""
     while true; do
         echo -n "    请粘贴你的 API Key: "
@@ -4163,11 +4163,11 @@ deploy_read_workspace() {
     local default_path="${HOME}/Desktop/openclaw"
     echo ""
     echo "    Boss，请提供 OpenClaw 项目文件夹地址"
-    echo -e "    ${MUTED}后续 OpenClaw 的资料和工作区文件将存放在这里${NC}"
+    echo -e "    后续 OpenClaw 的资料和工作区文件将存放在这里${NC}"
     echo ""
-    echo -e "    ${MUTED}默认路径: ${NC}${WARN}${default_path}${NC}"
+    echo -e "    默认路径: ${NC}${WARN}${default_path}${NC}"
     echo ""
-    echo -e "    ${MUTED}直接按 Enter 使用默认路径，或输入自定义路径：${NC}"
+    echo -e "    直接按 Enter 使用默认路径，或输入自定义路径：${NC}"
     echo -n "    工作目录: "
     local user_input
     read -r user_input < /dev/tty || true
@@ -4211,14 +4211,14 @@ deploy_invoke_deployment() {
     echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "  ${ACCENT}部署计划${NC}"
     echo -e "  ────────────────────────────────────────────────────────${NC}"
-    echo -e "    ${MUTED}模型提供商    ${NC}${p_name} (${p_name_en})"
-    echo -e "    ${MUTED}认证方式 ID   ${NC}${p_auth}"
-    echo -e "    ${MUTED}默认模型      ${NC}${p_model}"
-    echo -e "    ${MUTED}工作目录      ${NC}${work_dir}"
-    echo -e "    ${MUTED}安装 Daemon   ${NC}是（后台服务自启动）"
-    echo -e "    ${MUTED}跳过通道配置  ${NC}是（稍后可通过 openclaw channels add 添加）"
-    echo -e "    ${MUTED}跳过技能配置  ${NC}是（稍后可通过 openclaw skills 配置）"
-    echo -e "    ${MUTED}跳过搜索配置  ${NC}是（稍后可通过 openclaw configure --section web 配置）"
+    echo -e "    模型提供商    ${NC}${p_name} (${p_name_en})"
+    echo -e "    认证方式 ID   ${NC}${p_auth}"
+    echo -e "    默认模型      ${NC}${p_model}"
+    echo -e "    工作目录      ${NC}${work_dir}"
+    echo -e "    安装 Daemon   ${NC}是（后台服务自启动）"
+    echo -e "    跳过通道配置  ${NC}是（稍后可通过 openclaw channels add 添加）"
+    echo -e "    跳过技能配置  ${NC}是（稍后可通过 openclaw skills 配置）"
+    echo -e "    跳过搜索配置  ${NC}是（稍后可通过 openclaw configure --section web 配置）"
     echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
     ui_info "正在执行 OpenClaw 自动化部署，请稍候..."
@@ -4244,7 +4244,7 @@ deploy_invoke_deployment() {
         echo ""
         ui_success "OpenClaw 部署配置完成！"
         echo ""
-        echo -e "    ${MUTED}已完成以下配置：${NC}"
+        echo -e "    已完成以下配置：${NC}"
         echo "      - 模型提供商: ${p_name}"
         echo "      - 默认模型: ${p_model}"
         echo "      - API Key: 已配置"
@@ -4261,7 +4261,7 @@ deploy_invoke_deployment() {
         echo "      2. 网络是否可以访问对应模型提供商"
         echo "      3. 工作目录是否有写入权限"
         echo ""
-        echo -e "    ${MUTED}你可以稍后手动运行以下命令重试：${NC}"
+        echo -e "    你可以稍后手动运行以下命令重试：${NC}"
         echo -e "      ${INFO}openclaw onboard --install-daemon${NC}"
         echo ""
         return 1
@@ -4295,15 +4295,15 @@ deploy_invoke_gateway_restart() {
     ui_section "重启 Gateway 服务 (openclaw gateway restart)"
     ui_info "正在重启 Gateway 后台服务..."
     echo ""
-    echo -e "    ${MUTED}提示: gateway restart 是重启后台 daemon 服务${NC}"
-    echo -e "    ${MUTED}请不要额外执行 openclaw gateway run（前台模式会产生端口冲突）${NC}"
+    echo -e "    提示: gateway restart 是重启后台 daemon 服务${NC}"
+    echo -e "    请不要额外执行 openclaw gateway run（前台模式会产生端口冲突）${NC}"
     echo ""
     if openclaw gateway restart 2>&1; then
         echo ""
         ui_success "Gateway 服务已重启"
     else
         ui_warn "Gateway 重启遇到问题"
-        echo -e "    ${MUTED}你可以稍后手动运行: openclaw gateway restart${NC}"
+        echo -e "    你可以稍后手动运行: openclaw gateway restart${NC}"
     fi
 }
 
@@ -4321,7 +4321,7 @@ deploy_invoke_dashboard() {
         ui_success "Web UI 已启动"
     else
         ui_warn "打开 Web UI 遇到问题"
-        echo -e "    ${MUTED}你可以稍后手动运行: openclaw dashboard${NC}"
+        echo -e "    你可以稍后手动运行: openclaw dashboard${NC}"
     fi
 }
 
@@ -4342,22 +4342,22 @@ deploy_show_summary() {
     echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "  ${BOLD}部署摘要${NC}"
     echo -e "  ────────────────────────────────────────────────────────${NC}"
-    echo -e "    ${MUTED}模型提供商    ${NC}${INFO}${p_name}${NC}"
-    echo -e "    ${MUTED}默认模型      ${NC}${INFO}${p_model}${NC}"
-    echo -e "    ${MUTED}工作目录      ${NC}${INFO}${work_dir}${NC}"
-    echo -e "    ${MUTED}Gateway 端口  ${NC}${INFO}18789 (Loopback + Token)${NC}"
+    echo -e "    模型提供商    ${NC}${INFO}${p_name}${NC}"
+    echo -e "    默认模型      ${NC}${INFO}${p_model}${NC}"
+    echo -e "    工作目录      ${NC}${INFO}${work_dir}${NC}"
+    echo -e "    Gateway 端口  ${NC}${INFO}18789 (Loopback + Token)${NC}"
     echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
     echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "  ${BOLD}常用命令${NC}"
     echo -e "  ────────────────────────────────────────────────────────${NC}"
-    echo -e "    ${MUTED}自检修复      ${NC}${INFO}openclaw doctor --fix${NC}"
-    echo -e "    ${MUTED}重启服务      ${NC}${INFO}openclaw gateway restart${NC}"
-    echo -e "    ${MUTED}打开面板      ${NC}${INFO}openclaw dashboard${NC}"
-    echo -e "    ${MUTED}重新引导      ${NC}${INFO}openclaw onboard --install-daemon${NC}"
-    echo -e "    ${MUTED}安全审计      ${NC}${INFO}openclaw security audit --deep${NC}"
-    echo -e "    ${MUTED}添加通道      ${NC}${INFO}openclaw channels add${NC}"
-    echo -e "    ${MUTED}配置技能      ${NC}${INFO}openclaw skills${NC}"
+    echo -e "    自检修复      ${NC}${INFO}openclaw doctor --fix${NC}"
+    echo -e "    重启服务      ${NC}${INFO}openclaw gateway restart${NC}"
+    echo -e "    打开面板      ${NC}${INFO}openclaw dashboard${NC}"
+    echo -e "    重新引导      ${NC}${INFO}openclaw onboard --install-daemon${NC}"
+    echo -e "    安全审计      ${NC}${INFO}openclaw security audit --deep${NC}"
+    echo -e "    添加通道      ${NC}${INFO}openclaw channels add${NC}"
+    echo -e "    配置技能      ${NC}${INFO}openclaw skills${NC}"
     echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
     local -a tips=(
@@ -4366,7 +4366,7 @@ deploy_show_summary() {
         "配置完成！试试 openclaw dashboard 打开控制面板。"
         "准备好了！你的 AI 助手已经在后台待命。"
     )
-    echo -e "  ${MUTED}${tips[RANDOM % ${#tips[@]}]}${NC}"
+    echo -e "  ${tips[RANDOM % ${#tips[@]}]}${NC}"
     echo ""
 }
 
@@ -4377,7 +4377,7 @@ deploy_show_summary() {
 invoke_configure_model() {
     echo ""
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
-    echo -e "  ${BOLD}🦞 更换 OpenClaw 模型${NC}  ${MUTED}配置向导${NC}"
+    echo -e "  ${BOLD}🦞 更换 OpenClaw 模型${NC}  配置向导${NC}"
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
@@ -4385,16 +4385,16 @@ invoke_configure_model() {
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     echo -e "  ${WARN}🔥 火山方舟 Coding Plan（火山引擎 包月订阅）${NC}"
-    echo -e "     ${MUTED}配置指南： https://www.volcengine.com/docs/82379/2183190?lang=zh${NC}"
-    echo -e "     ${MUTED}API Key 查看： https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey${NC}"
+    echo -e "     配置指南： https://www.volcengine.com/docs/82379/2183190?lang=zh${NC}"
+    echo -e "     API Key 查看： https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey${NC}"
     echo ""
     echo -e "  ${WARN}☁️  阿里百炼 Coding Plan（平行引擎 包月订阅）${NC}"
-    echo -e "     ${MUTED}配置指南： https://bailian.console.aliyun.com/cn-beijing/?tab=doc#/doc/?type=model&url=3023085${NC}"
-    echo -e "     ${MUTED}API Key 查看： https://bailian.console.aliyun.com/cn-beijing?tab=coding-plan#/efm/coding-plan-detail${NC}"
+    echo -e "     配置指南： https://bailian.console.aliyun.com/cn-beijing/?tab=doc#/doc/?type=model&url=3023085${NC}"
+    echo -e "     API Key 查看： https://bailian.console.aliyun.com/cn-beijing?tab=coding-plan#/efm/coding-plan-detail${NC}"
     echo ""
     echo -e "  ${WARN}🟦 腾讯 Coding Plan（混元大模型 包月订阅）${NC}"
-    echo -e "     ${MUTED}配置指南： https://cloud.tencent.com/document/product/1772/128949${NC}"
-    echo -e "     ${MUTED}API Key 查看： https://hunyuan.cloud.tencent.com/#/app/subscription${NC}"
+    echo -e "     配置指南： https://cloud.tencent.com/document/product/1772/128949${NC}"
+    echo -e "     API Key 查看： https://hunyuan.cloud.tencent.com/#/app/subscription${NC}"
     echo ""
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  请提前准备好对应模型的 API Key，然后选择操作："
@@ -4434,7 +4434,7 @@ invoke_configure_model() {
 show_wechat_channel_menu() {
     echo ""
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
-    echo -e "  ${BOLD}🦞 连接微信${NC}  ${MUTED}Wechat Channel${NC}"
+    echo -e "  ${BOLD}🦞 连接微信${NC}  Wechat Channel${NC}"
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
@@ -4442,16 +4442,16 @@ show_wechat_channel_menu() {
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     echo -e "  第一步：升级微信至最新版（≥ 8.0.7）"
-    echo -e "    ${MUTED}微信 → 我 → 设置 → 关于微信 → 版本更新${NC}"
+    echo -e "    微信 → 我 → 设置 → 关于微信 → 版本更新${NC}"
     echo ""
     echo -e "  第二步：在微信里启用插件"
-    echo -e "    ${MUTED}1. 手机微信 → 「我」→ 「设置」→ 「插件」${NC}"
-    echo -e "    ${MUTED}2. 找到「微信 ClawBot」，按提示启用/授权${NC}"
-    echo -e "    ${MUTED}（此步是将微信账号与插件能力绑定）${NC}"
+    echo -e "    1. 手机微信 → 「我」→ 「设置」→ 「插件」${NC}"
+    echo -e "    2. 找到「微信 ClawBot」，按提示启用/授权${NC}"
+    echo -e "    （此步是将微信账号与插件能力绑定）${NC}"
     echo ""
     echo -e "  第三步：点击"继续"，将自动安装微信官方插件"
-    echo -e "    ${MUTED}执行命令： npx -y @tencent-weixin/openclaw-weixin-cli@latest install${NC}"
-    echo -e "    ${MUTED}执行后自动弹出二维码，用需要绑定的微信扫码并点"连接"确认${NC}"
+    echo -e "    执行命令： npx -y @tencent-weixin/openclaw-weixin-cli@latest install${NC}"
+    echo -e "    执行后自动弹出二维码，用需要绑定的微信扫码并点"连接"确认${NC}"
     echo ""
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
@@ -4487,16 +4487,16 @@ show_wechat_channel_menu() {
 show_qq_channel_menu() {
     echo ""
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
-    echo -e "  ${BOLD}🦞 连接 QQ${NC}  ${MUTED}三步完成 QQ 渠道接入${NC}"
+    echo -e "  ${BOLD}🦞 连接 QQ${NC}  三步完成 QQ 渠道接入${NC}"
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  📋 连接前请先阅读官方指南："
     echo -e "     ${INFO}https://q.qq.com/qqbot/openclaw/login.html${NC}"
     echo ""
     echo -e "  接入步骤："
-    echo -e "    ${MUTED}第一步：访问以上官方指南页面，完成 QQ 账号授权${NC}"
-    echo -e "    ${MUTED}第二步：准备好 QQ 机器人的相关凭据（AppID / Token 等）${NC}"
-    echo -e "    ${MUTED}第三步：点击继续，进入 OpenClaw Channels 配置页完成绑定${NC}"
+    echo -e "    第一步：访问以上官方指南页面，完成 QQ 账号授权${NC}"
+    echo -e "    第二步：准备好 QQ 机器人的相关凭据（AppID / Token 等）${NC}"
+    echo -e "    第三步：点击继续，进入 OpenClaw Channels 配置页完成绑定${NC}"
     echo ""
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
@@ -4531,7 +4531,7 @@ show_qq_channel_menu() {
 show_channels_menu() {
     echo ""
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
-    echo -e "  ${BOLD}🦞 添加 Channels${NC}  ${MUTED}连接即时通讯渠道${NC}"
+    echo -e "  ${BOLD}🦞 添加 Channels${NC}  连接即时通讯渠道${NC}"
     echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  请选择要连接的渠道："
@@ -4539,16 +4539,16 @@ show_channels_menu() {
     echo -e "    ${ACCENT}1)${NC} 连接微信"
     echo ""
     echo -e "    ${ACCENT}2)${NC} 连接飞书"
-    echo -e "       ${MUTED}参考指南：${NC} ${INFO}https://www.feishu.cn/content/article/7613711414611463386${NC}"
+    echo -e "       参考指南：${NC} ${INFO}https://www.feishu.cn/content/article/7613711414611463386${NC}"
     echo ""
     echo -e "    ${ACCENT}3)${NC} 连接企微"
-    echo -e "       ${MUTED}参考指南：${NC} ${INFO}https://open.work.weixin.qq.com/help2/pc/cat?doc_id=21657${NC}"
+    echo -e "       参考指南：${NC} ${INFO}https://open.work.weixin.qq.com/help2/pc/cat?doc_id=21657${NC}"
     echo ""
     echo -e "    ${ACCENT}4)${NC} 连接 QQ"
-    echo -e "       ${MUTED}参考指南：${NC} ${INFO}https://q.qq.com/qqbot/openclaw/login.html${NC}"
+    echo -e "       参考指南：${NC} ${INFO}https://q.qq.com/qqbot/openclaw/login.html${NC}"
     echo ""
     echo -e "    ${ACCENT}5)${NC} 连接其他渠道"
-    echo -e "       ${MUTED}进入 Channels 配置总入口，手动选择渠道${NC}"
+    echo -e "       进入 Channels 配置总入口，手动选择渠道${NC}"
     echo ""
     echo -e "    ${ACCENT}6)${NC} 返回主菜单"
     echo ""
@@ -4622,7 +4622,7 @@ invoke_selfcheck() {
 
     # Step 1: openclaw doctor
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 1 - 健康检查${NC}  ${MUTED}openclaw doctor${NC}"
+    echo -e "  ${BOLD}Step 1 - 健康检查${NC}  openclaw doctor${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在运行 OpenClaw 健康检查..."
     echo ""
@@ -4631,7 +4631,7 @@ invoke_selfcheck() {
 
     # Step 2: openclaw doctor --fix
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 2 - 自动修复${NC}  ${MUTED}openclaw doctor --fix${NC}"
+    echo -e "  ${BOLD}Step 2 - 自动修复${NC}  openclaw doctor --fix${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在尝试自动修复检测到的问题..."
     echo ""
@@ -4640,7 +4640,7 @@ invoke_selfcheck() {
 
     # Step 3: openclaw gateway restart
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 3 - 重启 Gateway${NC}  ${MUTED}openclaw gateway restart${NC}"
+    echo -e "  ${BOLD}Step 3 - 重启 Gateway${NC}  openclaw gateway restart${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在重启 Gateway 后台服务..."
     echo ""
@@ -4653,7 +4653,7 @@ invoke_selfcheck() {
 
     # Step 4: openclaw status --all
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 4 - 查看全量状态${NC}  ${MUTED}openclaw status --all${NC}"
+    echo -e "  ${BOLD}Step 4 - 查看全量状态${NC}  openclaw status --all${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在获取 OpenClaw 全量状态信息..."
     echo ""
@@ -4662,7 +4662,7 @@ invoke_selfcheck() {
 
     # Step 5: openclaw dashboard
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 5 - 打开控制面板${NC}  ${MUTED}openclaw dashboard${NC}"
+    echo -e "  ${BOLD}Step 5 - 打开控制面板${NC}  openclaw dashboard${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在打开 OpenClaw Web UI（控制面板）..."
     echo ""
@@ -4686,7 +4686,7 @@ invoke_selfcheck() {
 invoke_configure_main() {
     echo ""
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}进入 OpenClaw 配置页面${NC}  ${MUTED}openclaw configure${NC}"
+    echo -e "  ${BOLD}进入 OpenClaw 配置页面${NC}  openclaw configure${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在启动 OpenClaw 配置向导（包含模型 / 网关 / 渠道 / 守护进程等）..."
     echo ""
@@ -4705,7 +4705,7 @@ invoke_configure_main() {
 invoke_dashboard_menu() {
     echo ""
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}打开 OpenClaw 主页面${NC}  ${MUTED}openclaw dashboard${NC}"
+    echo -e "  ${BOLD}打开 OpenClaw 主页面${NC}  openclaw dashboard${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在启动 OpenClaw Web UI..."
     echo ""
@@ -4728,11 +4728,11 @@ invoke_uninstall() {
     echo -e "  ${ERROR}${BOLD}$(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  将依次执行以下操作："
-    echo -e "    ${MUTED}1. openclaw gateway stop${NC}"
-    echo -e "    ${MUTED}2. openclaw gateway uninstall${NC}"
-    echo -e "    ${MUTED}3. openclaw uninstall${NC}"
-    echo -e "    ${MUTED}4. npm uninstall -g openclaw${NC}"
-    echo -e "    ${MUTED}5. pnpm remove -g openclaw${NC}"
+    echo -e "    1. openclaw gateway stop${NC}"
+    echo -e "    2. openclaw gateway uninstall${NC}"
+    echo -e "    3. openclaw uninstall${NC}"
+    echo -e "    4. npm uninstall -g openclaw${NC}"
+    echo -e "    5. pnpm remove -g openclaw${NC}"
     echo ""
     echo -e "  ${ERROR}$(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${ERROR}请输入 YES 进行二次确认（输入其它内容取消）${NC}"
@@ -4775,7 +4775,7 @@ invoke_uninstall() {
 
     # Step 1: openclaw gateway stop
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 1 - 停止 Gateway 服务${NC}  ${MUTED}openclaw gateway stop${NC}"
+    echo -e "  ${BOLD}Step 1 - 停止 Gateway 服务${NC}  openclaw gateway stop${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd openclaw gateway stop; then
         uninstall_results+=("[OK] openclaw gateway stop")
@@ -4786,7 +4786,7 @@ invoke_uninstall() {
 
     # Step 2: openclaw gateway uninstall
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 2 - 移除 Gateway 服务${NC}  ${MUTED}openclaw gateway uninstall${NC}"
+    echo -e "  ${BOLD}Step 2 - 移除 Gateway 服务${NC}  openclaw gateway uninstall${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd openclaw gateway uninstall; then
         uninstall_results+=("[OK] openclaw gateway uninstall")
@@ -4797,7 +4797,7 @@ invoke_uninstall() {
 
     # Step 3: openclaw uninstall
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 3 - 卸载 OpenClaw 配置${NC}  ${MUTED}openclaw uninstall${NC}"
+    echo -e "  ${BOLD}Step 3 - 卸载 OpenClaw 配置${NC}  openclaw uninstall${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd openclaw uninstall; then
         uninstall_results+=("[OK] openclaw uninstall")
@@ -4808,7 +4808,7 @@ invoke_uninstall() {
 
     # Step 4: npm uninstall -g openclaw
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 4 - npm 全局卸载${NC}  ${MUTED}npm uninstall -g openclaw${NC}"
+    echo -e "  ${BOLD}Step 4 - npm 全局卸载${NC}  npm uninstall -g openclaw${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd npm uninstall -g openclaw; then
         uninstall_results+=("[OK] npm uninstall -g openclaw")
@@ -4819,7 +4819,7 @@ invoke_uninstall() {
 
     # Step 5: pnpm remove -g openclaw
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
-    echo -e "  ${BOLD}Step 5 - pnpm 全局卸载${NC}  ${MUTED}pnpm remove -g openclaw${NC}"
+    echo -e "  ${BOLD}Step 5 - pnpm 全局卸载${NC}  pnpm remove -g openclaw${NC}"
     echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd pnpm remove -g openclaw; then
         uninstall_results+=("[OK] pnpm remove -g openclaw")
@@ -4940,7 +4940,7 @@ invoke_install_flow() {
                     ;;
                 *)
                     ui_error "未选择安装方式"
-                    echo -e "  ${MUTED}请使用 --install-method npm|pnpm|git 重新运行${NC}"
+                    echo -e "  请使用 --install-method npm|pnpm|git 重新运行${NC}"
                     exit 2
                     ;;
             esac
@@ -4953,7 +4953,7 @@ invoke_install_flow() {
 
     if [[ "$INSTALL_METHOD" != "npm" && "$INSTALL_METHOD" != "pnpm" && "$INSTALL_METHOD" != "git" ]]; then
         ui_error "无效的 --install-method: ${INSTALL_METHOD}"
-        echo -e "  ${MUTED}请使用: --install-method npm|pnpm|git${NC}"
+        echo -e "  请使用: --install-method npm|pnpm|git${NC}"
         exit 2
     fi
 
@@ -5192,7 +5192,7 @@ invoke_install_flow() {
         )
         local update_message
         update_message="${update_messages[RANDOM % ${#update_messages[@]}]}"
-        echo -e "${MUTED}${update_message}${NC}"
+        echo -e "${update_message}${NC}"
     else
         local completion_messages=(
             "啊不错，我喜欢这儿。有零食吗？"
@@ -5208,7 +5208,7 @@ invoke_install_flow() {
         )
         local completion_message
         completion_message="${completion_messages[RANDOM % ${#completion_messages[@]}]}"
-        echo -e "${MUTED}${completion_message}${NC}"
+        echo -e "${completion_message}${NC}"
     fi
     echo ""
 
@@ -5312,8 +5312,8 @@ invoke_install_flow() {
     #     ui_info "若 openclaw 显示「command not found」或「No such file or directory」，请运行："
     #     echo -e "  ${ACCENT}hash -r${NC}  （清除命令缓存，bash）"
     #     echo -e "  ${ACCENT}rehash${NC}    （清除命令缓存，zsh）"
-    #     echo -e "  ${MUTED}或运行: source ~/.zprofile（zsh）/ source ~/.bashrc（bash）${NC}"
-    #     echo -e "  ${MUTED}或关闭并重新打开终端后再试${NC}"
+    #     echo -e "  或运行: source ~/.zprofile（zsh）/ source ~/.bashrc（bash）${NC}"
+    #     echo -e "  或关闭并重新打开终端后再试${NC}"
     #     ui_hr 48 "─"
     # fi
 
@@ -5328,7 +5328,7 @@ invoke_install_flow() {
     )
     local farewell_msg
     farewell_msg="${farewell_messages[RANDOM % ${#farewell_messages[@]}]}"
-    echo -e "${MUTED}${farewell_msg}${NC}"
+    echo -e "${farewell_msg}${NC}"
     echo ""
 
     show_footer_links
@@ -5341,7 +5341,7 @@ invoke_install_flow() {
 invoke_deploy_flow() {
     echo ""
     echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
-    echo -e "${ACCENT}${BOLD}  🚀 OpenClaw 部署配置  ${NC}${MUTED}Mac 版${NC}"
+    echo -e "${ACCENT}${BOLD}  🚀 OpenClaw 部署配置  ${NC}Mac 版${NC}"
     echo -e "${ACCENT}${BOLD}═══════════════════════════════════════════════════════════════${NC}"
     echo ""
 
