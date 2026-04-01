@@ -629,8 +629,7 @@ function Invoke-ConfigureModel {
                 Write-UIInfo "正在调起 openclaw configure （Local + Model）..."
                 Write-Host ""
                 try {
-                    # 传入 "1\n2\n" 模拟交互：选Local(1) 再选Model(2)
-                    & openclaw configure 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
+                    & openclaw configure
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
                     Write-Host "    请手动运行： openclaw configure" -ForegroundColor Blue
@@ -687,9 +686,7 @@ function Show-WechatChannelMenu {
                 Write-UIInfo "正在安装微信官方插件..."
                 Write-Host ""
                 try {
-                    & npx -y @tencent-weixin/openclaw-weixin-cli@latest install 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor Blue
-                    }
+                    & npx -y @tencent-weixin/openclaw-weixin-cli@latest install
                     Write-Host ""
                     Write-UIOk "微信插件安装命令执行完成！请用微信扫码确认连接。"
                 } catch {
@@ -742,7 +739,7 @@ function Show-ChannelsMenu {
         switch ($subInput) {
             "1" {
                 Show-WechatChannelMenu
-                return
+                # 微信子菜单返回后，继续循环显示渠道菜单
             }
             "2" {
                 Write-Host ""
@@ -751,14 +748,11 @@ function Show-ChannelsMenu {
                 Write-UIInfo "正在调起 openclaw configure → Channels..."
                 Write-Host ""
                 try {
-                    & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor Blue
-                    }
+                    & openclaw configure --section channels
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
                     Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
                 }
-                return
             }
             "3" {
                 Write-Host ""
@@ -767,32 +761,26 @@ function Show-ChannelsMenu {
                 Write-UIInfo "正在调起 openclaw configure → Channels..."
                 Write-Host ""
                 try {
-                    & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor Blue
-                    }
+                    & openclaw configure --section channels
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
                     Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
                 }
-                return
             }
             "4" {
                 Show-QQChannelMenu
-                return
+                # QQ子菜单返回后，继续循环显示渠道菜单
             }
             "5" {
                 Write-Host ""
                 Write-UIInfo "正在调起 openclaw configure → Channels..."
                 Write-Host ""
                 try {
-                    & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor Blue
-                    }
+                    & openclaw configure --section channels
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
                     Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
                 }
-                return
             }
             "6" { return }
             default { Write-Host "    输入无效，请输入 1 到 6 之间的序号" -ForegroundColor Red }
@@ -836,9 +824,7 @@ function Show-QQChannelMenu {
                 Write-UIInfo "正在调起 openclaw configure → Channels..."
                 Write-Host ""
                 try {
-                    & openclaw configure --section channels 2>&1 | ForEach-Object {
-                        Write-Host "    $_" -ForegroundColor Blue
-                    }
+                    & openclaw configure --section channels
                 } catch {
                     Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
                     Write-Host "    请手动运行： openclaw configure --section channels" -ForegroundColor Blue
@@ -938,7 +924,7 @@ function Invoke-ConfigureMain {
     Write-UIInfo "正在启动 OpenClaw 配置向导（包含模型 / 网关 / 渠道 / 守护进程等）..."
     Write-Host ""
     try {
-        & openclaw configure 2>&1 | ForEach-Object { Write-Host "    $_" -ForegroundColor Cyan }
+        & openclaw configure
     } catch {
         Write-UIWarn "configure 启动失败：$($_.Exception.Message)"
         Write-Host "    请手动运行： openclaw configure" -ForegroundColor Blue
@@ -2697,118 +2683,133 @@ function Invoke-DeployFlow {
 #                      统一入口
 # ═══════════════════════════════════════════════════════════════════════
 function Main-Setup {
-    # 显示欢迎菜单，选择功能模式
-    $mode = Show-WelcomeMenu
+    # 如果通过命令行指定了模式，直接进入
+    if (-not [string]::IsNullOrWhiteSpace($script:InitialMode)) {
+        $mode = $script:InitialMode
+    }
 
-    switch ($mode) {
-        "full" {
-            # ══ 模式 1: 安装 + 部署（先收集部署信息，再安装，最后部署） ══
-            Write-UISection -Title "配置部署信息" -Step "先收集，安装完成后自动部署"
+    while ($true) {
+        $mode = Show-WelcomeMenu
 
-            $provider = Select-Provider
-            $apiKeyVal = Read-ApiKey -Provider $provider
-            $workDir = Read-Workspace
+        switch ($mode) {
+            "full" {
+                # ══ 模式 1: 安装 + 部署（先收集部署信息，再安装，最后部署） ══
+                Write-UISection -Title "配置部署信息" -Step "先收集，安装完成后自动部署"
 
-            Write-Host ""
-            Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
-            Write-Host "  即将开始 安装 + 部署，Boss 请确认以上信息" -ForegroundColor Yellow
-            Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
-            Write-Host "    提供商: $($provider.Name)  |  模型: $($provider.DefaultModel)" -ForegroundColor Blue
-            Write-Host "    工作目录: $workDir" -ForegroundColor Blue
-            Write-Host ""
-            $confirm = Read-Host "    确认开始？(Y/n)"
-            if ($confirm -eq "n" -or $confirm -eq "N") {
-                Write-UIWarn "已取消，随时重新运行脚本即可。"
-                return
-            }
+                $provider = Select-Provider
+                $apiKeyVal = Read-ApiKey -Provider $provider
+                $workDir = Read-Workspace
 
-            # 检查管理员权限
-            if (-not (Test-IsAdmin)) {
                 Write-Host ""
-                Write-UIWarn "OpenClaw 安装需要管理员权限。"
-                Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Cyan
-                Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Cyan
+                Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
+                Write-Host "  即将开始 安装 + 部署，Boss 请确认以上信息" -ForegroundColor Yellow
+                Write-Host "  $script:UI_LINE" -ForegroundColor Yellow
+                Write-Host "    提供商: $($provider.Name)  |  模型: $($provider.DefaultModel)" -ForegroundColor Blue
+                Write-Host "    工作目录: $workDir" -ForegroundColor Blue
                 Write-Host ""
-                return
-            }
-            Set-AdminExecutionPolicy
-
-            Write-Host ""
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
-            Write-Host "  🦞 OpenClaw 安装器（安装 + 自动部署）  " -NoNewline -ForegroundColor Cyan
-            Write-Host "Windows 版" -ForegroundColor Blue
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
-            Write-Host ""
-
-            Show-SystemInfo
-            Apply-EnvOverrides
-            Invoke-InstallFlow
-
-            # 安装完成后自动部署
-            if (Test-OpenClawInstalled) {
-                Write-UISection -Title "开始自动部署" -Step "配置模型/网关/项目空间"
-                $deploySuccess = Invoke-Deployment -Provider $provider -Key $apiKeyVal -WorkDir $workDir
-                if ($deploySuccess) {
-                    Invoke-DoctorCheck
-                    Invoke-GatewayRestart
-                    Invoke-Dashboard
+                $confirm = Read-Host "    确认开始？(Y/n)"
+                if ($confirm -eq "n" -or $confirm -eq "N") {
+                    Write-UIWarn "已取消，随时重新运行脚本即可。"
+                    break
                 }
-                Show-DeploySummary -Provider $provider -WorkDir $workDir -DeploySuccess $deploySuccess
-            } else {
-                Write-UIWarn "OpenClaw 安装未成功，已跳过部署步骤。"
-                Write-Host "    解决安装问题后重新运行本脚本即可。" -ForegroundColor Cyan
-            }
-        }
-        "install" {
-            # ══ 模式 2: 仅安装 ══
-            if (-not (Test-IsAdmin)) {
+
+                # 检查管理员权限
+                if (-not (Test-IsAdmin)) {
+                    Write-Host ""
+                    Write-UIWarn "OpenClaw 安装需要管理员权限。"
+                    Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Cyan
+                    Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Cyan
+                    Write-Host ""
+                    break
+                }
+                Set-AdminExecutionPolicy
+
                 Write-Host ""
-                Write-UIWarn "OpenClaw 安装需要管理员权限。"
-                Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Cyan
-                Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Cyan
+                Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
+                Write-Host "  🦞 OpenClaw 安装器（安装 + 自动部署）  " -NoNewline -ForegroundColor Cyan
+                Write-Host "Windows 版" -ForegroundColor Blue
+                Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
                 Write-Host ""
+
+                Show-SystemInfo
+                Apply-EnvOverrides
+                Invoke-InstallFlow
+
+                # 安装完成后自动部署
+                if (Test-OpenClawInstalled) {
+                    Write-UISection -Title "开始自动部署" -Step "配置模型/网关/项目空间"
+                    $deploySuccess = Invoke-Deployment -Provider $provider -Key $apiKeyVal -WorkDir $workDir
+                    if ($deploySuccess) {
+                        Invoke-DoctorCheck
+                        Invoke-GatewayRestart
+                        Invoke-Dashboard
+                    }
+                    Show-DeploySummary -Provider $provider -WorkDir $workDir -DeploySuccess $deploySuccess
+                } else {
+                    Write-UIWarn "OpenClaw 安装未成功，已跳过部署步骤。"
+                    Write-Host "    解决安装问题后重新运行本脚本即可。" -ForegroundColor Cyan
+                }
                 return
             }
-            Set-AdminExecutionPolicy
+            "install" {
+                # ══ 模式 2: 仅安装 ══
+                if (-not (Test-IsAdmin)) {
+                    Write-Host ""
+                    Write-UIWarn "OpenClaw 安装需要管理员权限。"
+                    Write-Host "    请右键 PowerShell → 以管理员身份运行，然后重新执行此脚本。" -ForegroundColor Cyan
+                    Write-Host "    或双击 'OpenClaw一键安装部署.bat' 自动提权启动" -ForegroundColor Cyan
+                    Write-Host ""
+                    break
+                }
+                Set-AdminExecutionPolicy
 
-            Write-Host ""
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
-            Write-Host "  🦞 OpenClaw 安装器（仅安装）  " -NoNewline -ForegroundColor Cyan
-            Write-Host "Windows 版" -ForegroundColor Blue
-            Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
-            Write-Host ""
+                Write-Host ""
+                Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
+                Write-Host "  🦞 OpenClaw 安装器（仅安装）  " -NoNewline -ForegroundColor Cyan
+                Write-Host "Windows 版" -ForegroundColor Blue
+                Write-Host "  $script:UI_LINE_WIDE" -ForegroundColor Cyan
+                Write-Host ""
 
-            Show-SystemInfo
-            Apply-EnvOverrides
-            Invoke-InstallFlow
-        }
-        "deploy" {
-            # ══ 模式 3: 仅部署（无需管理员权限）══
-            Invoke-DeployFlow
-        }
-        "configure-model" {
-            # ══ 模式 4: 更换模型 ══
-            Invoke-ConfigureModel
-        }
-        "channels" {
-            # ══ 模式 5: 添加 Channels ══
-            Show-ChannelsMenu
-        }
-        "selfcheck" {
-            # ══ 模式 6: 自检并尝试修复 ══
-            Invoke-SelfCheck
-        }
-        "configure-main" {
-            # ══ 模式 7: 进入配置页面 ══
-            Invoke-ConfigureMain
-        }
-        "dashboard" {
-            # ══ 模式 8: 打开主页面 ══
-            Invoke-Dashboard
-        }
-        "uninstall" {
-            # ══ 模式 9: 完全卸载 OpenClaw ══
-            Invoke-Uninstall
+                Show-SystemInfo
+                Apply-EnvOverrides
+                Invoke-InstallFlow
+                return
+            }
+            "deploy" {
+                # ══ 模式 3: 仅部署（无需管理员权限）══
+                Invoke-DeployFlow
+                return
+            }
+            "configure-model" {
+                # ══ 模式 4: 更换模型 ══
+                Invoke-ConfigureModel
+                # 执行完回到 while 循环，重新显示主菜单
+            }
+            "channels" {
+                # ══ 模式 5: 添加 Channels ══
+                Show-ChannelsMenu
+                # 执行完回到 while 循环
+            }
+            "selfcheck" {
+                # ══ 模式 6: 自检并尝试修复 ══
+                Invoke-SelfCheck
+                # 执行完回到 while 循环
+            }
+            "configure-main" {
+                # ══ 模式 7: 进入配置页面 ══
+                Invoke-ConfigureMain
+                # 执行完回到 while 循环
+            }
+            "dashboard" {
+                # ══ 模式 8: 打开主页面 ══
+                Invoke-Dashboard
+                # 执行完回到 while 循环
+            }
+            "uninstall" {
+                # ══ 模式 9: 完全卸载 OpenClaw ══
+                Invoke-Uninstall
+                return
+            }
         }
     }
 }
