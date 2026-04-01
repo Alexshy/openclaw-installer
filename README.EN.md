@@ -98,7 +98,7 @@ curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/ins
 **Step 2**: Copy the command below, paste it into PowerShell, and press Enter:
 
 ```powershell
-$r=iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1; iex ([System.Text.Encoding]::UTF8.GetString($r.Content))
+$r=iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 -UseBasicParsing; iex ([System.Text.Encoding]::UTF8.GetString($r.RawContentBytes))
 ```
 
 > If GitHub is slow in your region, use the jsDelivr mirror:
