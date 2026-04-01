@@ -545,7 +545,7 @@ print_installer_banner() {
     echo -e "${ACCENT}${BOLD}"
     echo "     🦞 OpenClaw 安装器"
     echo -e "${NC}${INFO}     OpenClaw 一键部署 — 让 AI 助手为你效劳。${NC}"
-    echo -e "${MUTED}     ── 现代安装模式 ──${NC}"
+    echo -e "     ── 现代安装模式 ──${NC}"
     ui_hr 54 "═"
     echo ""
 }
@@ -4208,9 +4208,9 @@ deploy_invoke_deployment() {
     echo ""
     ui_section "步骤 4/4  执行自动部署 (openclaw onboard --non-interactive)"
     echo ""
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "  ${ACCENT}部署计划${NC}"
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "    ${MUTED}模型提供商    ${NC}${p_name} (${p_name_en})"
     echo -e "    ${MUTED}认证方式 ID   ${NC}${p_auth}"
     echo -e "    ${MUTED}默认模型      ${NC}${p_model}"
@@ -4219,7 +4219,7 @@ deploy_invoke_deployment() {
     echo -e "    ${MUTED}跳过通道配置  ${NC}是（稍后可通过 openclaw channels add 添加）"
     echo -e "    ${MUTED}跳过技能配置  ${NC}是（稍后可通过 openclaw skills 配置）"
     echo -e "    ${MUTED}跳过搜索配置  ${NC}是（稍后可通过 openclaw configure --section web 配置）"
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
     ui_info "正在执行 OpenClaw 自动化部署，请稍候..."
     echo ""
@@ -4339,18 +4339,18 @@ deploy_show_summary() {
         ui_warn "OpenClaw 部署配置已完成（部分步骤可能需要手动处理）"
     fi
     echo ""
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "  ${BOLD}部署摘要${NC}"
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "    ${MUTED}模型提供商    ${NC}${INFO}${p_name}${NC}"
     echo -e "    ${MUTED}默认模型      ${NC}${INFO}${p_model}${NC}"
     echo -e "    ${MUTED}工作目录      ${NC}${INFO}${work_dir}${NC}"
     echo -e "    ${MUTED}Gateway 端口  ${NC}${INFO}18789 (Loopback + Token)${NC}"
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "  ${BOLD}常用命令${NC}"
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo -e "    ${MUTED}自检修复      ${NC}${INFO}openclaw doctor --fix${NC}"
     echo -e "    ${MUTED}重启服务      ${NC}${INFO}openclaw gateway restart${NC}"
     echo -e "    ${MUTED}打开面板      ${NC}${INFO}openclaw dashboard${NC}"
@@ -4358,7 +4358,7 @@ deploy_show_summary() {
     echo -e "    ${MUTED}安全审计      ${NC}${INFO}openclaw security audit --deep${NC}"
     echo -e "    ${MUTED}添加通道      ${NC}${INFO}openclaw channels add${NC}"
     echo -e "    ${MUTED}配置技能      ${NC}${INFO}openclaw skills${NC}"
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
     local -a tips=(
         "部署完成！你的 OpenClaw 已经准备好了，开始探索吧！"
@@ -4376,13 +4376,13 @@ deploy_show_summary() {
 
 invoke_configure_model() {
     echo ""
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo -e "  ${BOLD}🦞 更换 OpenClaw 模型${NC}  ${MUTED}配置向导${NC}"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}模型资源与配置参考${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     echo -e "  ${WARN}🔥 火山方舟 Coding Plan（火山引擎 包月订阅）${NC}"
     echo -e "     ${MUTED}配置指南： https://www.volcengine.com/docs/82379/2183190?lang=zh${NC}"
@@ -4396,14 +4396,14 @@ invoke_configure_model() {
     echo -e "     ${MUTED}配置指南： https://cloud.tencent.com/document/product/1772/128949${NC}"
     echo -e "     ${MUTED}API Key 查看： https://hunyuan.cloud.tencent.com/#/app/subscription${NC}"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  请提前准备好对应模型的 API Key，然后选择操作："
     echo ""
     echo -e "    ${ACCENT}1)${NC} 继续配置 OpenClaw 模型"
     echo ""
     echo -e "    ${ACCENT}2)${NC} 返回主菜单"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     while true; do
         printf "    请输入序号 (1/2): "
@@ -4433,13 +4433,13 @@ invoke_configure_model() {
 
 show_wechat_channel_menu() {
     echo ""
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo -e "  ${BOLD}🦞 连接微信${NC}  ${MUTED}Wechat Channel${NC}"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}接入步骤${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     echo -e "  第一步：升级微信至最新版（≥ 8.0.7）"
     echo -e "    ${MUTED}微信 → 我 → 设置 → 关于微信 → 版本更新${NC}"
@@ -4453,13 +4453,13 @@ show_wechat_channel_menu() {
     echo -e "    ${MUTED}执行命令： npx -y @tencent-weixin/openclaw-weixin-cli@latest install${NC}"
     echo -e "    ${MUTED}执行后自动弹出二维码，用需要绑定的微信扫码并点"连接"确认${NC}"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     echo -e "    ${ACCENT}1)${NC} 安装微信官方插件（自动执行上述命令）"
     echo ""
     echo -e "    ${ACCENT}2)${NC} 返回主菜单"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     while true; do
         printf "    请输入序号 (1/2): "
@@ -4486,9 +4486,9 @@ show_wechat_channel_menu() {
 
 show_qq_channel_menu() {
     echo ""
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo -e "  ${BOLD}🦞 连接 QQ${NC}  ${MUTED}三步完成 QQ 渠道接入${NC}"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  📋 连接前请先阅读官方指南："
     echo -e "     ${INFO}https://q.qq.com/qqbot/openclaw/login.html${NC}"
@@ -4498,13 +4498,13 @@ show_qq_channel_menu() {
     echo -e "    ${MUTED}第二步：准备好 QQ 机器人的相关凭据（AppID / Token 等）${NC}"
     echo -e "    ${MUTED}第三步：点击继续，进入 OpenClaw Channels 配置页完成绑定${NC}"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     echo -e "    ${ACCENT}1)${NC} 继续连接 QQ（进入 Channels 配置）"
     echo ""
     echo -e "    ${ACCENT}2)${NC} 返回渠道菜单"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     while true; do
         printf "    请输入序号 (1-2): "
@@ -4530,9 +4530,9 @@ show_qq_channel_menu() {
 
 show_channels_menu() {
     echo ""
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo -e "  ${BOLD}🦞 添加 Channels${NC}  ${MUTED}连接即时通讯渠道${NC}"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  请选择要连接的渠道："
     echo ""
@@ -4552,7 +4552,7 @@ show_channels_menu() {
     echo ""
     echo -e "    ${ACCENT}6)${NC} 返回主菜单"
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo ""
     while true; do
         printf "    请输入序号 (1-6): "
@@ -4613,35 +4613,35 @@ show_channels_menu() {
 
 invoke_selfcheck() {
     echo ""
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo -e "  ${BOLD}🦞 OpenClaw 自检并尝试修复${NC}"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     echo -e "  ${INFO}小提示：请将完整自检结果复制粘贴给 豆包 / 千问 / DeepSeek 帮你分析${NC}"
     echo ""
 
     # Step 1: openclaw doctor
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 1 - 健康检查${NC}  ${MUTED}openclaw doctor${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在运行 OpenClaw 健康检查..."
     echo ""
     openclaw doctor 2>&1 || ui_warn "doctor 运行遇到问题"
     echo ""
 
     # Step 2: openclaw doctor --fix
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 2 - 自动修复${NC}  ${MUTED}openclaw doctor --fix${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在尝试自动修复检测到的问题..."
     echo ""
     openclaw doctor --fix 2>&1 || ui_warn "doctor --fix 运行遇到问题"
     echo ""
 
     # Step 3: openclaw gateway restart
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 3 - 重启 Gateway${NC}  ${MUTED}openclaw gateway restart${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在重启 Gateway 后台服务..."
     echo ""
     if openclaw gateway restart 2>&1; then
@@ -4652,18 +4652,18 @@ invoke_selfcheck() {
     echo ""
 
     # Step 4: openclaw status --all
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 4 - 查看全量状态${NC}  ${MUTED}openclaw status --all${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在获取 OpenClaw 全量状态信息..."
     echo ""
     openclaw status --all 2>&1 || ui_warn "status --all 运行遇到问题"
     echo ""
 
     # Step 5: openclaw dashboard
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 5 - 打开控制面板${NC}  ${MUTED}openclaw dashboard${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在打开 OpenClaw Web UI（控制面板）..."
     echo ""
     if openclaw dashboard; then
@@ -4673,9 +4673,9 @@ invoke_selfcheck() {
     fi
     echo ""
 
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     ui_success "✅ 🦞 全部自检流程执行完成！如有输出异常请复制给 AI 助手分析。"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
 }
 
@@ -4685,9 +4685,9 @@ invoke_selfcheck() {
 
 invoke_configure_main() {
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}进入 OpenClaw 配置页面${NC}  ${MUTED}openclaw configure${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在启动 OpenClaw 配置向导（包含模型 / 网关 / 渠道 / 守护进程等）..."
     echo ""
     if [[ -r /dev/tty && -w /dev/tty ]]; then
@@ -4704,9 +4704,9 @@ invoke_configure_main() {
 
 invoke_dashboard_menu() {
     echo ""
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}打开 OpenClaw 主页面${NC}  ${MUTED}openclaw dashboard${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     ui_info "正在启动 OpenClaw Web UI..."
     echo ""
     if openclaw dashboard; then
@@ -4754,9 +4754,9 @@ invoke_uninstall() {
     fi
 
     echo ""
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo -e "  ${BOLD}🦞 开始执行卸载流程...${NC}"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
 
     local uninstall_results=()
@@ -4774,9 +4774,9 @@ invoke_uninstall() {
     }
 
     # Step 1: openclaw gateway stop
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 1 - 停止 Gateway 服务${NC}  ${MUTED}openclaw gateway stop${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd openclaw gateway stop; then
         uninstall_results+=("[OK] openclaw gateway stop")
     else
@@ -4785,9 +4785,9 @@ invoke_uninstall() {
     echo ""
 
     # Step 2: openclaw gateway uninstall
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 2 - 移除 Gateway 服务${NC}  ${MUTED}openclaw gateway uninstall${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd openclaw gateway uninstall; then
         uninstall_results+=("[OK] openclaw gateway uninstall")
     else
@@ -4796,9 +4796,9 @@ invoke_uninstall() {
     echo ""
 
     # Step 3: openclaw uninstall
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 3 - 卸载 OpenClaw 配置${NC}  ${MUTED}openclaw uninstall${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd openclaw uninstall; then
         uninstall_results+=("[OK] openclaw uninstall")
     else
@@ -4807,9 +4807,9 @@ invoke_uninstall() {
     echo ""
 
     # Step 4: npm uninstall -g openclaw
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 4 - npm 全局卸载${NC}  ${MUTED}npm uninstall -g openclaw${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd npm uninstall -g openclaw; then
         uninstall_results+=("[OK] npm uninstall -g openclaw")
     else
@@ -4818,9 +4818,9 @@ invoke_uninstall() {
     echo ""
 
     # Step 5: pnpm remove -g openclaw
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     echo -e "  ${BOLD}Step 5 - pnpm 全局卸载${NC}  ${MUTED}pnpm remove -g openclaw${NC}"
-    echo -e "  ${MUTED}$(printf '─%.0s' {1..56})${NC}"
+    echo -e "  $(printf '─%.0s' {1..56})${NC}"
     if _run_uninstall_cmd pnpm remove -g openclaw; then
         uninstall_results+=("[OK] pnpm remove -g openclaw")
     else
@@ -4829,9 +4829,9 @@ invoke_uninstall() {
     echo ""
 
     # 卸载结果汇总
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo -e "  ${BOLD}🦞 卸载流程完成 — 执行结果汇总${NC}"
-    echo -e "  ${MUTED}$(printf '═%.0s' {1..63})${NC}"
+    echo -e "  $(printf '═%.0s' {1..63})${NC}"
     echo ""
     local r
     for r in "${uninstall_results[@]}"; do
@@ -4852,30 +4852,30 @@ invoke_uninstall() {
 
 show_welcome_menu() {
     echo ""
-    echo -e "  ${MUTED}# ═══════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "  # ═══════════════════════════════════════════════════════════════════════${NC}"
     echo -e "  ${BOLD}# OpenClaw 全自动安装部署脚本 - MacOS 版${NC}"
     echo -e "  # 涵盖 OpenClaw环境安装 + OpenClaw最新官方稳定版 + 模型/网关/项目空间全自动部署"
     echo -e "  # 无后门 | 无病毒 | 全自动 | 全免费 | 零技术门槛"
     echo -e "  # Created by: Mr_Hou  致力于技术平权降低门槛 让人人都有机会拥抱Ai世界"
     echo -e "  # Wechat_id：qiyuan_hou，欢迎一起讨论 共同进化！"
     echo -e "  # **严禁恶意篡改或将本免费脚本商业化售卖**"
-    echo -e "  ${MUTED}# ═══════════════════════════════════════════════════════════════════════${NC}"
+    echo -e "  # ═══════════════════════════════════════════════════════════════════════${NC}"
     echo -e "  # 功能菜单:"
     echo ""
 
     # ── 安装部署 OpenClaw 篇 ──
-    echo -e "  ${MUTED}┌─ 《安装与部署 OpenClaw 篇》 ────────────────────────────────────────────┤${NC}"
+    echo -e "  ┌─ 《安装与部署 OpenClaw 篇》 ────────────────────────────────────────────┤${NC}"
     echo -e "    ${ACCENT}1)${NC} ${BOLD}安装 OpenClaw 并自动化部署${NC}  ${INFO}（推荐新用户）${NC}"
     echo -e "       ${INFO}自动安装 Homebrew/Node.js/Git/OpenClaw，并配置模型、API Key、网关和项目空间${NC}"
     echo -e "    ${ACCENT}2)${NC} ${BOLD}仅自动化安装 OpenClaw${NC}"
     echo -e "       ${INFO}只安装 OpenClaw CLI 运行环境，模型和网关配置稍后可单独完成${NC}"
     echo -e "    ${ACCENT}3)${NC} ${BOLD}仅部署 OpenClaw 模型/网关/项目空间${NC}"
     echo -e "       ${INFO}OpenClaw 已安装，仅配置模型提供商、API Key 和工作目录${NC}"
-    echo -e "  ${MUTED}└─────────────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "  └─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 使用 OpenClaw 篇 ──
-    echo -e "  ${MUTED}┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤${NC}"
+    echo -e "  ┌─ 《使用 OpenClaw 篇》（需已安装 OpenClaw）─────────────────────────────┤${NC}"
     echo -e "    ${ACCENT}4)${NC} ${BOLD}更换 OpenClaw 模型${NC}（配置 AI 模型提供商 / API Key）"
     echo -e "       ${INFO}支持 DeepSeek / Kimi / 火山方舟 / 阿里百炼 / ChatGPT / Claude 等 9 家提供商${NC}"
     echo -e "    ${ACCENT}5)${NC} ${BOLD}添加 Channels${NC}（微信 / 飞书 / 企微 / QQ 等即时通讯渠道）"
@@ -4886,17 +4886,17 @@ show_welcome_menu() {
     echo -e "       ${INFO}打开完整的交互式配置向导（模型 / 网关 / 渠道 / 守护进程等）${NC}"
     echo -e "    ${ACCENT}8)${NC} ${BOLD}打开 OpenClaw 主页面${NC}"
     echo -e "       ${INFO}启动 OpenClaw Web UI 控制面板，可在浏览器中查看全部功能和对话${NC}"
-    echo -e "  ${MUTED}└─────────────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "  └─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     # ── 卸载 OpenClaw 篇 ──
-    echo -e "  ${MUTED}┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤${NC}"
+    echo -e "  ┌─ 《卸载 OpenClaw 篇》 ──────────────────────────────────────────────────┤${NC}"
     echo -e "    ${ACCENT}9)${NC} ${BOLD}完全卸载 OpenClaw${NC}"
     echo -e "       ${INFO}停止全部服务并彻底移除 OpenClaw（操作不可逆，执行前需二次确认）${NC}"
-    echo -e "  ${MUTED}└─────────────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "  └─────────────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
-    echo -e "  ${MUTED}────────────────────────────────────────────────────────${NC}"
+    echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
     while true; do
         printf "    请输入序号 (1-9): "
