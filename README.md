@@ -98,7 +98,13 @@ curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/ins
 > ⚠️ 必须以**管理员身份**运行，否则无法安装软件
 
 **第二步**：复制以下命令，粘贴到 PowerShell，按回车：
+请先运行：
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+> 然后点击A并按回车，然后运行下列安装命令。
 
+**第三步**：复制以下命令，粘贴到 PowerShell，按回车：
 ```powershell
 $r=iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 -UseBasicParsing; iex ([System.Text.Encoding]::UTF8.GetString($r.RawContentBytes))
 ```
@@ -108,13 +114,7 @@ $r=iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/i
 > $r=iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1; iex ([System.Text.Encoding]::UTF8.GetString($r.Content))
 > ```
 
-> 如遇到「执行策略」报错，请先运行：
-> ```powershell
-> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-> ```
-> 然后再重新运行安装命令。
-
-**第三步**：按照脚本提示操作即可 🎉
+**第四步**：按照脚本提示操作即可 🎉
 
 ---
 
