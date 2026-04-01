@@ -79,12 +79,12 @@
 **第二步**：复制以下命令，粘贴到终端，按回车：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
+curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
 ```
 
 > 国内网络较慢时，可使用 jsDelivr 加速：
 > ```bash
-> curl -fsSL https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
+> curl -fsSL --proto '=https' --tlsv1.2 https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
 > ```
 
 **第三步**：按照脚本提示操作即可 🎉
@@ -97,21 +97,23 @@ curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/ins
 
 > ⚠️ 必须以**管理员身份**运行，否则无法安装软件
 
-**第二步**：复制以下命令，粘贴到 PowerShell，按回车：
-请先运行：
-> ```powershell
-> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-> ```
-> 然后点击A并按回车，然后运行下列安装命令。
+**第二步**：复制以下命令，粘贴到 PowerShell，按回车，然后输入 `A` 再按回车确认：
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+> ⚠️ 此步骤允许 PowerShell 运行本地及下载的脚本，所有用户均需执行，避免后续因权限问题报错。
 
 **第三步**：复制以下命令，粘贴到 PowerShell，按回车：
+
 ```powershell
-$r=iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 -UseBasicParsing; iex ([System.Text.Encoding]::UTF8.GetString($r.RawContentBytes))
+iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
 ```
 
 > 国内网络较慢时，可使用 jsDelivr 加速：
 > ```powershell
-> $r=iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1; iex ([System.Text.Encoding]::UTF8.GetString($r.Content))
+> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
 > ```
 
 **第四步**：按照脚本提示操作即可 🎉
