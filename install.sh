@@ -1,11 +1,16 @@
 #!/bin/bash
+# Usage: curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
 set -euo pipefail
+
+# 强制 UTF-8 环境，确保 curl | bash 管道执行时中文显示正常
+export LANG="${LANG:-en_US.UTF-8}"
+export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
 # ═══════════════════════════════════════════════════════════════════════
 # OpenClaw 全自动安装部署脚本 - MacOS 版
 # 涵盖 OpenClaw环境安装 + OpenClaw最新官方稳定版 + 模型/网关/项目空间全自动部署
 # 无后门 | 无病毒 | 全自动 | 全免费 | 零技术门槛
-# Created by:Mr_Hou 致力于技术平权降低门槛 让人人都有机会拥抱Ai世界 
+# Created by:Mr_Hou 致力于技术平权降低门槛 让人人都有机会拥抱Ai世界
 # Wechat_id：qiyuan_hou，欢迎一起讨论 共同进化！
 # **严禁恶意篡改或将本免费脚本商业化售卖**
 # ═══════════════════════════════════════════════════════════════════════
