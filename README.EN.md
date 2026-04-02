@@ -62,7 +62,7 @@ Open a terminal, paste one command, and let the script handle everything ✅
 | Platform | Minimum Requirement |
 |----------|---------------------|
 | **Mac** | macOS 10.15 Catalina or later |
-| **Windows** | Windows 10 / 11 (64-bit) |
+| **Windows** | Windows 7 / 8 / 10 / 11 (64-bit) |
 
 > The script will **automatically install** all missing dependencies (Node.js, pnpm, etc.) — no manual setup needed!
 
@@ -108,13 +108,15 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **Step 3**: Copy the command below, paste it into PowerShell, and press Enter:
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
+[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]3072; iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
 ```
 
 > If GitHub is slow in your region, use the jsDelivr mirror:
 > ```powershell
-> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
+> [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]3072; iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
 > ```
+
+> 💡 The `[Net.ServicePointManager]::SecurityProtocol=...` prefix at the start of the command automatically upgrades the TLS version before downloading, ensuring compatibility with Windows 7/8 and older systems — no manual steps required.
 
 **Step 4**: Follow the on-screen prompts — that's it! 🎉
 
