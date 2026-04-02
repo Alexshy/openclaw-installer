@@ -77,12 +77,14 @@ Open a terminal, paste one command, and let the script handle everything ✅
 **Step 2**: Copy the command below, paste it into Terminal, and press Enter:
 
 ```bash
-curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
+curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | sudo bash
 ```
+
+> ⚠️ **To avoid permission issues during installation**, you will be prompted to enter your Mac login password on first run (characters won't be displayed while typing). Press Enter when finished.
 
 > If GitHub is slow in your region, use the jsDelivr mirror:
 > ```bash
-> curl -fsSL --proto '=https' --tlsv1.2 https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
+> curl -fsSL --proto '=https' --tlsv1.2 https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | sudo bash
 > ```
 
 **Step 3**: Follow the on-screen prompts — that's it! 🎉
