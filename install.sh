@@ -2549,6 +2549,10 @@ repair_openclaw_bin_from_globals() {
 
     ensure_user_local_bin_on_path
     local wrapper="${HOME}/.local/bin/openclaw"
+    # 如果 wrapper 路径是符号链接，先删除它，避免覆盖目标文件
+    if [[ -L "$wrapper" ]]; then
+        rm -f "$wrapper"
+    fi
     cat > "$wrapper" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
@@ -3286,6 +3290,10 @@ install_openclaw_from_git() {
 
     ensure_user_local_bin_on_path
 
+    # 如果 wrapper 路径是符号链接，先删除它，避免覆盖目标文件
+    if [[ -L "$HOME/.local/bin/openclaw" ]]; then
+        rm -f "$HOME/.local/bin/openclaw"
+    fi
     cat > "$HOME/.local/bin/openclaw" <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
