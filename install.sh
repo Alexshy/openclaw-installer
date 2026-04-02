@@ -3309,35 +3309,11 @@ EOF
     ui_info "此源码使用 pnpm — 运行 pnpm install（或 corepack pnpm install）安装依赖"
 }
 
-resolve_beta_version() {
-    local beta=""
-    beta="$(npm_view openclaw dist-tags.beta 2>/dev/null || true)"
-    if [[ -z "$beta" || "$beta" == "undefined" || "$beta" == "null" ]]; then
-        return 1
-    fi
-    echo "$beta"
-}
-
 install_openclaw() {
     local package_name
     package_name="$(get_openclaw_package)"
     local dist_tag="latest"
-    local edition_label="中文版"
-    if [[ "${OPENCLAW_EDITION:-}" == "original" ]]; then
-        edition_label="原版"
-        if [[ "$USE_BETA" == "1" ]]; then
-            dist_tag="$(resolve_beta_version 2>/dev/null || true)"
-            if [[ -z "$dist_tag" ]]; then
-                dist_tag="next"
-            fi
-            ui_info "使用测试版 (${dist_tag})"
-        fi
-    else
-        if [[ "$USE_BETA" == "1" ]]; then
-            dist_tag="nightly"
-            ui_info "使用测试版 (nightly)"
-        fi
-    fi
+    local edition_label="原版"
 
     local resolved_version=""
     resolved_version="$(npm view "${package_name}@${dist_tag}" version 2>/dev/null || true)"
@@ -3409,22 +3385,7 @@ install_openclaw_pnpm() {
     local package_name
     package_name="$(get_openclaw_package)"
     local dist_tag="latest"
-    local edition_label="中文版"
-    if [[ "${OPENCLAW_EDITION:-}" == "original" ]]; then
-        edition_label="原版"
-        if [[ "$USE_BETA" == "1" ]]; then
-            dist_tag="$(resolve_beta_version 2>/dev/null || true)"
-            if [[ -z "$dist_tag" ]]; then
-                dist_tag="next"
-            fi
-            ui_info "使用测试版 (${dist_tag})"
-        fi
-    else
-        if [[ "$USE_BETA" == "1" ]]; then
-            dist_tag="nightly"
-            ui_info "使用测试版 (nightly)"
-        fi
-    fi
+    local edition_label="原版"
 
     local resolved_version=""
     resolved_version="$(npm_view "${package_name}@${dist_tag}" version 2>/dev/null || true)"
