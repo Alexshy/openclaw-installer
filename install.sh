@@ -1666,80 +1666,10 @@ optional_components_summary() {
 choose_optional_components_interactive() {
     normalize_optional_components_config
 
-    local default_channels="$INSTALL_CHINA_CHANNELS"
-    local default_manager="$INSTALL_OPENCLAW_MANAGER"
-    [[ "$default_channels" == "auto" ]] && default_channels="1"
-    [[ "$default_manager" == "auto" ]] && default_manager="1"
-
-    local should_prompt=false
-    if [[ "$INSTALL_CHINA_CHANNELS" == "auto" || "$INSTALL_OPENCLAW_MANAGER" == "auto" ]]; then
-        should_prompt=true
-    fi
-
-    if [[ "$should_prompt" != "true" ]]; then
-        INSTALL_CHINA_CHANNELS="$default_channels"
-        INSTALL_OPENCLAW_MANAGER="$default_manager"
-        return 0
-    fi
-
-    if ! is_promptable; then
-        INSTALL_CHINA_CHANNELS="$default_channels"
-        INSTALL_OPENCLAW_MANAGER="$default_manager"
-        ui_info "无交互终端，默认安装可选组件: $(optional_components_summary "$INSTALL_CHINA_CHANNELS" "$INSTALL_OPENCLAW_MANAGER")"
-        return 0
-    fi
-
-    local selected_channels="$default_channels"
-    local selected_manager="$default_manager"
-
-    if [[ -n "$GUM" ]] && gum_is_tty; then
-        local selection=""
-        selection="$("$GUM" choose \
-            --no-limit \
-            --header "选择可选组件（可多选，回车确认）" \
-            --cursor-prefix "❯ " \
-            "China 渠道插件（@openclaw-china/channels）" \
-            "OpenClaw Manager（图形化管理工具）" < /dev/tty || true)"
-        if [[ -n "$selection" ]]; then
-            selected_channels=0
-            selected_manager=0
-            echo "$selection" | grep -q "China 渠道插件" && selected_channels=1
-            echo "$selection" | grep -q "OpenClaw Manager" && selected_manager=1
-        fi
-    else
-        local choice=""
-        local prompt_text=""
-        prompt_text="${WARN}→${NC} 选择可选组件（可多选）:
-  1) China 渠道插件（@openclaw-china/channels）
-  2) OpenClaw Manager（图形化管理工具）
-  0) 都不安装
-直接回车 = 默认（全部安装）
-请输入序号（示例: 1 2 或 1,2）:"
-        choice="$(prompt_choice "$prompt_text" || true)"
-        if [[ -n "$choice" ]]; then
-            selected_channels=0
-            selected_manager=0
-            local token=""
-            local normalized=""
-            normalized="$(echo "$choice" | tr ',，;；/' '     ')"
-            for token in $normalized; do
-                case "$token" in
-                    1) selected_channels=1 ;;
-                    2) selected_manager=1 ;;
-                    0) selected_channels=0; selected_manager=0 ;;
-                esac
-            done
-        fi
-    fi
-
-    if [[ "$INSTALL_CHINA_CHANNELS" == "auto" ]]; then
-        INSTALL_CHINA_CHANNELS="$selected_channels"
-    fi
-    if [[ "$INSTALL_OPENCLAW_MANAGER" == "auto" ]]; then
-        INSTALL_OPENCLAW_MANAGER="$selected_manager"
-    fi
-
-    ui_info "可选组件选择: $(optional_components_summary "$INSTALL_CHINA_CHANNELS" "$INSTALL_OPENCLAW_MANAGER")"
+    # 默认跳过可选组件安装，不弹出选择提示
+    INSTALL_CHINA_CHANNELS=0
+    INSTALL_OPENCLAW_MANAGER=0
+    ui_info "可选组件: 已跳过 China 渠道插件 和 OpenClaw Manager 安装"
     return 0
 }
 
