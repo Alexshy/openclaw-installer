@@ -64,7 +64,7 @@
 | 系统 | 最低要求 |
 |------|---------|
 | **Mac** | macOS 10.15 Catalina 及以上 |
-| **Windows** | Windows 10 / 11（64位） |
+| **Windows** | Windows 7 / 8 / 10 / 11（64位） |
 
 > 脚本会自动帮你安装所有缺少的依赖（Node.js、pnpm 等），无需手动安装！
 
@@ -110,13 +110,15 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 **第三步**：复制以下命令，粘贴到 PowerShell，按回车：
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
+[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]3072; iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex
 ```
 
 > 国内网络较慢时，可使用 jsDelivr 加速：
 > ```powershell
-> iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
+> [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]3072; iwr -useb https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.ps1 | iex
 > ```
+
+> 💡 命令开头的 `[Net.ServicePointManager]::SecurityProtocol=...` 用于在下载前自动升级 TLS 版本，确保 Windows 7/8 等老系统也能正常连接 HTTPS 地址，无需任何手动操作。
 
 **第四步**：按照脚本提示操作即可 🎉
 
