@@ -611,7 +611,7 @@ detect_os_or_die() {
         ui_hr 48 "─"
         ui_error "不支持的操作系统"
         echo -e "  本安装器支持 ${ACCENT}macOS${NC} 和 ${ACCENT}Linux${NC}（包括 WSL）"
-        echo -e "  Windows 用户请使用: ${INFO}iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex${NC}"
+        echo -e "  Windows 用户请使用: ${INFO}[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]3072; iwr -useb https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.ps1 | iex${NC}"
         ui_hr 48 "─"
         echo ""
         exit 1
@@ -4903,7 +4903,7 @@ invoke_install_flow() {
             xcode-select --install 2>/dev/null || true
             echo ""
             ui_warn "请等待 macOS 弹窗完成 Xcode 命令行工具安装，然后重新运行本安装器："
-            echo -e "  ${INFO}curl -fsSL https://openclaw.orence.net/install-zh.sh | bash${NC}"
+            echo -e "  ${INFO}curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | sudo bash${NC}"
             echo ""
             exit 1
         fi
