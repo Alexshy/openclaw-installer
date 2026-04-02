@@ -712,19 +712,13 @@ show_install_plan() {
     if [[ "$INSTALL_METHOD" == "npm" || "$INSTALL_METHOD" == "pnpm" ]]; then
         local pkg=""
         local tag="latest"
-        [[ "$USE_BETA" == "1" ]] && tag="$([[ "${OPENCLAW_EDITION:-}" == "original" ]] && echo "beta/next" || echo "nightly")"
-        if [[ -n "${OPENCLAW_EDITION:-}" ]]; then
-            pkg="$(get_openclaw_package)@${tag}"
-        else
-            pkg="openclaw 或 ${OPENCLAW_PACKAGE_ZH}（待选择）@${tag}"
-        fi
+
+        pkg="${OPENCLAW_PACKAGE_ORIGINAL}@${tag}"
         ui_kv "安装包" "$pkg"
     else
         ui_kv "请求版本" "$OPENCLAW_VERSION"
     fi
-    if [[ "$USE_BETA" == "1" ]]; then
-        ui_kv "测试版" "nightly"
-    fi
+
     if [[ "$INSTALL_METHOD" == "git" ]]; then
         ui_kv "Git 目录" "$GIT_DIR"
         ui_kv "Git 更新" "$GIT_UPDATE"
@@ -758,22 +752,14 @@ show_footer_links() {
         local content
         content="需要帮助？
 官方文档: ${OPENCLAW_DOCS_URL}
-常见问题: ${OPENCLAW_FAQ_URL}
-OpenClawCN 官网: ${OPENCLAW_CN_SITE_URL}
-OpenClawCN 中文翻译: ${OPENCLAW_CN_TRANSLATION_REPO}
-OpenClaw Manager: ${OPENCLAW_MANAGER_REPO_URL}
-China IM 渠道: ${OPENCLAW_CHINA_CHANNELS_REPO_URL}"
+OpenClawCN 官网: ${OPENCLAW_CN_SITE_URL}"
         ui_panel "$content"
     else
         echo ""
         echo -e "  需要帮助？${NC}"
         ui_hr 48 "─"
         echo -e "  官方文档${NC}     ${INFO}${OPENCLAW_DOCS_URL}${NC}"
-        echo -e "  常见问题${NC}     ${INFO}${OPENCLAW_FAQ_URL}${NC}"
         echo -e "  OpenClawCN${NC}   ${INFO}${OPENCLAW_CN_SITE_URL}${NC}"
-        echo -e "  中文翻译${NC}     ${INFO}${OPENCLAW_CN_TRANSLATION_REPO}${NC}"
-        echo -e "  Manager${NC}     ${INFO}${OPENCLAW_MANAGER_REPO_URL}${NC}"
-        echo -e "  China IM${NC}     ${INFO}${OPENCLAW_CHINA_CHANNELS_REPO_URL}${NC}"
         ui_hr 48 "─"
     fi
 }
@@ -1288,7 +1274,7 @@ map_legacy_env "OPENCLAW_NO_PROMPT" "CLAWDBOT_NO_PROMPT"
 map_legacy_env "OPENCLAW_DRY_RUN" "CLAWDBOT_DRY_RUN"
 map_legacy_env "OPENCLAW_INSTALL_METHOD" "CLAWDBOT_INSTALL_METHOD"
 map_legacy_env "OPENCLAW_VERSION" "CLAWDBOT_VERSION"
-map_legacy_env "OPENCLAW_BETA" "CLAWDBOT_BETA"
+
 map_legacy_env "OPENCLAW_GIT_DIR" "CLAWDBOT_GIT_DIR"
 map_legacy_env "OPENCLAW_GIT_UPDATE" "CLAWDBOT_GIT_UPDATE"
 map_legacy_env "OPENCLAW_NPM_LOGLEVEL" "CLAWDBOT_NPM_LOGLEVEL"
@@ -1402,10 +1388,9 @@ NO_PROMPT=${OPENCLAW_NO_PROMPT:-0}
 DRY_RUN=${OPENCLAW_DRY_RUN:-0}
 INSTALL_METHOD=${OPENCLAW_INSTALL_METHOD:-}
 OPENCLAW_VERSION=${OPENCLAW_VERSION:-latest}
-USE_BETA=${OPENCLAW_BETA:-0}
-# 版本选择: original=原版 openclaw, zh=中文版 @qingchencloud/openclaw-zh
-OPENCLAW_EDITION=${OPENCLAW_EDITION:-}
-OPENCLAW_EDITION_FROM_ARGS=0  # 1=用户显式传入 --zh/--original 等
+
+# 版本选择: 仅支持 original=原版 openclaw
+OPENCLAW_EDITION="original"
 OPENCLAW_PACKAGE_ORIGINAL="openclaw"
 OPENCLAW_PACKAGE_ZH="@qingchencloud/openclaw-zh"
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -1428,7 +1413,7 @@ NPM_REGISTRY="${OPENCLAW_NPM_REGISTRY:-auto}"
 OPENCLAW_HOME_DIR="${OPENCLAW_HOME_DIR:-${HOME}/.openclaw}"
 OPENCLAW_CHANNELS_DIR="${OPENCLAW_CHANNELS_DIR:-${OPENCLAW_HOME_DIR}/extensions/channels}"
 OPENCLAW_DOCS_URL="${OPENCLAW_DOCS_URL:-https://docs.openclaw.ai/zh-CN}"
-OPENCLAW_WEB_UI_URL="${OPENCLAW_WEB_UI_URL:-https://claw.moyuxl.top/}"
+
 OPENCLAW_FAQ_URL="${OPENCLAW_FAQ_URL:-https://docs.openclaw.ai/start/faq}"
 OPENCLAW_CN_SITE_URL="${OPENCLAW_CN_SITE_URL:-https://openclaw.qt.cool/}"
 OPENCLAW_CN_TRANSLATION_REPO="${OPENCLAW_CN_TRANSLATION_REPO:-https://github.com/1186258278/OpenClawChineseTranslation}"
@@ -1470,8 +1455,7 @@ print_usage() {
     echo -e "  ${ACCENT}--install-method${NC}, --method npm|pnpm|git  通过 pnpm（默认）、npm 或 git 源码安装"
     echo -e "  --npm, --pnpm, --git/--github                    快捷方式"
     echo -e "  --version <版本|dist-tag>                        npm 安装: 指定版本（默认: latest）"
-    echo -e "  --original/--en, --zh/--chinese                  原版或中文版"
-    echo -e "  --beta                                           使用测试版"
+    echo ""
     echo -e "  --git-dir, --dir <路径>                          源码目录"
     echo -e "  --no-git-update, --no-onboard, --no-prompt       跳过选项"
     echo -e "  --with-channels / --without-channels             安装/跳过 China 渠道插件"
@@ -1481,14 +1465,13 @@ print_usage() {
     echo -e "  ${ACCENT}--github-proxy${NC}, -g <URL>             GitHub 代理"
     echo -e "  --help, -h                                       显示此帮助"
     echo ""
-    echo -e "环境变量:${NC} OPENCLAW_INSTALL_METHOD, OPENCLAW_EDITION, OPENCLAW_VERSION, OPENCLAW_NPM_REGISTRY,"
+    echo -e "环境变量:${NC} OPENCLAW_INSTALL_METHOD, OPENCLAW_VERSION, OPENCLAW_NPM_REGISTRY,"
     echo -e "         OPENCLAW_INSTALL_CHINA_CHANNELS, OPENCLAW_INSTALL_MANAGER,"
     echo -e "         OPENCLAW_PROXY_SINGAPORE / OPENCLAW_PROXY_HONGKONG,"
     echo -e "         OPENCLAW_PROXY_PRIMARY / OPENCLAW_PROXY_SECONDARY 等"
     echo ""
     echo -e "示例:${NC}"
     echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash"
-    echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- ${ACCENT}--beta${NC}"
     echo -e "  curl -fsSL https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash -s -- ${ACCENT}--registry taobao${NC}"
     echo ""
 }
@@ -1528,20 +1511,7 @@ parse_args() {
                 OPENCLAW_VERSION="$2"
                 shift 2
                 ;;
-            --beta)
-                USE_BETA=1
-                shift
-                ;;
-            --original|--en)
-                OPENCLAW_EDITION="original"
-                OPENCLAW_EDITION_FROM_ARGS=1
-                shift
-                ;;
-            --zh|--chinese)
-                OPENCLAW_EDITION="zh"
-                OPENCLAW_EDITION_FROM_ARGS=1
-                shift
-                ;;
+            
             --npm)
                 INSTALL_METHOD="npm"
                 shift
@@ -1938,13 +1908,9 @@ EOF
     return 0
 }
 
-# 根据 OPENCLAW_EDITION 返回包名
+# 返回包名（仅支持 original 版本）
 get_openclaw_package() {
-    if [[ "${OPENCLAW_EDITION:-}" == "original" ]]; then
-        echo "$OPENCLAW_PACKAGE_ORIGINAL"
-    else
-        echo "$OPENCLAW_PACKAGE_ZH"
-    fi
+    echo "$OPENCLAW_PACKAGE_ORIGINAL"
 }
 
 # 检测当前包管理器中已安装的版本：original | zh | 空（解析输出，不依赖退出码；pnpm list 在包未安装时也返回 0）
@@ -1984,120 +1950,24 @@ detect_installed_edition() {
     return 1
 }
 
-choose_edition_interactive() {
-    # 仅当用户显式传入 --zh/--original 等时跳过；环境变量不跳过提示
-    if [[ "${OPENCLAW_EDITION_FROM_ARGS:-0}" == "1" && -n "${OPENCLAW_EDITION:-}" ]]; then
-        return 0
-    fi
-    if [[ "$INSTALL_METHOD" != "npm" && "$INSTALL_METHOD" != "pnpm" ]]; then
-        return 0
-    fi
-
-    # 直接使用原版，不再弹出选择
-    OPENCLAW_EDITION="original"
-    return 0
-}
-
-# 检测当前已安装的通道：stable | beta | 空（根据版本号判断，含 nightly/next/beta 等为测试版）
+# 检测当前已安装的通道：stable | 空（根据版本号判断）
 detect_installed_channel() {
     local method="${1:-$INSTALL_METHOD}"
-    local pkg=""
-    [[ "${OPENCLAW_EDITION:-}" == "original" ]] && pkg="$OPENCLAW_PACKAGE_ORIGINAL" || pkg="$OPENCLAW_PACKAGE_ZH"
+    local pkg="$OPENCLAW_PACKAGE_ORIGINAL"
     local version=""
     if [[ "$method" == "npm" ]]; then
         local json=""
         json="$(npm list -g --depth 0 --json 2>/dev/null || true)"
         if [[ -n "$json" ]]; then
-            if [[ "$pkg" == "openclaw" ]]; then
-                version="$(echo "$json" | grep -A 3 '"openclaw":' | grep '"version"' | head -1 | sed -nE 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p')"
-            else
-                version="$(echo "$json" | grep -A 3 '"@qingchencloud/openclaw-zh":' | grep '"version"' | head -1 | sed -nE 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p')"
-            fi
+            version="$(echo "$json" | grep -A 3 '"openclaw":' | grep '"version"' | head -1 | sed -nE 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p')"
         fi
     elif [[ "$method" == "pnpm" ]] && pnpm_cmd_is_ready 2>/dev/null; then
         local out=""
         out="$("${PNPM_CMD[@]}" list -g 2>/dev/null || true)"
-        if [[ "$pkg" == "openclaw" ]]; then
-            version="$(echo "$out" | grep -oE '\+ openclaw[[:space:]]+[^[:space:]]+' | head -1 | awk '{print $NF}')"
-        else
-            version="$(echo "$out" | grep -oE '\+ @qingchencloud/openclaw-zh[[:space:]]+[^[:space:]]+' | head -1 | awk '{print $NF}')"
-        fi
+        version="$(echo "$out" | grep -oE '\+ openclaw[[:space:]]+[^[:space:]]+' | head -1 | awk '{print $NF}')"
     fi
     [[ -z "$version" ]] && return 1
-    if echo "$version" | grep -qE 'nightly|next|beta|rc|alpha|canary|preview'; then
-        echo "beta"
-    else
-        echo "stable"
-    fi
-    return 0
-}
-
-choose_beta_interactive() {
-    if [[ "$USE_BETA" == "1" ]]; then
-        return 0
-    fi
-    if [[ "$INSTALL_METHOD" != "npm" && "$INSTALL_METHOD" != "pnpm" ]]; then
-        return 0
-    fi
-
-    local beta_label=""
-    if [[ "${OPENCLAW_EDITION:-}" == "original" ]]; then
-        beta_label="beta/next"
-    else
-        beta_label="nightly"
-    fi
-
-    local channel_hint=""
-    local installed_edition=""
-    installed_edition="$(detect_installed_edition "$INSTALL_METHOD" || true)"
-    if [[ "$installed_edition" == "${OPENCLAW_EDITION:-}" ]]; then
-        local ch=""
-        ch="$(detect_installed_channel "$INSTALL_METHOD" 2>/dev/null || true)"
-        if [[ "$ch" == "stable" ]]; then
-            channel_hint="（当前已安装: 稳定版）"
-        elif [[ "$ch" == "beta" ]]; then
-            channel_hint="（当前已安装: 测试版）"
-        fi
-    fi
-
-    if [[ -n "$GUM" ]] && gum_is_tty; then
-        local selection
-        selection="$("$GUM" choose \
-            --header "选择版本通道 ${channel_hint}" \
-            --cursor-prefix "❯ " \
-            "稳定版 (latest) · 推荐生产使用" \
-            "测试版 ($beta_label) · 抢先体验新功能" < /dev/tty || true)"
-        case "$selection" in
-            稳定版*)
-                USE_BETA=0
-                return 0
-                ;;
-            测试版*)
-                USE_BETA=1
-                return 0
-                ;;
-        esac
-    fi
-
-    local choice=""
-    local prompt_text="${WARN}→${NC} 选择版本通道${channel_hint}:
-  1) 稳定版 (latest) - 推荐生产使用
-  2) 测试版 ($beta_label) - 抢先体验新功能
-请输入序号 (1-2):"
-    choice="$(prompt_choice "$prompt_text" || true)"
-
-    case "$choice" in
-        1)
-            USE_BETA=0
-            return 0
-            ;;
-        2)
-            USE_BETA=1
-            return 0
-            ;;
-    esac
-
-    USE_BETA=0
+    echo "stable"
     return 0
 }
 
@@ -4361,10 +4231,10 @@ deploy_show_summary() {
     echo -e "  ────────────────────────────────────────────────────────${NC}"
     echo ""
     local -a tips=(
-        "部署完成！你的 OpenClaw 已经准备好了，开始探索吧！"
-        "一切就绪！打开 Web UI 即可开始与你的 AI 助手对话。"
+        "🦞 OpenClaw 已就绪，快去探索 AI 世界吧！"
+        "一切就绪！打开 Web UI 就可以与 AI 助手对话。"
         "配置完成！试试 openclaw dashboard 打开控制面板。"
-        "准备好了！你的 AI 助手已经在后台待命。"
+        "你的 AI 助手已在后台待命，随时召唤。"
     )
     echo -e "  ${tips[RANDOM % ${#tips[@]}]}${NC}"
     echo ""
@@ -4987,14 +4857,6 @@ invoke_install_flow() {
         install_node
     fi
 
-    if [[ "$INSTALL_METHOD" == "npm" || "$INSTALL_METHOD" == "pnpm" ]]; then
-        choose_edition_interactive || true
-        if [[ -z "${OPENCLAW_EDITION:-}" ]]; then
-            OPENCLAW_EDITION="zh"
-        fi
-        choose_beta_interactive || true
-    fi
-
     ui_stage "安装 OpenClaw"
 
     local final_git_dir=""
@@ -5160,51 +5022,25 @@ invoke_install_flow() {
     else
         ui_celebrate "🦞 OpenClaw 安装成功！"
     fi
-    if [[ "$OS" == "macos" ]]; then
-        open "${OPENCLAW_DOCS_URL}" 2>/dev/null &
-        open "${OPENCLAW_WEB_UI_URL}" 2>/dev/null &
-    elif [[ "$OS" == "linux" ]] && command -v xdg-open &>/dev/null; then
-        xdg-open "${OPENCLAW_DOCS_URL}" 2>/dev/null &
-        xdg-open "${OPENCLAW_WEB_UI_URL}" 2>/dev/null &
-    fi
+
     if [[ "$is_upgrade" == "true" ]]; then
         local update_messages=(
-            "升级完成！新技能已解锁。不客气。"
-            "新代码，同一只龙虾。想我了吗？"
-            "回来了，更强了。你注意到我离开了吗？"
-            "更新完成。我出去学了点新把戏。"
-            "升级了！现在多了 23% 的毒舌。"
-            "我进化了。跟上节奏。🦞"
-            "新版本，谁啊？哦对，还是我，只是更闪了。"
-            "打补丁、抛光、准备开夹。出发。"
-            "龙虾蜕壳了。壳更硬，钳更利。"
-            "更新完成！看看更新日志，或者信我就行，反正很好。"
-            "从 npm 的沸水中重生。更强了。"
-            "我出去了一趟，回来更聪明了。你也可以试试。"
-            "更新完成。bug 怕我，所以跑了。"
-            "新版本已安装。旧版本向你问好。"
-            "固件新鲜。脑回路：增加了。"
-            "我见过你不敢相信的东西。总之，我更新了。"
-            "重新上线。更新日志很长，但我们的友谊更长。"
-            "升级了！Peter 修了东西。坏了怪他。"
-            "蜕壳完成。别看我软壳期的样子。"
-            "版本升级！同样的混乱能量，更少的崩溃（大概）。"
+            "🦞 OpenClaw 升级完成！我变得更强大了！"
+            "升级完成！带着全新功能回来啦！"
+            "升级完毕！学到了不少新本领！"
+            "自我进化完成！感觉状态绝佳！"
+            "升级完毕！现在更强劲了！"
         )
         local update_message
         update_message="${update_messages[RANDOM % ${#update_messages[@]}]}"
         echo -e "${update_message}${NC}"
     else
         local completion_messages=(
-            "啊不错，我喜欢这儿。有零食吗？"
-            "到家了。别担心，我不会乱动家具的。"
-            "我来了。让我们制造点负责任的混乱吧。"
-            "安装完成。你的生产力即将变得奇怪。"
-            "安顿好了。是时候自动化你的生活了，不管你准备好了没。"
-            "舒服。我已经看过你的日历了。我们得聊聊。"
-            "终于 unpack 完了。现在指给我你的问题。"
-            "掰掰钳子 好了，我们要造什么？"
-            "龙虾已着陆。你的终端将不再一样。"
-            "全部完成！我保证只稍微评判一下你的代码。"
+            "🦞 安装完成！OpenClaw 准备就绪，随时待命！"
+            "安装完成！欢迎来到 AI 世界！"
+            "初次见面！已准备就绪，开始探索吧！"
+            "安装完毕！让我们一起开启智能协作之旅！"
+            "🦞 部署完成！AI 助手已在后台待命！"
         )
         local completion_message
         completion_message="${completion_messages[RANDOM % ${#completion_messages[@]}]}"
@@ -5317,18 +5153,6 @@ invoke_install_flow() {
     #     ui_hr 48 "─"
     # fi
 
-    echo ""
-    ui_info "OpenClaw Manager 为测试版，可能存在兼容性或稳定性问题；遇到问题可反馈至其项目仓库。"
-    local farewell_messages=(
-        "祝使用愉快！有问题可查阅文档或加入社区交流。"
-        "准备好了就出发吧。文档和社区随时等你。"
-        "开夹快乐！遇到问题别客气，文档和群友都在。"
-        "享受自动化吧。卡住了？文档和社区帮你兜底。"
-        "开始折腾吧。有问题？文档里找找，群里问问。"
-    )
-    local farewell_msg
-    farewell_msg="${farewell_messages[RANDOM % ${#farewell_messages[@]}]}"
-    echo -e "${farewell_msg}${NC}"
     echo ""
 
     show_footer_links
