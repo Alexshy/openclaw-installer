@@ -2662,6 +2662,10 @@ ensure_pnpm_wrapper_in_local_bin() {
     ensure_user_local_bin_on_path
     local user_pnpm="${HOME}/.local/bin/pnpm"
     if [[ ! -x "$user_pnpm" ]] || ! grep -q "corepack pnpm" "$user_pnpm" 2>/dev/null; then
+        # 如果路径是符号链接，先删除它，避免覆盖目标文件
+        if [[ -L "$user_pnpm" ]]; then
+            rm -f "$user_pnpm"
+        fi
         cat >"${user_pnpm}" <<'PNPMWRAP'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -2731,6 +2735,10 @@ ensure_pnpm_binary_for_scripts() {
     if [[ "${PNPM_CMD[*]}" == "corepack pnpm" ]] && command -v corepack >/dev/null 2>&1; then
         ensure_user_local_bin_on_path
         local user_pnpm="${HOME}/.local/bin/pnpm"
+        # 如果路径是符号链接，先删除它，避免覆盖目标文件
+        if [[ -L "$user_pnpm" ]]; then
+            rm -f "$user_pnpm"
+        fi
         cat >"${user_pnpm}" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
