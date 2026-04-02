@@ -79,12 +79,14 @@
 **第二步**：复制以下命令，粘贴到终端，按回车：
 
 ```bash
-curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
+sudo curl -fsSL --proto '=https' --tlsv1.2 https://raw.githubusercontent.com/Alexshy/openclaw-installer/main/install.sh | bash
 ```
+
+> ⚠️ **为避免安装时的权限问题，首次执行时会提示输入 Mac 电脑的开机登录密码（输入密码时不会显示任何字符），完成输入后按回车即可。
 
 > 国内网络较慢时，可使用 jsDelivr 加速：
 > ```bash
-> curl -fsSL --proto '=https' --tlsv1.2 https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
+> sudo curl -fsSL --proto '=https' --tlsv1.2 https://cdn.jsdelivr.net/gh/Alexshy/openclaw-installer@main/install.sh | bash
 > ```
 
 **第三步**：按照脚本提示操作即可 🎉
